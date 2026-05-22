@@ -118,6 +118,77 @@ export default function ProductDetailPage() {
   const product = PRODUCT_DATABASE[slug] || PRODUCT_DATABASE['h-type-layer-pullet-systems'];
 
   const [isQuoting, setIsQuoting] = useState(false);
+  const [shedLength, setShedLength] = useState<number | ''>('');
+  const [numRows, setNumRows] = useState<number | ''>('');
+  const [numTiers, setNumTiers] = useState<number | ''>('');
+  
+  const [calcResult, setCalcResult] = useState<{
+    sectionsPerRow?: number,
+    totalSections?: number,
+    totalBoxes?: number,
+    shedHeight?: number,
+    shedWidth?: number,
+    totalBirds?: number,
+    error?: string,
+    usableLength?: number,
+    cm?: number,
+    ess?: number
+  } | null>(null);
+
+  const calculateCapacity = () => {
+    setCalcResult(null);
+
+    const length = Number(shedLength);
+    const rows = Number(numRows);
+    const tiers = Number(numTiers);
+
+    if (!length || length < 100 || length > 450) {
+      setCalcResult({ error: 'Shed length must be between 100 and 450 ft.' });
+      return;
+    }
+    if (!rows || rows < 1 || rows > 9) {
+      setCalcResult({ error: 'Number of rows must be between 1 and 9.' });
+      return;
+    }
+    if (!tiers || tiers < 2 || tiers > 4) {
+      setCalcResult({ error: 'Number of tiers must be between 2 and 4.' });
+      return;
+    }
+
+    const CM = 7, MU = 6.3, EndKit = 5.7;
+    const sectionLength = 6;
+    const baseHeight = 1.26, tierHeight = 2.18, houseHeightMargin = 2.46;
+    const shedWidth = rows * 8.3;
+    const birdsPerBox = 3;
+
+    const usableLength1 = length - (CM + MU + EndKit);
+    const sectionsPerRow = Math.floor(usableLength1 / sectionLength) - 1;
+    const totalSections = sectionsPerRow * rows;
+    const totalBoxes = 8 * tiers * totalSections;
+    const totalBirds = totalBoxes * birdsPerBox;
+    const shedHeight = (tierHeight * tiers) + baseHeight + houseHeightMargin;
+    const usableLength = sectionsPerRow * sectionLength;
+    const ESS = usableLength1 - usableLength;
+
+    setCalcResult({
+      sectionsPerRow,
+      totalSections,
+      totalBoxes,
+      shedHeight,
+      shedWidth,
+      totalBirds,
+      usableLength,
+      cm: CM,
+      ess: ESS
+    });
+  };
+
+  const resetCalc = () => {
+    setShedLength('');
+    setNumRows('');
+    setNumTiers('');
+    setCalcResult(null);
+  };
 
   // Fallback to top if rendering
   useEffect(() => {
@@ -399,6 +470,9 @@ export default function ProductDetailPage() {
     </main>
   );
 }
+
+
+
 
 
 
