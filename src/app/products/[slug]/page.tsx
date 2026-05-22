@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
@@ -7,6 +7,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeft, ArrowUpRight, CheckCircle2, Shield, Settings, Zap, ArrowRight, Box } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+
+import { Calculator } from 'lucide-react';
 
 const PRODUCT_DATABASE: Record<string, any> = {
   'h-type-layer-pullet-systems': {
@@ -53,6 +55,60 @@ const PRODUCT_DATABASE: Record<string, any> = {
     gallery: ['/images/Glimpse-Metplast-Indsutries-1.jpg', '/images/Hero-Slider-2.jpg'],
     cat: 'Storage',
     specs: ['Galvanized Steel Build', 'Thermal Reflective Coating', 'Automated Auger Delivery', 'Contamination Sealed']
+  },
+  'breeder': {
+    name: 'Breeder Systems',
+    tagline: 'Genetic optimization matrix for maximum hatchability.',
+    desc: 'Precision feeding and watering systems to ensure superior breeder flock health, optimal mating environments, and high hatchability rates. Features specialized male-exclusion grilles and isolated nesting sectors.',
+    image: '/images/Breeder.png',
+    gallery: ['/images/aa.png', '/images/cc.png'],
+    cat: 'Turnkey Solutions',
+    specs: ['Male-Exclusion Grilles', 'Precision Automated Weighing', 'Ergonomic Nest Layout', 'High-Flow Nipple Lines']
+  },
+  'broiler': {
+    name: 'Broiler Solutions',
+    tagline: 'Rapid growth matrices engineered for scale.',
+    desc: 'Advanced climate-controlled systems designed for rapid and healthy bird growth, maximizing yield and efficiency for modern broiler farming operations with specialized day-old chick adaptations.',
+    image: '/images/Broiler.png',
+    gallery: ['/images/bb.png', '/images/dd.png'],
+    cat: 'Turnkey Solutions',
+    specs: ['360° Nipple Drinkers', 'Flood-Proof Feed Pans', 'Dynamic Micro-Climate Control', 'Heavy-Duty Flooring']
+  },
+  'layer': {
+    name: 'Layer Complexes',
+    tagline: 'High-yield framework for commercial egg production.',
+    desc: 'Meticulously crafted to deliver exceptional results. Optimizes productivity while prioritizing the well-being of your layer birds with uniform feed distribution and efficient egg collection.',
+    image: '/images/Layer.png',
+    gallery: ['/images/ee.png', '/images/ff.png'],
+    cat: 'Turnkey Solutions',
+    specs: ['Gantry Feed Distributors', 'Soft-Roll Egg Belts', 'Mite-Resistant Perches', 'Automated Manure Removal']
+  },
+  'drinking-system': {
+    name: 'Precision Drinking Systems',
+    tagline: 'Dynamic hydration delivery matrix.',
+    desc: '360-degree, high-flow nipple drinker systems engineered to prevent leaking while delivering precise, filtered hydration to every bird at all stages of growth.',
+    image: '/images/chicken.png',
+    gallery: ['/images/Glimpse-Metplast-Indsutries-1.jpg', '/images/Hero-Slider-3.jpg'],
+    cat: 'Products',
+    specs: ['360° Stainless Steel Nipples', 'Integrated Water Filtration', 'Anti-Roost Wires', 'Pressure Regulators']
+  },
+  'feeding-system': {
+    name: 'Automated Feeding Systems',
+    tagline: 'Zero-friction nutrient distribution.',
+    desc: 'High-velocity auger and pan feeding systems that ensure perfectly uniform feed distribution across massive scale houses without feed separation or waste.',
+    image: '/images/Untitled-design-3-560x690.jpg',
+    gallery: ['/images/Untitled-design-6-560x690.jpg', '/images/Hero-Slider-1.jpg'],
+    cat: 'Products',
+    specs: ['Flood-Proof Feed Pans', 'High-Speed Auger Lines', 'Anti-Waste Lip Rings', 'Dynamic Height Adjustment']
+  },
+  'ventilation-system': {
+    name: 'Climate & Ventilation Matrix',
+    tagline: 'Absolute atmospheric control.',
+    desc: 'Tunnel ventilation, cooling pads, and heavy-duty extraction fans integrated with AI thermostats to maintain the absolute perfect micro-climate for high-yield farming.',
+    image: '/images/Untitled-design-2.jpg',
+    gallery: ['/images/Hero-Slider-2.jpg', '/images/Glimpse-Metplast-Indsutries-1.jpg'],
+    cat: 'Products',
+    specs: ['50" Tunnel Extraction Fans', 'Cellulose Cooling Pads', 'AI Thermostatic Controllers', 'Automated Baffle Inlets']
   }
 };
 
@@ -139,6 +195,17 @@ export default function ProductDetailPage() {
               >
                 Request Quotation <ArrowUpRight className="ml-2 w-5 h-5" />
               </Button>
+              {['layer', 'broiler', 'breeder'].includes(slug) && (
+                <Button 
+                  variant="outline"
+                  onClick={() => {
+                    document.getElementById('calculator-form')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="h-16 px-8 rounded-full bg-white/5 border border-white/20 text-white hover:bg-white/10 hover:border-white/30 font-bold text-lg hover:scale-105 transition-all w-full sm:w-auto"
+                >
+                  <Calculator className="w-5 h-5 mr-2" /> Open Calculator
+                </Button>
+              )}
             </motion.div>
           </div>
 
@@ -202,8 +269,80 @@ export default function ProductDetailPage() {
         </div>
       </div>
 
+      {/* DEDICATED CALCULATOR SECTION */}
+      {['layer', 'broiler', 'breeder'].includes(slug) && (
+        <section id="calculator-form" className="relative z-20 bg-[#0a0a0a] text-white py-32 px-6 border-t border-white/10 rounded-t-[4rem] -mb-10">
+          <div className="max-w-[1400px] mx-auto grid lg:grid-cols-12 gap-16 items-start">
+            <div className="lg:col-span-5 space-y-8 sticky top-32">
+              <div className="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center border border-white/10 mb-8">
+                <Calculator className="w-8 h-8 text-white" />
+              </div>
+              <h2 className="text-5xl font-['Space_Grotesk'] font-black leading-[0.9] tracking-tighter text-white">
+                INTELLIGENT <br/><span className="text-primary">CAPACITY CALCULATOR.</span>
+              </h2>
+              <p className="text-xl font-medium text-white/60 leading-relaxed">
+                Determine the exact structural and equipment requirements for your {product.name} facility based on your specific dimensions.
+              </p>
+            </div>
+            
+            <div className="lg:col-span-7 bg-white/5 p-10 md:p-14 rounded-[3rem] shadow-2xl relative overflow-hidden border border-white/10 glass-panel-dark">
+              <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-primary/5 blur-[100px] rounded-full pointer-events-none" />
+              
+              <div className="relative z-10 space-y-8">
+                <div className="grid md:grid-cols-2 gap-8">
+                  <div className="space-y-3">
+                    <label className="text-xs font-bold text-white/50 uppercase tracking-widest">Shed Length (Feet)</label>
+                    <input type="number" className="w-full bg-dark border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-primary transition-colors font-medium text-lg" placeholder="e.g. 300" />
+                  </div>
+                  <div className="space-y-3">
+                    <label className="text-xs font-bold text-white/50 uppercase tracking-widest">Shed Width (Feet)</label>
+                    <input type="number" className="w-full bg-dark border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-primary transition-colors font-medium text-lg" placeholder="e.g. 40" />
+                  </div>
+                </div>
+                
+                {slug === 'layer' && (
+                  <div className="grid md:grid-cols-2 gap-8">
+                    <div className="space-y-3">
+                      <label className="text-xs font-bold text-white/50 uppercase tracking-widest">Cage Tiers (Height)</label>
+                      <select className="w-full bg-dark border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-primary transition-colors font-medium text-lg appearance-none cursor-pointer">
+                        <option>3 Tiers</option>
+                        <option>4 Tiers</option>
+                        <option>5 Tiers</option>
+                        <option>6 Tiers</option>
+                      </select>
+                    </div>
+                    <div className="space-y-3">
+                      <label className="text-xs font-bold text-white/50 uppercase tracking-widest">Rows per Shed</label>
+                      <select className="w-full bg-dark border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-primary transition-colors font-medium text-lg appearance-none cursor-pointer">
+                        <option>3 Rows</option>
+                        <option>4 Rows</option>
+                        <option>5 Rows</option>
+                      </select>
+                    </div>
+                  </div>
+                )}
+
+                <div className="pt-6">
+                  <Button className="w-full h-16 rounded-full bg-white text-dark hover:bg-slate-200 font-black text-xl transition-all shadow-lg">
+                    Calculate Total Capacity
+                  </Button>
+                </div>
+
+                <div className="pt-8 mt-8 border-t border-white/10">
+                  <p className="text-sm font-bold text-white/50 uppercase tracking-widest mb-4">Projected Output</p>
+                  <div className="bg-dark/50 rounded-2xl p-8 border border-white/5 flex items-center justify-between">
+                    <span className="text-white/70 font-medium text-lg">Total Bird Capacity</span>
+                    <span className="text-4xl font-['Space_Grotesk'] font-black text-primary">--</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* DEDICATED QUOTE SECTION */}
-      <section id="quote-form" className="relative z-20 bg-primary text-white py-32 px-6 rounded-t-[4rem] shadow-[0_-20px_50px_rgba(248,49,54,0.2)]">
+      <section id="quote-form" className="relative z-30 bg-primary text-white py-32 px-6 rounded-t-[4rem] shadow-[0_-20px_50px_rgba(248,49,54,0.3)]">
         <div className="max-w-[1200px] mx-auto grid lg:grid-cols-2 gap-16 items-center">
           <div className="space-y-8">
             <h2 className="text-5xl md:text-7xl font-['Space_Grotesk'] font-black leading-[0.9] tracking-tighter drop-shadow-md">
@@ -260,3 +399,8 @@ export default function ProductDetailPage() {
     </main>
   );
 }
+
+
+
+
+
