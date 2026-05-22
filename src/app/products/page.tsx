@@ -1,6 +1,7 @@
 "use client"
 
 import React from 'react';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { ArrowRight, Box, Target, Zap, ArrowUpRight } from 'lucide-react';
@@ -61,27 +62,28 @@ export default function ProductsPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="glass-panel-dark rounded-[2.5rem] overflow-hidden group hover:border-white/20 transition-all duration-500 flex flex-col hover:-translate-y-2 shadow-2xl"
             >
-              <div className="relative h-[400px] bg-black/50 p-8 flex items-center justify-center overflow-hidden">
-                <Image src={prod.image} alt={prod.name} fill className="object-cover opacity-80 mix-blend-luminosity group-hover:mix-blend-normal group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
-                <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/40 to-transparent opacity-80" />
-                <div className="absolute top-8 left-8">
-                  <span className="bg-white/10 backdrop-blur-xl border border-white/20 text-white text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full">
-                    {prod.cat}
-                  </span>
-                </div>
-              </div>
-              <div className="p-10 flex flex-col flex-1 bg-dark/50">
-                <h3 className="text-3xl font-['Space_Grotesk'] font-black text-white mb-4 group-hover:text-primary transition-colors tracking-tight">{prod.name}</h3>
-                <p className="text-white/50 mb-10 leading-relaxed font-medium flex-1">{prod.desc}</p>
-                <div className="pt-6 border-t border-white/10 flex items-center justify-between cursor-pointer group/btn">
-                  <span className="font-bold text-white tracking-wide uppercase text-sm group-hover/btn:text-primary transition-colors">Deploy Configuration</span>
-                  <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover/btn:bg-primary group-hover/btn:border-primary transition-all">
-                    <ArrowUpRight className="w-5 h-5 text-white" />
+              <Link href={`/products/${prod.name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '')}`} className="block glass-panel-dark rounded-[2.5rem] overflow-hidden group hover:border-white/20 transition-all duration-500 flex flex-col hover:-translate-y-2 shadow-2xl h-full">
+                <div className="relative h-[400px] bg-black/50 p-8 flex items-center justify-center overflow-hidden">
+                  <Image src={prod.image} alt={prod.name} fill className="object-cover opacity-80 mix-blend-luminosity group-hover:mix-blend-normal group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/40 to-transparent opacity-80" />
+                  <div className="absolute top-8 left-8">
+                    <span className="bg-white/10 backdrop-blur-xl border border-white/20 text-white text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full">
+                      {prod.cat}
+                    </span>
                   </div>
                 </div>
-              </div>
+                <div className="p-10 flex flex-col flex-1 bg-dark/50">
+                  <h3 className="text-3xl font-['Space_Grotesk'] font-black text-white mb-4 group-hover:text-primary transition-colors tracking-tight">{prod.name}</h3>
+                  <p className="text-white/50 mb-10 leading-relaxed font-medium flex-1">{prod.desc}</p>
+                  <div className="pt-6 border-t border-white/10 flex items-center justify-between cursor-pointer group/btn mt-auto">
+                    <span className="font-bold text-white tracking-wide uppercase text-sm group-hover/btn:text-primary transition-colors">Deploy Configuration</span>
+                    <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover/btn:bg-primary group-hover/btn:border-primary transition-all">
+                      <ArrowUpRight className="w-5 h-5 text-white" />
+                    </div>
+                  </div>
+                </div>
+              </Link>
             </motion.div>
           ))}
         </div>
@@ -126,3 +128,6 @@ export default function ProductsPage() {
     </main>
   );
 }
+
+
+
