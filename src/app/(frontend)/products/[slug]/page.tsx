@@ -55,7 +55,7 @@ const PRODUCT_DATABASE: Record<string, any> = {
     name: 'Breeder Systems',
     tagline: 'Genetic optimization matrix for maximum hatchability.',
     desc: 'Precision feeding and watering systems to ensure superior breeder flock health, optimal mating environments, and high hatchability rates. Features specialized male-exclusion grilles and isolated nesting sectors.',
-    image: '/images/Breeder.jpg',
+    image: '/images/Breeder2.jpg',
     cat: 'Turnkey Solutions',
     specs: ['Male-Exclusion Grilles', 'Precision Automated Weighing', 'Ergonomic Nest Layout', 'High-Flow Nipple Lines', 'Dedicated Mating Sectors', 'Micro-Climate Control']
   },
@@ -63,7 +63,7 @@ const PRODUCT_DATABASE: Record<string, any> = {
     name: 'Broiler Solutions',
     tagline: 'Rapid growth matrices engineered for scale.',
     desc: 'Advanced climate-controlled systems designed for rapid and healthy bird growth, maximizing yield and efficiency for modern broiler farming operations with specialized day-old chick adaptations.',
-    image: '/images/Broiler.png',
+    image: '/images/Broiler2.jpg',
     cat: 'Turnkey Solutions',
     specs: ['360° Nipple Drinkers', 'Flood-Proof Feed Pans', 'Dynamic Micro-Climate Control', 'Heavy-Duty Flooring', 'Rapid Expansion Modules', 'Automated Weighing']
   },
