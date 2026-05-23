@@ -216,7 +216,7 @@ export function Navbar() {
               initial={{ scale: 0.95, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
-              className="bg-dark border border-white/10 rounded-[2rem] p-8 md:p-12 max-w-lg w-full shadow-2xl relative"
+              className="bg-dark border border-white/10 rounded-[2rem] p-6 md:p-8 max-w-lg w-full shadow-2xl relative max-h-[90vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
               <button 
@@ -226,21 +226,21 @@ export function Navbar() {
                 <X className="w-5 h-5" />
               </button>
               
-              <div className="w-16 h-16 bg-primary/20 text-primary rounded-2xl flex items-center justify-center mb-6">
-                <FileText className="w-8 h-8" />
+              <div className="w-12 h-12 bg-primary/20 text-primary rounded-2xl flex items-center justify-center mb-4">
+                <FileText className="w-6 h-6" />
               </div>
               
-              <h2 className="text-3xl font-['Space_Grotesk'] font-black text-white mb-2 tracking-tight">Download Brochure</h2>
-              <p className="text-white/60 mb-8 font-medium leading-relaxed">Enter your email to receive the complete Metplast Product Catalog and Turnkey Solutions guide directly to your inbox.</p>
+              <h2 className="text-2xl font-['Space_Grotesk'] font-black text-white mb-2 tracking-tight">Download Brochure</h2>
+              <p className="text-white/60 mb-6 text-sm font-medium leading-relaxed">Enter your email to receive the complete Metplast Product Catalog and Turnkey Solutions guide directly to your inbox.</p>
               
-              <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); alert('Brochure request transmitted successfully.'); setIsBrochureOpen(false); }}>
+              <form className="space-y-3" onSubmit={(e) => { e.preventDefault(); alert('Brochure request transmitted successfully.'); setIsBrochureOpen(false); }}>
                 <input 
                   type="email" 
                   required 
                   placeholder="Enter your email address" 
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-primary transition-colors font-medium" 
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors font-medium text-sm" 
                 />
-                <Button className="w-full h-14 bg-primary text-white hover:bg-primary/90 rounded-xl font-bold text-lg btn-glow">
+                <Button className="w-full h-12 bg-primary text-white hover:bg-primary/90 rounded-xl font-bold text-base btn-glow">
                   Request Download Link
                 </Button>
               </form>
@@ -263,7 +263,7 @@ export function Navbar() {
               initial={{ scale: 0.95, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
-              className="bg-dark border border-white/10 rounded-[2rem] p-8 md:p-12 max-w-lg w-full shadow-2xl relative"
+              className="bg-dark border border-white/10 rounded-[2rem] p-6 md:p-8 max-w-lg w-full shadow-2xl relative max-h-[90vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
               <button 
@@ -273,35 +273,35 @@ export function Navbar() {
                 <X className="w-5 h-5" />
               </button>
               
-              <div className="w-16 h-16 bg-primary/20 text-primary rounded-2xl flex items-center justify-center mb-6">
-                <FileText className="w-8 h-8" />
+              <div className="w-12 h-12 bg-primary/20 text-primary rounded-2xl flex items-center justify-center mb-4">
+                <FileText className="w-6 h-6" />
               </div>
               
-              <h2 className="text-3xl font-['Space_Grotesk'] font-black text-white mb-2 tracking-tight">Request Quotation</h2>
-              <p className="text-white/60 mb-8 font-medium leading-relaxed">Fill out the form below to receive a custom quotation from our engineering team.</p>
+              <h2 className="text-2xl font-['Space_Grotesk'] font-black text-white mb-2 tracking-tight">Request Quotation</h2>
+              <p className="text-white/60 mb-6 text-sm font-medium leading-relaxed">Fill out the form below to receive a custom quotation from our engineering team.</p>
               
-              <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); alert('Quotation request transmitted successfully.'); setIsQuoteOpen(false); }}>
+              <form className="space-y-3" onSubmit={(e) => { e.preventDefault(); alert('Quotation request transmitted successfully.'); setIsQuoteOpen(false); }}>
                 <input 
                   type="text" 
                   required 
                   placeholder="Your Name / Company" 
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-primary transition-colors font-medium" 
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors font-medium text-sm" 
                 />
                 <input 
                   type="email" 
                   required 
                   placeholder="Email Address" 
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-primary transition-colors font-medium" 
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors font-medium text-sm" 
                 />
                 <input 
                   type="tel" 
                   required 
                   placeholder="Phone Number" 
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-primary transition-colors font-medium" 
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors font-medium text-sm" 
                 />
                 <select 
                   defaultValue=""
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-primary transition-colors font-medium appearance-none cursor-pointer"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors font-medium text-sm appearance-none cursor-pointer"
                   required
                 >
                   <option value="" disabled className="text-dark">Select System Interest</option>
@@ -312,10 +312,10 @@ export function Navbar() {
                 </select>
                 <textarea 
                   placeholder="Additional Details (Optional)" 
-                  rows={3}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-primary transition-colors font-medium resize-none" 
+                  rows={2}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors font-medium text-sm resize-none" 
                 />
-                <Button className="w-full h-14 bg-primary text-white hover:bg-primary/90 rounded-xl font-bold text-lg btn-glow mt-2">
+                <Button className="w-full h-12 bg-primary text-white hover:bg-primary/90 rounded-xl font-bold text-base btn-glow mt-1">
                   Submit Request
                 </Button>
               </form>
