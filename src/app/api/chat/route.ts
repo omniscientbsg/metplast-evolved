@@ -74,5 +74,5 @@ Always be helpful, professional, and concise.`
     messages,
   })
 
-  return result.toDataStreamResponse()
+  return result.toTextStreamResponse()
 }
