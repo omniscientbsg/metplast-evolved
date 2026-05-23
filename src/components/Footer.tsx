@@ -12,12 +12,12 @@ export function Footer() {
       <div className="max-w-[1600px] mx-auto">
         <div className="grid lg:grid-cols-4 gap-16 lg:gap-8 mb-20 border-b border-white/10 pb-20">
           <div className="lg:col-span-2 pr-12">
-            <div className="flex items-center h-12 w-48 relative mb-8">
+            <div className="flex items-center h-16 w-60 relative mb-8">
               <Image 
-                src="/images/Metplast-Website-Themes-1980-x-400-px.png" 
+                src="/images/Logo Metplast.png" 
                 alt="Metplast Logo" 
                 fill 
-                className="object-contain brightness-0 invert" 
+                className="object-contain" 
               />
             </div>
             <p className="text-white/50 text-lg font-medium leading-relaxed mb-8 max-w-md">

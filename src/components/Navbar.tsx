@@ -13,6 +13,7 @@ export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [isBrochureOpen, setIsBrochureOpen] = useState(false);
+  const [isQuoteOpen, setIsQuoteOpen] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -22,8 +23,8 @@ export function Navbar() {
   }, []);
 
   const navClass = isScrolled 
-    ? 'bg-dark/80 backdrop-blur-2xl border-b border-white/5 py-3 shadow-[0_4px_30px_rgba(0,0,0,0.1)]' 
-    : 'bg-transparent py-6';
+    ? 'bg-dark/80 backdrop-blur-2xl border-b border-white/5 py-4 shadow-[0_4px_30px_rgba(0,0,0,0.1)]' 
+    : 'bg-transparent py-8';
 
   const links = [
     { name: 'Home', href: '/' },
@@ -56,13 +57,13 @@ export function Navbar() {
         <div className="max-w-[1600px] mx-auto px-6 flex items-center justify-between">
           
           {/* Brand */}
-          <Link href="/" className="relative flex items-center h-12 w-48 group shrink-0">
+          <Link href="/" className="relative flex items-center h-20 w-72 group shrink-0">
             <div className="absolute inset-0 bg-primary/20 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
             <Image 
-              src="/images/Metplast-Website-Themes-1980-x-400-px.png" 
+              src="/images/Logo Metplast.png" 
               alt="Metplast Logo" 
               fill 
-              className="object-contain brightness-0 invert relative z-10" 
+              className="object-contain relative z-10" 
               priority
             />
           </Link>
@@ -126,11 +127,12 @@ export function Navbar() {
             >
               <Download className="mr-2 w-4 h-4" /> Brochure
             </Button>
-            <Link href="/contact">
-              <Button className="bg-primary text-white hover:bg-primary/90 h-11 px-6 rounded-full font-bold text-sm tracking-wide btn-glow transition-all border border-red-500/50">
-                Get a Quote <ArrowUpRight className="ml-2 w-4 h-4" />
-              </Button>
-            </Link>
+            <Button 
+              onClick={() => setIsQuoteOpen(true)}
+              className="bg-primary text-white hover:bg-primary/90 h-11 px-6 rounded-full font-bold text-sm tracking-wide btn-glow transition-all border border-red-500/50"
+            >
+              Get a Quote <ArrowUpRight className="ml-2 w-4 h-4" />
+            </Button>
           </div>
 
           {/* Mobile Toggle */}
@@ -185,11 +187,15 @@ export function Navbar() {
                 >
                   <Download className="mr-2 w-5 h-5" /> Download Brochure
                 </Button>
-                <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)}>
-                  <Button className="w-full h-14 bg-primary text-white rounded-xl font-bold text-lg border border-red-500/50 btn-glow mt-4">
-                    Get a Quote
-                  </Button>
-                </Link>
+                <Button 
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    setIsQuoteOpen(true);
+                  }}
+                  className="w-full h-14 bg-primary text-white rounded-xl font-bold text-lg border border-red-500/50 btn-glow mt-4"
+                >
+                  Get a Quote
+                </Button>
               </div>
             </motion.div>
           )}
@@ -236,6 +242,81 @@ export function Navbar() {
                 />
                 <Button className="w-full h-14 bg-primary text-white hover:bg-primary/90 rounded-xl font-bold text-lg btn-glow">
                   Request Download Link
+                </Button>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Quote Modal */}
+      <AnimatePresence>
+        {isQuoteOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[200] bg-black/80 backdrop-blur-sm flex items-center justify-center p-6"
+            onClick={() => setIsQuoteOpen(false)}
+          >
+            <motion.div 
+              initial={{ scale: 0.95, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 20 }}
+              className="bg-dark border border-white/10 rounded-[2rem] p-8 md:p-12 max-w-lg w-full shadow-2xl relative"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button 
+                onClick={() => setIsQuoteOpen(false)}
+                className="absolute top-6 right-6 w-10 h-10 bg-white/5 border border-white/10 rounded-full flex items-center justify-center text-white/50 hover:text-white hover:bg-white/10 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+              
+              <div className="w-16 h-16 bg-primary/20 text-primary rounded-2xl flex items-center justify-center mb-6">
+                <FileText className="w-8 h-8" />
+              </div>
+              
+              <h2 className="text-3xl font-['Space_Grotesk'] font-black text-white mb-2 tracking-tight">Request Quotation</h2>
+              <p className="text-white/60 mb-8 font-medium leading-relaxed">Fill out the form below to receive a custom quotation from our engineering team.</p>
+              
+              <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); alert('Quotation request transmitted successfully.'); setIsQuoteOpen(false); }}>
+                <input 
+                  type="text" 
+                  required 
+                  placeholder="Your Name / Company" 
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-primary transition-colors font-medium" 
+                />
+                <input 
+                  type="email" 
+                  required 
+                  placeholder="Email Address" 
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-primary transition-colors font-medium" 
+                />
+                <input 
+                  type="tel" 
+                  required 
+                  placeholder="Phone Number" 
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-primary transition-colors font-medium" 
+                />
+                <select 
+                  defaultValue=""
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-primary transition-colors font-medium appearance-none cursor-pointer"
+                  required
+                >
+                  <option value="" disabled className="text-dark">Select System Interest</option>
+                  <option value="layer" className="text-dark">Layer Pullet Systems</option>
+                  <option value="broiler" className="text-dark">Broiler Solutions</option>
+                  <option value="breeder" className="text-dark">Breeder Systems</option>
+                  <option value="other" className="text-dark">Other Infrastructure</option>
+                </select>
+                <textarea 
+                  placeholder="Additional Details (Optional)" 
+                  rows={3}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-primary transition-colors font-medium resize-none" 
+                />
+                <Button className="w-full h-14 bg-primary text-white hover:bg-primary/90 rounded-xl font-bold text-lg btn-glow mt-2">
+                  Submit Request
                 </Button>
               </form>
             </motion.div>

@@ -80,6 +80,27 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+/* Light Glassmorphism for Light Theme */
+.glass-panel-light {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 2px solid rgba(255, 255, 255, 1);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+}
+
+/* Animated Light Gradient Background */
+@keyframes gradient-bg {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.bg-animated-light {
+  background: linear-gradient(-45deg, #ffffff, #f0f4f8, rgba(34, 88, 120, 0.15), rgba(248, 49, 54, 0.1), #e9ecef);
+  background-size: 400% 400%;
+  animation: gradient-bg 20s ease infinite;
+}
+
 /* Glowing Orbs */
 .glow-orb {
   position: absolute;
@@ -116,4 +137,14 @@ body {
 /* Smooth transition for background colors */
 .bg-transition {
   transition: background-color 0.8s ease-in-out, color 0.8s ease-in-out;
+}
+
+/* Hide native number input arrows */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
 }
