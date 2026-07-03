@@ -1,20 +1,94 @@
 @import "tailwindcss";
 
+/* ============================================================
+   DESIGN TOKENS — DARK (default)
+   ============================================================ */
 :root {
-  --background: #373435;
-  --foreground: #ffffff;
-  --primary: #f83136;
-  --primary-glow: rgba(248, 49, 54, 0.5);
-  --secondary: #225878;
-  --surface: rgba(255, 255, 255, 0.03);
-  --surface-border: rgba(255, 255, 255, 0.08);
-  
-  --dark-color: #373435;
-  --blue-color: #225878;
-  --red-color: #f83136;
+  /* Page backgrounds */
+  --bg: #0B1220;
+  --bg-elevated: #121A2B;
+  --surface: #162032;
+
+  /* Text */
+  --text: #E6ECF5;
+  --text-muted: #9AA7BD;
+
+  /* Borders */
+  --border: rgba(255, 255, 255, 0.10);
+
+  /* Brand (constant in both themes) */
+  --brand-navy: #1B3A6B;
+  --accent: #F97316;
+  --accent-text: #FFFFFF;
+
+  /* Glass */
+  --glass-bg: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.14);
+  --glass-blur: 20px;
+  --glass-highlight: rgba(255, 255, 255, 0.18);
+  --glass-sheen: rgba(255, 255, 255, 0.05);
+
+  /* Shadow */
+  --shadow: 0 8px 30px rgba(0, 0, 0, 0.40);
+
+  /* Legacy aliases (keep for backward compat during migration) */
+  --background: #0B1220;
+  --foreground: #E6ECF5;
+  --primary: #F97316;
+  --primary-glow: rgba(249, 115, 22, 0.45);
+  --secondary: #1B3A6B;
+  --dark-color: #0B1220;
+  --blue-color: #1B3A6B;
+  --red-color: #F97316;
   --white-color: #ffffff;
 }
 
+/* ============================================================
+   DESIGN TOKENS — LIGHT
+   ============================================================ */
+[data-theme="light"] {
+  --bg: #FFFFFF;
+  --bg-elevated: #F5F7FA;
+  --surface: #FFFFFF;
+  --text: #1A2430;
+  --text-muted: #5A6678;
+  --border: rgba(16, 24, 40, 0.10);
+
+  /* Brand stays constant */
+  --brand-navy: #1B3A6B;
+  --accent: #F97316;
+  --accent-text: #FFFFFF;
+
+  /* Glass — frosted light */
+  --glass-bg: rgba(255, 255, 255, 0.55);
+  --glass-border: rgba(16, 24, 40, 0.08);
+  --glass-blur: 20px;
+  --glass-highlight: rgba(255, 255, 255, 0.90);
+  --glass-sheen: rgba(255, 255, 255, 0.35);
+  --shadow: 0 8px 30px rgba(16, 24, 40, 0.10);
+
+  /* Legacy aliases */
+  --background: #FFFFFF;
+  --foreground: #1A2430;
+  --dark-color: #1A2430;
+}
+
+/* ============================================================
+   LOGO SWAP (Light Mode)
+   ============================================================ */
+[data-theme="light"] .footer-logo-dark {
+  display: none !important;
+}
+.footer-logo-light {
+  display: none !important;
+}
+[data-theme="light"] .footer-logo-light {
+  display: block !important;
+}
+
+/* ============================================================
+   TAILWIND THEME MAPPING
+   ============================================================ */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -23,89 +97,171 @@
   --color-dark: var(--dark-color);
   --color-blue: var(--blue-color);
   --color-red: var(--red-color);
-  --color-surface: var(--surface);
+  --color-surface: var(--glass-bg);
   --font-sans: 'Outfit', system-ui, sans-serif;
   --font-display: 'Space Grotesk', system-ui, sans-serif;
 }
 
+/* ============================================================
+   BASE
+   ============================================================ */
 html {
   font-size: 80%;
 }
 
 body {
-  background-color: var(--background);
-  color: var(--foreground);
+  background-color: var(--bg);
+  color: var(--text);
   font-family: var(--font-sans);
   scroll-behavior: smooth;
   overflow-x: hidden;
+  /* Smooth theme transition — backgrounds and text only, NOT images */
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-/* Custom Scrollbar */
+/* Prevent white flash on dark mode load */
+html:not([data-theme="light"]) {
+  color-scheme: dark;
+}
+[data-theme="light"] {
+  color-scheme: light;
+}
+
+/* ============================================================
+   CUSTOM SCROLLBAR
+   ============================================================ */
 ::-webkit-scrollbar {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--background);
+  background: var(--bg);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(249, 115, 22, 0.3);
   border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--primary);
+  background: var(--accent);
 }
 
-/* Typography Gradients */
+/* ============================================================
+   TYPOGRAPHY GRADIENTS
+   ============================================================ */
 .text-gradient {
-  background: linear-gradient(135deg, #f83136 0%, #ff7b7b 100%);
+  background: linear-gradient(135deg, #F97316 0%, #fb923c 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 .text-gradient-blue {
-  background: linear-gradient(135deg, #225878 0%, #4ea8de 100%);
+  background: linear-gradient(135deg, #1B3A6B 0%, #3b6fcf 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.text-gradient-navy {
+  background: linear-gradient(135deg, #1B3A6B 0%, #2d5bb5 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Glassmorphism */
+/* ============================================================
+   LIQUID GLASS — TOKEN-DRIVEN (auto-flips with theme)
+   Apple-style recipe: heavy blur + saturation boost, translucent
+   fill with a diagonal sheen, hairline border, and an inner top
+   highlight that catches the "light".
+   ============================================================ */
 .glass-panel {
-  background: var(--surface);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid var(--surface-border);
-  box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.5);
+  background:
+    linear-gradient(135deg, var(--glass-sheen) 0%, transparent 45%),
+    var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  border: 1px solid var(--glass-border);
+  box-shadow:
+    var(--shadow),
+    inset 0 1px 0 var(--glass-highlight),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.05);
 }
-.glass-panel-dark {
-  background: rgba(55, 52, 53, 0.6);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+@supports not (backdrop-filter: blur(1px)) {
+  .glass-panel {
+    background: var(--surface);
+  }
 }
 
-/* Light Glassmorphism for Light Theme */
+/* Higher-opacity variant for modals / overlays that sit on busy
+   content — still glassy but guaranteed readable in both themes. */
+.glass-modal {
+  /* Solid fallback first — the color-mix declaration below overrides it
+     only in browsers that support it */
+  background: var(--surface);
+  background:
+    linear-gradient(135deg, var(--glass-sheen) 0%, transparent 45%),
+    color-mix(in srgb, var(--surface) 85%, transparent);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  box-shadow:
+    var(--shadow),
+    inset 0 1px 0 var(--glass-highlight);
+}
+@supports not (backdrop-filter: blur(1px)) {
+  .glass-modal {
+    background: var(--surface);
+  }
+}
+
+/* Dropdown menu — solid surface so items are always readable,
+   with a strong shadow to lift it off same-colour backgrounds */
+.glass-dropdown {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.30), inset 0 1px 0 var(--glass-highlight);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+/* Sticky header bar — translucent page background, liquid glass finish */
+.glass-nav {
+  background: var(--bg);
+  background: color-mix(in srgb, var(--bg) 72%, transparent);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-bottom: 1px solid var(--glass-border);
+  box-shadow: var(--shadow), inset 0 1px 0 var(--glass-highlight);
+}
+@supports not (backdrop-filter: blur(1px)) {
+  .glass-nav {
+    background: var(--bg);
+  }
+}
+
+.glass-panel-dark {
+  background: rgba(18, 26, 43, 0.70);
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.10);
+}
+@supports not (backdrop-filter: blur(1px)) {
+  .glass-panel-dark {
+    background: var(--surface);
+  }
+}
+
+/* Light glassmorphism */
 .glass-panel-light {
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.60);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 2px solid rgba(255, 255, 255, 1);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
 }
 
-/* Animated Light Gradient Background */
-@keyframes gradient-bg {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-.bg-animated-light {
-  background: linear-gradient(-45deg, #ffffff, #f0f4f8, rgba(34, 88, 120, 0.15), rgba(248, 49, 54, 0.1), #e9ecef);
-  background-size: 400% 400%;
-  animation: gradient-bg 20s ease infinite;
-}
-
-/* Glowing Orbs */
+/* ============================================================
+   GLOWING ORBS
+   ============================================================ */
 .glow-orb {
   position: absolute;
   border-radius: 50%;
@@ -115,32 +271,39 @@ body {
   animation: float 20s infinite ease-in-out alternate;
 }
 
-.glow-red { background: rgba(248, 49, 54, 0.2); }
-.glow-blue { background: rgba(34, 88, 120, 0.3); }
+.glow-red  { background: rgba(249, 115, 22, 0.18); }
+.glow-blue { background: rgba(27, 58, 107, 0.28); }
+.glow-orange { background: rgba(249, 115, 22, 0.18); }
+.glow-navy { background: rgba(27, 58, 107, 0.28); }
 
 @keyframes float {
-  0% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(5%, 5%) scale(1.1); }
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(5%, 5%) scale(1.1); }
   100% { transform: translate(-5%, -5%) scale(0.9); }
 }
 
-/* Magnet Button Effect */
+/* ============================================================
+   BUTTONS
+   ============================================================ */
 .btn-glow:hover {
   box-shadow: 0 0 30px var(--primary-glow);
 }
 
-/* Hide scrollbar for horizontal scrolling containers */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
+/* ============================================================
+   UTILITY
+   ============================================================ */
+/* Hide scrollbar for horizontal containers */
+.no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
 
-/* Smooth transition for background colors */
-.bg-transition {
-  transition: background-color 0.8s ease-in-out, color 0.8s ease-in-out;
+/* Native select popup — force readable option colors in both themes
+   (options inherit --text, which is near-white on the white UA popup) */
+select option {
+  background-color: var(--surface);
+  color: var(--text);
 }
 
 /* Hide native number input arrows */
@@ -151,4 +314,26 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 input[type="number"] {
   -moz-appearance: textfield;
+}
+
+/* Animated light gradient background */
+@keyframes gradient-bg {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.bg-animated-light {
+  background: linear-gradient(-45deg, #ffffff, #f0f4f8, rgba(27, 58, 107, 0.15), rgba(249, 115, 22, 0.1), #e9ecef);
+  background-size: 400% 400%;
+  animation: gradient-bg 20s ease infinite;
+}
+
+/* Smooth bg/color transition for theme switching (not images) */
+.bg-transition {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Prevent image flicker during theme switch */
+img, video {
+  transition: none !important;
 }

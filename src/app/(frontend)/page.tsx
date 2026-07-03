@@ -1,73 +1,72 @@
 "use client"
 
-import React, { useRef, useState, useEffect } from 'react';
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import React, { useRef, useState } from 'react';
+import { motion, useScroll, useTransform, AnimatePresence, useSpring } from 'framer-motion';
 import Image from 'next/image';
-import { ArrowUpRight, Activity, Zap, Cpu, Play, ThermometerSnowflake, Droplets, ArrowRight, CheckCircle2, Calculator, Settings, Users, ArrowRightCircle, X } from 'lucide-react';
+import { ArrowUpRight, ArrowRight, Play, CheckCircle2, Calculator, ArrowRightCircle, X, Download, Wind, Image as ImageIcon, Bird, Award, Handshake } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
 export default function Home() {
-  const [isShowreelOpen, setIsShowreelOpen] = useState(false);
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"]
   });
 
-  const y1 = useTransform(scrollYProgress, [0, 1], [0, 200]);
-  const scale = useTransform(scrollYProgress, [0, 0.2], [1, 0.8]);
-  const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
-  const heroBlur = useTransform(scrollYProgress, [0, 0.2], [0, 10]);
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
+
+  const scale = useTransform(smoothProgress, [0, 0.05], [1, 0.8]);
+  const heroBlur = useTransform(smoothProgress, [0, 0.05], [0, 10]);
 
   return (
-    <main ref={containerRef} className="relative min-h-screen bg-dark overflow-hidden">
+    <main ref={containerRef} className="relative min-h-screen bg-[var(--bg)] overflow-hidden">
       
       {/* Background Orbs */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        <div className="glow-orb glow-red w-[800px] h-[800px] top-[-20%] left-[-10%]" />
-        <div className="glow-orb glow-blue w-[600px] h-[600px] bottom-[-10%] right-[-10%]" style={{ animationDelay: '-5s' }} />
+        <div className="glow-orb glow-orange w-[800px] h-[800px] top-[-20%] left-[-10%]" />
+        <div className="glow-orb glow-navy w-[600px] h-[600px] bottom-[-10%] right-[-10%]" style={{ animationDelay: '-5s' }} />
       </div>
 
       {/* HERO SECTION */}
-      <motion.section 
-        style={{ scale, opacity, filter: `blur(${heroBlur}px)` }}
+      <section 
         className="sticky top-0 h-screen flex flex-col justify-center px-6 overflow-hidden z-10"
       >
-        <div className="absolute inset-0 z-[-1] opacity-60">
+        <div className="absolute inset-0 z-[-1] opacity-80">
           <Image src="/images/Hero-Slider-2.jpg" alt="Background" fill className="object-cover object-center" priority sizes="100vw" />
-          <div className="absolute inset-0 bg-gradient-to-b from-dark/40 via-dark/80 to-dark" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/70 to-[var(--bg)]" />
         </div>
 
-        <div className="max-w-[1600px] mx-auto w-full relative z-10 grid lg:grid-cols-12 gap-12 items-end pb-20 pt-32">
+        <motion.div style={{ scale, filter: `blur(${heroBlur}px)` }} className="w-full max-w-[1600px] mx-auto mt-20">
+          <div className="w-full relative z-10 grid lg:grid-cols-12 gap-12 items-end pb-20 pt-32">
           <div className="lg:col-span-8 space-y-8">
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl shadow-[0_4px_20px_rgba(34,88,120,0.2)]"
             >
-              <div className="w-2 h-2 rounded-full bg-primary shadow-[0_0_10px_#f83136] animate-pulse" />
-              <span className="text-sm font-bold tracking-widest text-white uppercase">The 100/100 Standard</span>
+              <div className="w-2 h-2 rounded-full animate-pulse" style={{ background: 'var(--accent)', boxShadow: '0 0 10px var(--accent)' }} />
+              <span className="text-sm font-bold tracking-widest text-white uppercase">35+ Years of Poultry Engineering</span>
             </motion.div>
             
             <motion.h1 
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-4xl sm:text-6xl md:text-8xl lg:text-[140px] break-words hyphens-auto font-['Space_Grotesk'] font-black leading-[0.9] tracking-tighter drop-shadow-2xl"
+              className="text-white text-4xl sm:text-6xl md:text-8xl lg:text-[110px] break-words hyphens-auto font-['Space_Grotesk'] font-black leading-[0.9] tracking-tighter drop-shadow-2xl"
             >
-              ARCHITECTING<br />
-              <span className="text-gradient">THE FUTURE.</span>
+              COMPLETE POULTRY<br />
+              <span className="text-gradient">HOUSING SYSTEMS</span>
             </motion.h1>
 
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="flex flex-col sm:flex-row gap-6 max-w-2xl"
+              className="flex flex-col sm:flex-row gap-6 max-w-3xl"
             >
-              <p className="text-lg md:text-xl text-white/70 font-medium leading-relaxed">
-                Immersive, precision-engineered poultry systems. Over 35 years of dominating the industry through unrelenting automation and high-yield configuration.
+              <p className="text-lg md:text-xl text-white/90 font-medium leading-relaxed">
+                From levelled land to complete poultry housing, cage systems, feeding, drinking, ventilation, cooling, silos, and farm workflow planning.
               </p>
             </motion.div>
           </div>
@@ -79,14 +78,16 @@ export default function Home() {
               transition={{ delay: 0.3 }}
               className="flex flex-col gap-4 w-full sm:w-auto"
             >
-              <Link href="/products" className="w-full sm:w-auto">
-                <Button className="h-16 px-8 rounded-full bg-primary text-white border border-red-500/50 font-bold text-lg hover:scale-105 transition-transform btn-glow w-full">
-                  Explore Products <ArrowRight className="ml-2 w-5 h-5" />
+              <Link href="/housing" className="w-full sm:w-auto">
+                <Button className="h-16 px-8 rounded-full text-white border border-orange-500/50 font-bold text-lg hover:scale-105 transition-transform btn-glow w-full" style={{ background: 'var(--accent)' }}>
+                  Plan My Poultry Project <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
               </Link>
-              <Button onClick={() => setIsShowreelOpen(true)} variant="outline" className="h-16 px-8 rounded-full border-blue/40 bg-blue/10 backdrop-blur-xl text-white hover:bg-blue/30 font-bold text-lg w-full sm:w-auto transition-colors">
-                <Play className="w-5 h-5 mr-2 fill-current" /> Watch Showreel
-              </Button>
+              <Link href="/layer" className="w-full sm:w-auto">
+                <Button variant="outline" className="h-16 px-8 rounded-full border-blue/40 bg-blue/10 backdrop-blur-xl text-white hover:bg-blue/30 font-bold text-lg w-full sm:w-auto transition-colors">
+                  Explore Solutions <ArrowUpRight className="ml-2 w-5 h-5" />
+                </Button>
+              </Link>
             </motion.div>
 
             <motion.div 
@@ -96,205 +97,156 @@ export default function Home() {
               className="grid grid-cols-2 gap-8 pt-8 w-full border-t border-white/10 mt-4"
             >
               <div>
-                <p className="text-5xl font-['Space_Grotesk'] font-black text-white">99<span className="text-primary">%</span></p>
-                <p className="text-xs font-bold text-white/50 uppercase tracking-widest mt-2">Feeding Accuracy</p>
+                <p className="text-5xl font-['Space_Grotesk'] font-black text-white">99.7<span style={{ color: 'var(--accent)' }}>%</span></p>
+                <p className="text-xs font-bold text-white/70 uppercase tracking-widest mt-2">Feeding Accuracy</p>
               </div>
               <div>
                 <p className="text-5xl font-['Space_Grotesk'] font-black text-white">97<span className="text-primary">%</span></p>
-                <p className="text-xs font-bold text-white/50 uppercase tracking-widest mt-2">Yield Efficiency</p>
+                <p className="text-xs font-bold text-white/70 uppercase tracking-widest mt-2">Yield Efficiency</p>
               </div>
             </motion.div>
           </div>
         </div>
-      </motion.section>
-
-      {/* CORE FEATURES - ICON BOXES */}
-      <section className="relative z-20 bg-dark py-20 px-6 mt-[-2rem] mb-12">
-        <div className="max-w-[1600px] mx-auto">
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              { icon: 'chicken.png', title: 'Innovative Poultry Solutions', desc: 'Providing cutting-edge, high-quality equipment for efficient poultry farming.' },
-              { icon: 'best-customer-experience.png', title: 'Expertise & Experience', desc: 'Providing cutting-edge, high-quality equipment for efficient poultry farming.' },
-              { icon: 'hand-shake.png', title: 'Customer-Centric Approach', desc: 'Providing cutting-edge, high-quality equipment for efficient poultry farming.' }
-            ].map((feature, i) => (
-              <div key={i} className="glass-panel-dark rounded-[2rem] p-10 flex flex-col gap-6 hover:-translate-y-2 transition-transform duration-500 group border border-white/10 shadow-2xl relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-full blur-2xl group-hover:bg-primary/20 transition-colors duration-500" />
-                <div className="absolute top-6 right-8 text-6xl font-black text-white/5 font-['Space_Grotesk'] pointer-events-none group-hover:text-primary/10 transition-colors">0{i+1}</div>
-                <div className="w-20 h-20 relative flex items-center justify-center bg-white/5 rounded-2xl p-4 border border-white/10 shadow-inner group-hover:scale-110 transition-transform duration-500 shrink-0">
-                   <Image 
-                     src={`/images/${feature.icon}`} 
-                     alt={feature.title} 
-                     fill 
-                     className="object-contain p-4" 
-                     sizes="80px" 
-                     style={{ filter: 'invert(35%) sepia(91%) saturate(3506%) hue-rotate(341deg) brightness(97%) contrast(98%)' }}
-                   />
-                </div>
-                <div>
-                  <h3 className="text-2xl font-bold text-white mb-3 tracking-tight font-['Space_Grotesk']">{feature.title}</h3>
-                  <p className="text-white/60 font-medium leading-relaxed">{feature.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        </motion.div>
       </section>
 
-      {/* ABOUT US & PROGRESS BARS */}
-      <section className="relative z-20 bg-white text-dark py-32 px-6 rounded-[4rem] shadow-[0_-20px_50px_rgba(0,0,0,0.5)] overflow-hidden mt-[-2rem]">
-        <div className="max-w-[1600px] mx-auto grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-          <div className="space-y-10 relative z-10">
-            <div className="space-y-4">
-              <span className="text-primary font-bold tracking-widest uppercase text-sm">Pioneering Poultry Farming Excellence</span>
-              <h2 className="text-5xl md:text-7xl font-['Space_Grotesk'] font-black tracking-tighter leading-[1.1]">
-                We’re the Leaders in <br/> <span className="text-gradient">Solutions & Innovation</span>
-              </h2>
+      {/* FEATURE CARDS */}
+      <section className="relative z-20 bg-[var(--bg)] pt-12 pb-6 px-6 -mt-8 transition-colors duration-500">
+        <div className="max-w-[1600px] mx-auto grid md:grid-cols-3 gap-6">
+          <div className="bg-[var(--surface)] p-10 rounded-[2rem] border border-[var(--border)] relative overflow-hidden group shadow-xl transition-colors duration-500">
+            <div className="absolute top-4 right-8 text-8xl font-black text-[var(--text)] opacity-[0.03] select-none pointer-events-none group-hover:scale-110 transition-transform duration-700">01</div>
+            <div className="w-16 h-16 rounded-2xl bg-[var(--bg)] border border-[var(--border)] flex items-center justify-center mb-6 shadow-sm relative z-10 transition-colors duration-500 group-hover:-translate-y-1 group-hover:shadow-md transition-all">
+              <Bird className="w-8 h-8 text-[var(--accent)]" />
             </div>
-            
-            <p className="text-xl text-dark/70 font-medium leading-relaxed max-w-2xl">
-              At <strong className="text-dark">Metplast Industries</strong>, we are committed to continuous innovation, developing cutting-edge equipment tailored to the evolving needs of poultry farmers. As an industry leader, we specialize in manufacturing high-quality, need-based poultry solutions from our state-of-the-art facility in Khopoli, India.
+            <h3 className="text-2xl font-bold text-[var(--text)] mb-4 relative z-10 group-hover:text-[var(--accent)] transition-colors">Innovative Poultry Solutions</h3>
+            <p className="text-[var(--text-muted)] font-medium text-[15px] leading-relaxed relative z-10">
+              Providing cutting-edge, high-quality equipment for efficient and modern poultry farming.
             </p>
-
-            <p className="text-lg text-dark/60 font-medium max-w-2xl">
-              Are you a farmer aiming to maximize productivity while ensuring the comfort of your poultry? Our <em className="text-primary font-bold not-italic">Automatic Cages</em> are designed to revolutionize poultry farming with unmatched efficiency and durability.
-            </p>
-
-            <div className="space-y-8 pt-6 max-w-xl">
-              {/* Progress 1 */}
-              <div className="space-y-3">
-                <div className="flex justify-between items-end">
-                  <span className="font-bold text-lg">Automatic Feeding Accuracy</span>
-                  <span className="font-black text-xl text-primary font-['Space_Grotesk']">99%</span>
-                </div>
-                <div className="h-3 w-full bg-slate-100 rounded-full overflow-hidden shadow-inner">
-                  <motion.div 
-                    initial={{ width: 0 }}
-                    whileInView={{ width: '99%' }}
-                    transition={{ duration: 1.5, delay: 0.2 }}
-                    viewport={{ once: true }}
-                    className="h-full bg-gradient-to-r from-primary to-red-400 rounded-full" 
-                  />
-                </div>
-              </div>
-              
-              {/* Progress 2 */}
-              <div className="space-y-3">
-                <div className="flex justify-between items-end">
-                  <span className="font-bold text-lg">Egg Collection Efficiency</span>
-                  <span className="font-black text-xl text-blue font-['Space_Grotesk']">97%</span>
-                </div>
-                <div className="h-3 w-full bg-slate-100 rounded-full overflow-hidden shadow-inner">
-                  <motion.div 
-                    initial={{ width: 0 }}
-                    whileInView={{ width: '97%' }}
-                    transition={{ duration: 1.5, delay: 0.4 }}
-                    viewport={{ once: true }}
-                    className="h-full bg-gradient-to-r from-blue to-[#4ea8de] rounded-full" 
-                  />
-                </div>
-              </div>
+          </div>
+          <div className="bg-[var(--surface)] p-10 rounded-[2rem] border border-[var(--border)] relative overflow-hidden group shadow-xl transition-colors duration-500">
+            <div className="absolute top-4 right-8 text-8xl font-black text-[var(--text)] opacity-[0.03] select-none pointer-events-none group-hover:scale-110 transition-transform duration-700">02</div>
+            <div className="w-16 h-16 rounded-2xl bg-[var(--bg)] border border-[var(--border)] flex items-center justify-center mb-6 shadow-sm relative z-10 transition-colors duration-500 group-hover:-translate-y-1 group-hover:shadow-md transition-all">
+              <Award className="w-8 h-8 text-[var(--accent)]" />
             </div>
-
-             <Button className="h-16 px-10 rounded-full bg-dark text-white hover:bg-slate-900 text-lg font-bold transition-all hover:scale-105 shadow-2xl flex items-center gap-3 mx-auto">
-               Let's Build A Farm <ArrowUpRight className="w-5 h-5" />
-             </Button>
+            <h3 className="text-2xl font-bold text-[var(--text)] mb-4 relative z-10 group-hover:text-[var(--accent)] transition-colors">Expertise & Experience</h3>
+            <p className="text-[var(--text-muted)] font-medium text-[15px] leading-relaxed relative z-10">
+              Backed by over 35 years of manufacturing excellence and deep industry knowledge.
+            </p>
           </div>
-
-          <div className="relative aspect-[4/5] lg:aspect-square w-full rounded-[3rem] overflow-hidden shadow-2xl group">
-             <Image src="/images/Near-Rajesh-Home-Page.jpg" alt="Metplast Factory" fill className="object-cover object-center group-hover:scale-105 transition-transform duration-1000" sizes="(max-width: 1024px) 100vw, 50vw" />
-             <div className="absolute inset-0 bg-gradient-to-t from-dark/60 to-transparent" />
-             
-             {/* Floating Info Badge */}
-             <div className="absolute bottom-10 left-10 right-10 bg-white/90 backdrop-blur-md p-6 rounded-3xl shadow-[0_20px_40px_rgba(0,0,0,0.2)] flex items-center gap-6 border border-white">
-                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                  <CheckCircle2 className="w-8 h-8 text-primary" />
-                </div>
-                <div>
-                  <h4 className="text-2xl font-black text-dark font-['Space_Grotesk']">35+ Years</h4>
-                  <p className="text-dark/60 font-medium">Of Manufacturing Excellence</p>
-                </div>
-             </div>
+          <div className="bg-[var(--surface)] p-10 rounded-[2rem] border border-[var(--border)] relative overflow-hidden group shadow-xl transition-colors duration-500">
+            <div className="absolute top-4 right-8 text-8xl font-black text-[var(--text)] opacity-[0.03] select-none pointer-events-none group-hover:scale-110 transition-transform duration-700">03</div>
+            <div className="w-16 h-16 rounded-2xl bg-[var(--bg)] border border-[var(--border)] flex items-center justify-center mb-6 shadow-sm relative z-10 transition-colors duration-500 group-hover:-translate-y-1 group-hover:shadow-md transition-all">
+              <Handshake className="w-8 h-8 text-[var(--accent)]" />
+            </div>
+            <h3 className="text-2xl font-bold text-[var(--text)] mb-4 relative z-10 group-hover:text-[var(--accent)] transition-colors">Customer-Centric Approach</h3>
+            <p className="text-[var(--text-muted)] font-medium text-[15px] leading-relaxed relative z-10">
+              Delivering customized turnkey solutions from project planning to final installation.
+            </p>
           </div>
         </div>
       </section>
 
-      {/* HORIZONTAL SCROLL CAROUSEL - IMMERSIVE EXPERIENCE */}
-      <section className="relative z-20 bg-dark py-32 px-6 border-t border-white/5">
-        <div className="max-w-[1600px] mx-auto">
-          <div className="flex justify-between items-end mb-16">
-            <h2 className="text-4xl md:text-6xl font-['Space_Grotesk'] font-black tracking-tighter">
-              BEYOND <span className="text-gradient-blue">TRADITION</span>
-            </h2>
-            <p className="hidden md:block text-white/50 max-w-sm text-right font-medium">Explore the ecosystems driving modern agriculture.</p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8 pb-12">
-            {[
-              { title: 'LAYER', img: '/images/Layer2.jpg', tag: 'High-Yield Framework' },
-              { title: 'BROILER', img: '/images/Broiler2.jpg', tag: 'Rapid Growth Matrix' },
-              { title: 'BREEDER', img: '/images/Breeder2.jpg', tag: 'Genetic Optimization' }
-            ].map((item, i) => (
-              <div key={i} className="aspect-[3/4] relative rounded-[2.5rem] overflow-hidden glass-panel-dark group cursor-pointer w-full border border-white/5 hover:border-white/20 shadow-[0_10px_30px_rgba(0,0,0,0.3)]">
-                <div className="absolute inset-0 bg-gradient-to-tr from-blue/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-0" />
-                
-                <div className="absolute inset-0 z-10 pointer-events-none">
-                   <Image src={item.img} alt={item.title} fill className="object-cover object-center opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-transform duration-700 mix-blend-luminosity group-hover:mix-blend-normal" sizes="(max-width: 768px) 100vw, 33vw" />
-                </div>
-
-                <div className="absolute inset-0 z-20 flex flex-col justify-between p-8 sm:p-10 bg-gradient-to-t from-dark/95 via-dark/40 to-transparent">
-                  <div className="flex justify-between items-start">
-                    <span className="px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md text-xs font-bold uppercase tracking-widest border border-white/20 text-white shadow-lg">
-                      {item.tag}
-                    </span>
-                    <div className="w-12 h-12 shrink-0 rounded-full bg-white/5 backdrop-blur-md border border-white/10 flex items-center justify-center group-hover:bg-primary transition-colors shadow-lg">
-                      <ArrowUpRight className="w-6 h-6 text-white" />
-                    </div>
-                  </div>
-                  <h3 className="text-5xl sm:text-6xl font-['Space_Grotesk'] font-black tracking-tighter opacity-50 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0 text-white drop-shadow-md">
-                    {item.title}
-                  </h3>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* NEXT-GEN CALCULATOR SECTION */}
-      <section className="relative z-20 bg-dark py-32 px-6 border-t border-white/5 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/Metplast-Website-Themes-1980-x-400-px.png')] bg-center opacity-5 mix-blend-luminosity pointer-events-none" />
-        <div className="absolute w-[800px] h-[800px] bg-blue/10 blur-[120px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
-        
-        <div className="max-w-[1400px] mx-auto relative z-10">
-          <div className="text-center space-y-6 mb-20">
-             <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-white/5 border border-white/10 mb-4 backdrop-blur-xl shadow-[0_0_30px_rgba(34,88,120,0.3)]">
-               <Calculator className="w-10 h-10 text-blue" />
-             </div>
-             <h2 className="text-5xl md:text-7xl font-['Space_Grotesk'] font-black tracking-tighter text-white drop-shadow-xl">
-                CALCULATE <br className="md:hidden" />
-                <span className="text-gradient-blue">OPTIMAL YIELD</span>
+      {/* POSITIONING & 4 SOLUTION CARDS */}
+      <section className="relative z-20 bg-[var(--bg)] py-16 px-6 mb-12">
+        <div className="max-w-[1600px] mx-auto space-y-20">
+          
+          {/* Plain Text Positioning */}
+          <div className="max-w-4xl text-center mx-auto space-y-6">
+             <h2 className="text-3xl md:text-5xl font-['Space_Grotesk'] font-black tracking-tighter text-[var(--text)]">
+                Engineered for <span className="text-gradient">Performance.</span>
              </h2>
-             <p className="text-xl text-white/50 font-medium max-w-2xl mx-auto">
-               Deploy intelligent telemetry to determine optimal bird density. Maximize throughput while ensuring welfare standards.
+             <p className="text-lg md:text-xl text-[var(--text-muted)] leading-relaxed font-medium">
+                Metplast Industries specializes in high-quality, reliable poultry equipment. With over 35 years of manufacturing experience, we deliver everything from robust cage structures and automated feeding systems to complete turnkey housing projects for layer, breeder, and broiler farms.
              </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          {/* Solution Selector - 4 Cards */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+             {[
+                { title: 'Metplast Housing', img: '/images/Near-Rajesh-Home-Page.jpg', link: '/housing', desc: 'Complete structural builds.' },
+                { title: 'Layer Solutions', img: '/images/Layer2.jpg', link: '/layer', desc: 'H-Type & S-Frame Layer Cages.' },
+                { title: 'Breeder Solutions', img: '/images/Breeder2.jpg', link: '/breeder', desc: 'Breeder Cage & Feeding Systems.' },
+                { title: 'Broiler Solutions', img: '/images/gallery/1-3-600x540.jpg', link: '/broiler', desc: 'Floor & Cage Broiler Systems.' }
+             ].map((sol, i) => (
+                 <Link href={sol.link} key={i} className="group relative rounded-[2rem] overflow-hidden aspect-square border border-[var(--border)] hover:border-[var(--border)] transition-colors shadow-2xl bg-slate-900">
+                    <Image src={sol.img} alt={sol.title} fill className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-60 group-hover:opacity-90" sizes="(max-width: 1024px) 50vw, 25vw" />
+                   <div className="absolute inset-0 bg-gradient-to-t from-dark/95 via-dark/40 to-transparent p-8 flex flex-col justify-end">
+                      <h3 className="text-2xl font-black text-white font-['Space_Grotesk'] mb-2">{sol.title}</h3>
+                      <p className="text-white/80 font-medium text-sm">{sol.desc}</p>
+                   </div>
+                </Link>
+             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* PRODUCT SYSTEM OVERVIEW */}
+      <section className="relative z-20 py-24 px-6 bg-[var(--bg-elevated)] rounded-[4rem] text-[var(--text)] shadow-[var(--shadow)] mt-[-2rem] overflow-hidden border border-[var(--border)]">
+        <div className="max-w-[1600px] mx-auto text-center space-y-16">
+          <div className="max-w-3xl mx-auto space-y-6">
+             <span className="text-primary font-bold tracking-widest uppercase text-sm">Our Equipment</span>
+             <h2 className="text-4xl md:text-6xl font-['Space_Grotesk'] font-black tracking-tighter text-[var(--text)]">
+                Everything Your Farm Needs
+             </h2>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+             {[
+                { name: 'Cage Systems', link: '/layer' },
+                { name: 'Feeding', link: '/layer' },
+                { name: 'Drinking', link: '/layer' },
+                { name: 'Manure Removal', link: '/layer' },
+                { name: 'Egg Collection', link: '/layer' },
+                { name: 'Environmental Control', link: '/environmental-control' },
+                { name: 'Feed Silos', link: '/feed-silos' },
+                { name: 'Calculators', link: '/calculators' }
+             ].map((tile, i) => (
+                <Link href={tile.link} key={i} className="glass-panel rounded-2xl p-8 flex flex-col items-center justify-center gap-4 hover:shadow-xl hover:-translate-y-1 transition-all group">
+                   <div className="w-12 h-12 bg-[var(--bg-elevated)] border border-[var(--border)] rounded-full flex items-center justify-center text-[var(--accent)] font-black font-['Space_Grotesk'] group-hover:bg-[var(--accent)] group-hover:text-white transition-colors">
+                      0{i+1}
+                   </div>
+                   <span className="font-bold text-lg text-center text-[var(--text)]">{tile.name}</span>
+                </Link>
+             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CALCULATOR SECTION */}
+      <section className="relative z-20 bg-[var(--bg)] py-32 px-6 overflow-hidden mt-[-2rem]">
+        <div className="absolute inset-0 bg-[url('/images/Metplast-Website-Themes-1980-x-400-px.png')] bg-center opacity-5 mix-blend-luminosity pointer-events-none" />
+        
+        <div className="max-w-[1400px] mx-auto relative z-10">
+          <div className="text-center space-y-6 mb-20">
+             <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-[var(--text)]/5 border border-[var(--border)] mb-4 backdrop-blur-xl shadow-[0_0_30px_rgba(34,88,120,0.3)]">
+               <Calculator className="w-10 h-10 text-blue" />
+             </div>
+             <h2 className="text-5xl md:text-7xl font-['Space_Grotesk'] font-black tracking-tighter text-[var(--text)] drop-shadow-xl">
+                START FARM <br className="md:hidden" />
+                <span className="text-gradient-blue">CALCULATION</span>
+             </h2>
+             <p className="text-xl text-[var(--text-muted)] font-medium max-w-2xl mx-auto">
+               Use our intelligent calculators to determine the optimal bird density, rows, and dimensions for your shed.
+             </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8 justify-center">
             {[
-              { title: 'Layer Calculator', img: '/images/Layer.png', link: '#', glow: 'shadow-[0_10px_40px_rgba(248,49,54,0.15)] group-hover:shadow-[0_20px_60px_rgba(248,49,54,0.3)]', accent: 'text-primary' },
-              { title: 'Broiler Calculator', img: '/images/Broiler.png', link: '#', glow: 'shadow-[0_10px_40px_rgba(34,88,120,0.15)] group-hover:shadow-[0_20px_60px_rgba(34,88,120,0.3)]', accent: 'text-blue' },
-              { title: 'Breeder Calculator', img: '/images/Breeder.png', link: '#', glow: 'shadow-[0_10px_40px_rgba(0,0,0,0.1)] group-hover:shadow-[0_20px_60px_rgba(0,0,0,0.2)]', accent: 'text-dark' }
+              { title: 'Layer', link: '/calculators/layer', img: '/images/Untitled-design-3-560x690.jpg' },
+              { title: 'Layer Pullet', link: '/calculators/layer-pullet', img: '/images/gallery/9-600x540.jpg' },
+              { title: 'Breeder', link: '/calculators/breeder', img: '/images/Breeder2.jpg' },
+              { title: 'Breeder Pullet', link: '/calculators/breeder-pullet', img: '/images/gallery/4-1-600x540.jpg' },
+              { title: 'Broiler', link: '/calculators/broiler', img: '/images/gallery/1-3-600x540.jpg' }
             ].map((calc, i) => (
-              <Link href={calc.link} key={i} className={`group relative bg-white rounded-[2.5rem] p-10 border border-primary transition-all duration-700 hover:-translate-y-4 flex flex-col items-center gap-8 overflow-hidden ${calc.glow}`}>
+              <Link href={calc.link} key={i} className="group relative glass-panel rounded-3xl p-6 transition-all duration-700 hover:-translate-y-2 flex flex-col items-center gap-6 overflow-hidden hover:shadow-[0_20px_60px_rgba(34,88,120,0.2)]">
                 <div className="absolute inset-0 bg-gradient-to-t from-dark/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                <div className="relative w-48 h-48 flex items-center justify-center">
-                  <div className="absolute inset-0 bg-dark/5 rounded-full blur-xl group-hover:bg-dark/10 transition-colors duration-700" />
-                  <Image src={calc.img} alt={calc.title} fill className="object-contain group-hover:scale-110 transition-transform duration-700 drop-shadow-[0_10px_20px_rgba(0,0,0,0.2)] z-10" sizes="192px" />
+                <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-[var(--border)] shadow-lg">
+                  <Image src={calc.img} alt={calc.title} fill className="object-cover group-hover:scale-110 transition-transform duration-700 z-10" sizes="96px" />
                 </div>
                 <div className="space-y-4 w-full relative z-20 text-center">
-                   <h3 className="text-3xl font-black font-['Space_Grotesk'] text-dark">{calc.title}</h3>
-                   <div className={`flex items-center justify-center gap-2 text-sm font-bold uppercase tracking-widest ${calc.accent} group-hover:gap-4 transition-all`}>
-                     Execute Calculation <ArrowRightCircle className="w-5 h-5" />
+                   <h3 className="text-xl font-black font-['Space_Grotesk'] text-[var(--text)] leading-tight">{calc.title}<br/>Calculator</h3>
+                   <div className="flex items-center justify-center text-blue group-hover:scale-110 transition-transform">
+                     <ArrowRightCircle className="w-6 h-6" />
                    </div>
                 </div>
               </Link>
@@ -303,194 +255,88 @@ export default function Home() {
         </div>
       </section>
 
-      {/* BENTO GRID - HARDWARE ARCHITECTURE */}
-      <section className="relative z-20 py-32 px-6 bg-dark text-white">
-        <div className="max-w-[1600px] mx-auto">
-          <div className="mb-20 max-w-3xl">
-            <h2 className="text-5xl md:text-7xl font-['Space_Grotesk'] font-black tracking-tighter leading-none mb-6">
-              HARDWARE <br/><span className="text-gradient">ARCHITECTURE.</span>
-            </h2>
-            <p className="text-xl text-white/70 font-medium leading-relaxed">
-              We don't just build equipment. We build the physical manifestation of efficiency. Every component is over-engineered for absolute reliability.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-[300px]">
-            {/* Big Bento 1 */}
-            <div className="md:col-span-2 lg:col-span-2 row-span-2 rounded-[2.5rem] bg-slate-900 relative overflow-hidden group shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10">
-              <Image src="/images/Untitled-design-3-560x690.jpg" alt="Layer Cages" fill className="object-cover object-center group-hover:scale-105 transition-transform duration-700" sizes="(max-width: 1024px) 100vw, 50vw" />
-              <div className="absolute inset-0 bg-gradient-to-t from-dark/95 via-dark/40 to-transparent p-10 flex flex-col justify-end">
-                <div className="bg-primary w-16 h-16 rounded-2xl flex items-center justify-center mb-6 shadow-[0_10px_30px_rgba(248,49,54,0.4)]">
-                  <Activity className="w-8 h-8 text-white" />
-                </div>
-                <h3 className="text-4xl font-black text-white mb-3 tracking-tight font-['Space_Grotesk']">H-Type Layer Pullet Systems</h3>
-                <p className="text-white/80 font-medium text-lg max-w-md">The pinnacle of structural integrity and automated yield extraction.</p>
+      {/* ENV CONTROL / GALLERY / BROCHURES ROW */}
+      <section className="relative z-20 py-32 px-6 bg-[var(--bg)] border-t border-white/5 text-[var(--text)]">
+        <div className="max-w-[1600px] mx-auto grid lg:grid-cols-3 gap-8">
+           
+           {/* Env Control */}
+           <div className="glass-panel rounded-[2.5rem] p-10 flex flex-col justify-between transition-colors relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--accent)]/10 rounded-full blur-3xl pointer-events-none" />
+               <div className="space-y-6 relative z-10">
+                 <div className="w-16 h-16 bg-[var(--accent)]/20 rounded-2xl flex items-center justify-center text-[var(--accent)]">
+                    <Wind className="w-8 h-8" />
+                 </div>
+                 <h3 className="text-3xl font-black font-['Space_Grotesk'] text-[var(--text)]">Environmental Control</h3>
+                 <p className="text-[var(--text-muted)] font-medium">Keep your flock comfortable with our range of exhaust fans, cooling pads, and automated climate control systems.</p>
               </div>
-            </div>
+              <Link href="/environmental-control" className="mt-12 inline-flex items-center text-[var(--accent)] font-bold tracking-widest uppercase text-sm hover:gap-4 transition-all gap-2 relative z-10">
+                 View Climate Systems <ArrowRight className="w-4 h-4" />
+              </Link>
+           </div>
 
-            {/* Small Bentos Top Right */}
-            {[
-              { icon: Zap, title: 'Automation', color: 'bg-blue' },
-              { icon: Cpu, title: 'Debeaking AI', color: 'bg-primary' },
-              { icon: ThermometerSnowflake, title: 'Climate Control', color: 'bg-slate-800' },
-              { icon: Droplets, title: 'Hydration', color: 'bg-slate-700' }
-            ].map((feat, i) => (
-              <div key={i} className="rounded-[2.5rem] bg-white/5 backdrop-blur-md border border-white/10 p-8 flex flex-col justify-between group hover:bg-white/10 transition-colors duration-500 cursor-pointer shadow-xl">
-                <div className={`w-16 h-16 rounded-2xl ${feat.color} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform`}>
-                  <feat.icon className="w-8 h-8 text-white" />
-                </div>
-                <div>
-                  <h4 className="text-2xl font-bold text-white tracking-tight font-['Space_Grotesk']">{feat.title}</h4>
-                  <p className="text-white/50 font-medium text-sm mt-2 uppercase tracking-widest">Precision Integration</p>
-                </div>
+           {/* Gallery Teaser */}
+           <div className="glass-panel rounded-[2.5rem] p-10 flex flex-col justify-between transition-colors relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--brand-navy)]/15 rounded-full blur-3xl pointer-events-none" />
+               <div className="space-y-6 relative z-10">
+                 <div className="w-16 h-16 bg-[var(--accent)]/20 rounded-2xl flex items-center justify-center text-[var(--accent)]">
+                    <ImageIcon className="w-8 h-8" />
+                 </div>
+                 <h3 className="text-3xl font-black font-['Space_Grotesk'] text-[var(--text)]">Projects & Gallery</h3>
+                 <p className="text-[var(--text-muted)] font-medium">See real installations of our cages, silos, and housing projects across 250+ farms.</p>
               </div>
-            ))}
+              <Link href="/gallery" className="mt-12 inline-flex items-center text-[var(--accent)] font-bold tracking-widest uppercase text-sm hover:gap-4 transition-all gap-2 relative z-10">
+                 View All Projects <ArrowRight className="w-4 h-4" />
+              </Link>
+           </div>
 
-            {/* Big Bento 2 - Left side of bottom row */}
-            <div className="md:col-span-2 lg:col-span-2 rounded-[2.5rem] bg-slate-900 border border-white/10 text-white p-10 flex flex-col justify-center relative overflow-hidden group shadow-xl">
-              <div className="absolute right-[-10%] bottom-[-20%] w-[400px] h-[400px] bg-blue/30 blur-[100px] rounded-full group-hover:bg-blue/50 transition-colors duration-700" />
-              <div className="absolute inset-0 opacity-20">
-                <Image src="/images/7-1-560x690.jpg" alt="Silos" fill className="object-cover object-center group-hover:scale-110 transition-transform duration-1000" sizes="(max-width: 1024px) 100vw, 50vw" />
+           {/* Brochures */}
+           <div className="glass-panel rounded-[2.5rem] p-10 flex flex-col justify-between transition-colors relative overflow-hidden group">
+              <div className="absolute top-0 left-0 w-64 h-64 bg-orange-500/10 rounded-full blur-3xl pointer-events-none" />
+               <div className="space-y-6 relative z-10">
+                 <div className="w-16 h-16 bg-[var(--accent)]/20 rounded-2xl flex items-center justify-center text-[var(--accent)]">
+                    <Download className="w-8 h-8" />
+                 </div>
+                 <h3 className="text-3xl font-black font-['Space_Grotesk'] text-[var(--text)]">Product Brochures</h3>
+                 <p className="text-[var(--text-muted)] font-medium">Download our comprehensive master brochure containing detailed specs of all Metplast products.</p>
               </div>
-              <h3 className="text-4xl font-black mb-4 relative z-10 tracking-tight font-['Space_Grotesk']">Silo Storage Matrix</h3>
-              <p className="text-white/70 max-w-md mb-8 relative z-10 text-lg font-medium">High-capacity, zero-friction feed delivery frameworks designed for massive scale.</p>
-              <Button className="w-fit rounded-full bg-white text-dark hover:bg-slate-200 font-bold relative z-10 h-12 px-8 shadow-xl">
-                View Specifications
-              </Button>
-            </div>
+              <button
+                onClick={() => window.dispatchEvent(new CustomEvent('metplast:open-brochure'))}
+                className="mt-12 inline-flex items-center text-[var(--accent)] hover:opacity-80 font-bold tracking-widest uppercase text-sm hover:gap-4 transition-all gap-2 relative z-10 cursor-pointer"
+              >
+                 Download PDF <ArrowRight className="w-4 h-4" />
+              </button>
+           </div>
 
-            {/* Small Bentos Bottom Right */}
-            {[
-              { icon: Activity, title: 'Biometrics', color: 'bg-slate-800' },
-              { icon: Settings, title: 'Monitoring', color: 'bg-slate-600' }
-            ].map((feat, i) => (
-              <div key={i} className="rounded-[2.5rem] bg-white/5 backdrop-blur-md border border-white/10 p-8 flex flex-col justify-between group hover:bg-white/10 transition-colors duration-500 cursor-pointer shadow-xl">
-                <div className={`w-16 h-16 rounded-2xl ${feat.color} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform`}>
-                  <feat.icon className="w-8 h-8 text-white" />
-                </div>
-                <div>
-                  <h4 className="text-2xl font-bold text-white tracking-tight font-['Space_Grotesk']">{feat.title}</h4>
-                  <p className="text-white/50 font-medium text-sm mt-2 uppercase tracking-widest">Precision Integration</p>
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
-      {/* NEXT-GEN WHAT WE OFFER SECTION */}
-      <section className="relative z-20 bg-dark py-32 px-6 overflow-hidden border-t border-white/5">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/10 blur-[150px] rounded-full pointer-events-none" />
-        <div className="absolute bottom-0 left-[-10%] w-[500px] h-[500px] bg-blue/10 blur-[150px] rounded-full pointer-events-none" />
-        
-        <div className="max-w-[1600px] mx-auto grid lg:grid-cols-2 gap-16 lg:gap-24 items-center relative z-10">
-          
-          {/* Left Side: Large Image Box */}
-          <div className="relative w-full aspect-square lg:aspect-[4/3] rounded-[3rem] overflow-hidden group shadow-[0_30px_60px_rgba(0,0,0,0.8)] border border-white/10">
-            <Image src="/images/7-1-560x690.jpg" alt="Metplast Silo" fill className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000" sizes="(max-width: 1024px) 100vw, 50vw" />
-            <div className="absolute inset-0 bg-gradient-to-t from-dark/90 via-dark/30 to-transparent mix-blend-multiply" />
-            <div className="absolute inset-0 bg-gradient-to-r from-dark/80 to-transparent opacity-80" />
-            
-            <div className="absolute bottom-12 left-12 max-w-[320px]">
-              <h3 className="text-5xl lg:text-6xl font-['Space_Grotesk'] font-black text-white leading-[1.1] drop-shadow-2xl">
-                35 YEARS <br/><span className="text-primary">OF MASTERY</span>
-              </h3>
-            </div>
-            <div className="absolute right-0 top-0 bottom-0 w-16 bg-primary/80 backdrop-blur-md flex items-center justify-center border-l border-white/20">
-              <span className="text-white font-bold tracking-[0.3em] uppercase text-sm -rotate-90 whitespace-nowrap drop-shadow-md">
-                Precision Automation Equipment
-              </span>
-            </div>
-          </div>
-
-          {/* Right Side: Clean Dark Layout */}
-          <div className="space-y-8">
-            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-primary/20 bg-primary/10">
-              <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              <span className="text-xs font-bold tracking-widest text-primary uppercase">What We Offer</span>
-            </div>
-            
-            <h2 className="text-4xl md:text-5xl lg:text-7xl font-['Space_Grotesk'] font-black text-white leading-[1.05] tracking-tight">
-              THE PREFERRED <br/>CHOICE FOR <span className="text-gradient">QUALITY.</span>
-            </h2>
-            
-            <p className="text-white/60 text-lg md:text-xl leading-relaxed font-medium max-w-2xl">
-              Our Layer Cages are engineered to deliver uncompromising results. Designed with absolute precision, these systems maximize yield while ensuring peak biological welfare. Featuring hyper-uniform feed distribution, zero-friction egg collection, and automated manure processing.
-            </p>
-
-            <div className="grid sm:grid-cols-2 gap-6 pt-6">
-              {/* Animated Stat Card 1 */}
-              <div className="bg-white/5 border border-white/10 rounded-3xl p-6 lg:p-8 flex items-center gap-6 group hover:bg-white/10 transition-all hover:-translate-y-1 shadow-lg hover:shadow-primary/10">
-                <div className="relative w-24 h-24 flex items-center justify-center shrink-0">
-                  <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 100 100">
-                    <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="6" />
-                    <motion.circle 
-                      cx="50" cy="50" r="45" fill="none" stroke="#f83136" strokeWidth="6" 
-                      strokeDasharray="283" 
-                      initial={{ strokeDashoffset: 283 }}
-                      whileInView={{ strokeDashoffset: 2.83 }}
-                      transition={{ duration: 2, ease: "easeOut", delay: 0.2 }}
-                      viewport={{ once: true }}
-                      className="drop-shadow-[0_0_10px_rgba(248,49,54,0.8)]" 
-                    />
-                  </svg>
-                  <span className="text-2xl font-black text-white font-['Space_Grotesk']">99%</span>
-                </div>
-                <h4 className="text-lg font-bold text-white/90 leading-tight uppercase tracking-wide">Precision<br/>Feeding</h4>
-              </div>
-              
-              {/* Animated Stat Card 2 */}
-              <div className="bg-white/5 border border-white/10 rounded-3xl p-6 lg:p-8 flex items-center gap-6 group hover:bg-white/10 transition-all hover:-translate-y-1 shadow-lg hover:shadow-blue/10">
-                <div className="relative w-24 h-24 flex items-center justify-center shrink-0">
-                  <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 100 100">
-                    <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="6" />
-                    <motion.circle 
-                      cx="50" cy="50" r="45" fill="none" stroke="#225878" strokeWidth="6" 
-                      strokeDasharray="283" 
-                      initial={{ strokeDashoffset: 283 }}
-                      whileInView={{ strokeDashoffset: 5.66 }}
-                      transition={{ duration: 2, ease: "easeOut", delay: 0.4 }}
-                      viewport={{ once: true }}
-                      className="drop-shadow-[0_0_10px_rgba(34,88,120,0.8)]" 
-                    />
-                  </svg>
-                  <span className="text-2xl font-black text-white font-['Space_Grotesk']">98%</span>
-                </div>
-                <h4 className="text-lg font-bold text-white/90 leading-tight uppercase tracking-wide">Breakage<br/>Reduction</h4>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* DARK MODE PARALLAX - TRUST */}
-      <section className="relative z-20 py-40 px-6 overflow-hidden bg-dark border-t border-white/10">
-        <div className="absolute inset-0 bg-[url('/images/Hero-Slider-2.jpg')] bg-cover bg-center opacity-20 mix-blend-luminosity" />
-        <div className="absolute inset-0 bg-gradient-to-b from-dark via-transparent to-dark" />
+      {/* TESTIMONIALS */}
+      <section className="relative z-20 py-32 px-6 overflow-hidden bg-[var(--bg)] border-t border-[var(--border)]">
+        <div className="absolute inset-0 bg-[url('/images/Hero-Slider-2.jpg')] bg-cover bg-center opacity-10 mix-blend-luminosity" />
         
         <div className="max-w-[1600px] mx-auto relative z-10">
           <div className="flex flex-col items-center text-center mb-24">
-            <h2 className="text-5xl md:text-8xl font-['Space_Grotesk'] font-black tracking-tighter mb-8 text-white">
-              THE <span className="text-gradient-blue">NETWORK.</span>
+            <h2 className="text-4xl md:text-6xl font-['Space_Grotesk'] font-black tracking-tighter mb-6 text-[var(--text)]">
+              REAL FARMERS. <br/><span className="text-gradient">REAL RESULTS.</span>
             </h2>
-            <p className="text-xl text-white/70 max-w-2xl font-medium">Over 250+ enterprise installations. We power the facilities that feed the continent.</p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
-              { q: "Their machines run perfectly. Absolute reliability.", auth: "Mr. Srinivas", img: "/images/Mr.-Manjunath-.jpg" },
-              { q: "Quality products, timely delivery. A true partnership.", auth: "Saiyed Tarik", img: "/images/Mr.-Saiyad-Tarik.jpg" },
-              { q: "Zero issues. Unmatched reliability. Our yield increased by 20%.", auth: "Mr. Imran", img: "/images/Mr.-Ghanis.jpg" }
-            ].map((t, i) => (
-              <div key={i} className="glass-panel-dark rounded-[2.5rem] p-10 flex flex-col justify-between hover:-translate-y-4 transition-transform duration-500 border border-white/10 shadow-2xl">
-                <p className="text-3xl font-bold leading-tight mb-12 text-white/90 font-['Space_Grotesk'] tracking-tight">"{t.q}"</p>
-                <div className="flex items-center gap-5 border-t border-white/10 pt-8">
-                  <div className="w-16 h-16 rounded-full overflow-hidden relative border-2 border-primary/50 grayscale group-hover:grayscale-0 transition-all shrink-0 shadow-lg">
-                    <Image src={t.img} alt={t.auth} fill className="object-cover object-center" sizes="64px" />
+              { q: "Metplast isn't just a company; they treat you like family. Their support and quality products make all the difference in your business.", auth: "Mr. Arez", farm: "Eggsy Farms", img: "/images/Mr.-Arez.jpg" },
+              { q: "We've been using Metplast cages for years — excellent quality, zero issues, and unmatched reliability. Highly recommended!", auth: "Mr. Imran", farm: "Ghanis Food & Farms", img: "/images/Mr.-Ghanis.jpg" },
+              { q: "Switching to Metplast Battery Cages has significantly reduced bird mortality and egg breakage. I'm extremely satisfied with the results!", auth: "Mr. Srinivas", farm: "Shree Manjunath Farms", img: "/images/Mr.-Manjunath-.jpg" },
+              { q: "Their machines run perfectly and their service is truly reliable and commendable. After visiting the factory, I knew I made the right choice.", auth: "Saiyed Tarik", farm: "Satisfied Customer", img: "/images/Mr.-Saiyad-Tarik.jpg" },
+              ].map((t, i) => (
+              <div key={i} className="glass-panel rounded-[2.5rem] p-10 flex flex-col justify-between hover:-translate-y-4 transition-transform duration-500">
+                <p className="text-xl font-bold leading-relaxed mb-10 text-[var(--text)] font-['Space_Grotesk'] tracking-tight">"{t.q}"</p>
+                <div className="flex items-center gap-5 border-t border-[var(--border)] pt-8 mt-auto">
+                  <div className="w-12 h-12 rounded-full border-2 border-[var(--border)] overflow-hidden relative">
+                    <Image src={t.img} alt={t.auth} fill className="object-cover" />
                   </div>
-                  <div>
-                    <span className="font-black text-white text-lg tracking-wide uppercase block">{t.auth}</span>
-                    <span className="text-white/50 text-sm font-bold tracking-widest uppercase">Enterprise Partner</span>
+                  <div className="flex flex-col">
+                    <h4 className="font-bold text-[var(--text)] text-sm tracking-wide">{t.auth}</h4>
+                    <span className="text-[var(--accent)] text-xs font-bold uppercase tracking-widest">{t.farm}</span>
                   </div>
                 </div>
               </div>
@@ -500,56 +346,23 @@ export default function Home() {
       </section>
 
       {/* MASSIVE CTA */}
-      <section className="relative z-20 bg-primary text-white py-40 px-6 rounded-t-[4rem] shadow-[0_-30px_60px_rgba(248,49,54,0.2)]">
-        <div className="absolute inset-0 overflow-hidden rounded-t-[4rem]">
-          <div className="absolute w-[800px] h-[800px] bg-white/10 blur-3xl rounded-full top-[-400px] left-1/2 -translate-x-1/2" />
-        </div>
+      <section className="relative z-20 text-white py-40 px-6 rounded-t-[4rem] shadow-[0_-30px_60px_rgba(249,115,22,0.2)]" style={{ background: 'var(--accent)' }}>
         <div className="max-w-[1200px] mx-auto text-center space-y-12 relative z-10">
           <h2 className="text-5xl sm:text-7xl md:text-8xl lg:text-[130px] break-words hyphens-auto font-['Space_Grotesk'] font-black leading-[0.9] tracking-tighter drop-shadow-xl">
-            INITIATE <br/>YOUR BUILD.
+            PLAN YOUR <br/>FARM.
           </h2>
           <p className="text-2xl font-medium text-white/90 max-w-2xl mx-auto drop-shadow-md">
-            Stop scrolling. Start scaling. Speak to our engineers today to configure your bespoke automation architecture.
+            Speak to our engineers today to configure your complete poultry housing and equipment setup.
           </p>
           <div className="pt-8">
-            <Button className="h-20 px-12 rounded-full bg-dark text-white hover:bg-slate-900 font-black text-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] hover:scale-105 transition-all">
-              Let's Build A Farm <ArrowUpRight className="ml-4 w-8 h-8" />
-            </Button>
+            <Link href="/contact">
+              <Button className="h-20 px-12 rounded-full bg-[var(--bg)] text-[var(--text)] hover:opacity-90 font-black text-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] hover:scale-105 transition-all">
+                Send Enquiry <ArrowRight className="ml-4 w-8 h-8" />
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
-      {/* Showreel Modal */}
-      <AnimatePresence>
-        {isShowreelOpen && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[200] bg-dark/95 backdrop-blur-2xl flex items-center justify-center p-6"
-            onClick={() => setIsShowreelOpen(false)}
-          >
-            <button className="absolute top-8 right-8 text-white/50 hover:text-white transition-colors bg-white/5 border border-white/10 rounded-full p-4 backdrop-blur-md hover:bg-primary hover:border-primary z-[210]">
-              <X className="w-8 h-8" />
-            </button>
-            <motion.div 
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="relative w-full max-w-7xl aspect-[16/9] rounded-[2rem] overflow-hidden shadow-2xl"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <iframe 
-                src="https://www.youtube.com/embed/sPCkTagbAYo?autoplay=1" 
-                title="Metplast Showreel" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowFullScreen
-                className="w-full h-full border-0"
-              />
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </main>
   );
 }
