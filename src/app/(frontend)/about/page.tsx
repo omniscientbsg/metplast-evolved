@@ -38,7 +38,7 @@ export default function AboutPage() {
             transition={{ delay: 0.2 }}
             className="text-xl text-[var(--text-muted)] font-medium max-w-2xl mx-auto leading-relaxed"
           >
-            Metplast Industries is committed to continuous innovation, developing cutting-edge equipment tailored to the evolving needs of poultry farmers worldwide.
+            Metplast Industries manufactures complete poultry housing and cage systems for the evolving needs of poultry farmers worldwide.
           </motion.p>
         </div>
       </section>
@@ -61,18 +61,18 @@ export default function AboutPage() {
                 As an industry leader, we manufacture and install complete poultry housing systems — from cage design and feeding systems to ventilation, cooling, and feed silos — from our facility in Khalapur, Maharashtra, just an hour from Mumbai.
               </p>
               <p>
-                Over 35 years and 250+ satisfied farm owners across 10+ countries trust Metplast for durability, precision engineering, and end-to-end project support. From levelled land to fully commissioned poultry housing — that is our commitment.
+                Over 35 years and 500+ farms across India and international markets trust Metplast for durability, precision engineering, and end-to-end project support. From levelled land to fully commissioned poultry housing — that is our commitment.
               </p>
             </div>
             
             <div className="grid grid-cols-2 gap-6 pt-8 border-t border-[var(--border)]">
               <div className="glass-panel p-8 rounded-3xl group hover:border-orange-500/50 transition-colors">
-                <p className="text-5xl font-['Space_Grotesk'] font-black mb-3" style={{ color: 'var(--accent)' }}>99.7<span className="text-2xl">%</span></p>
-                <p className="font-bold tracking-wide uppercase text-sm" style={{ color: 'var(--text)' }}>Feeding Accuracy</p>
+                <p className="text-5xl font-['Space_Grotesk'] font-black mb-3" style={{ color: 'var(--accent)' }}>35<span className="text-2xl">+</span></p>
+                <p className="font-bold tracking-wide uppercase text-sm" style={{ color: 'var(--text)' }}>Years</p>
               </div>
               <div className="glass-panel p-8 rounded-3xl group hover:border-orange-500/50 transition-colors">
-                <p className="text-5xl font-['Space_Grotesk'] font-black mb-3" style={{ color: 'var(--accent)' }}>250<span className="text-2xl">+</span></p>
-                <p className="font-bold tracking-wide uppercase text-sm" style={{ color: 'var(--text)' }}>Farm Installations</p>
+                <p className="text-5xl font-['Space_Grotesk'] font-black mb-3" style={{ color: 'var(--accent)' }}>500<span className="text-2xl">+</span></p>
+                <p className="font-bold tracking-wide uppercase text-sm" style={{ color: 'var(--text)' }}>Farms</p>
               </div>
             </div>
           </motion.div>
@@ -114,10 +114,10 @@ export default function AboutPage() {
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
-              { icon: Zap, title: "99.7% Feeding Accuracy", desc: "Precision-engineered feeding systems eliminate waste and ensure every bird gets the right nutrition." },
+              { icon: Zap, title: "Turnkey Delivery", desc: "From levelled land to a running farm, one team stays responsible — planning, manufacturing, installation, and long-term support." },
               { icon: Globe, title: "10+ Countries", desc: "Metplast systems operate on poultry farms across India, Africa, Asia, and beyond." },
               { icon: ShieldCheck, title: "Egg Protection", desc: "Our cage designs protect every egg from collection to delivery, reducing breakage and improving margins." },
-              { icon: Users, title: "250+ Farm Installations", desc: "Layer, Breeder, and Broiler farms trust Metplast for complete housing and equipment solutions." },
+              { icon: Users, title: "500+ Farms", desc: "Layer, Breeder, and Broiler farms trust Metplast for complete housing and equipment solutions." },
             ].map((value, i) => (
               <div key={i} className="glass-panel p-10 rounded-[2.5rem] hover:-translate-y-1 transition-all duration-500 group cursor-pointer hover:shadow-2xl">
                 <div className="w-16 h-16 bg-primary text-white rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-primary/30 group-hover:scale-110 transition-transform">
