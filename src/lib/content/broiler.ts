@@ -2,25 +2,25 @@ import { PageConfig } from '@/components/ScrollPageTemplate';
 
 export const broilerConfig: PageConfig = {
   hero: {
-    title: "BROILER SOLUTIONS",
-    subtitle: "High-performance rearing systems, from automated deep litter to space-saving multi-tier battery cages, designed for superior meat yield and flock health.",
+    title: "BROILER POULTRY SYSTEMS",
+    subtitle: "Designed for uniform feed access, clean water, better airflow, and practical shed management.",
     image: "/images/Broiler2.jpg",
     ctaPrimary: { label: "Get a Quote", href: "/contact" },
     ctaSecondary: { label: "View Gallery", href: "/gallery" }
   },
   intro: [
-    "Metplast’s Broiler Rearing Solutions provide a combination of high efficiency, excellent bird health, and superior meat yield, making them ideal for modern poultry farms.",
-    "Whether you prefer the cost-effective flexibility of a Deep Litter System or the high-density optimization of our H-Type Battery Cages, we have the complete automated solution for you."
+    "Metplast broiler systems cover deep litter housing and cage rearing — with pan feeding, nipple drinking, curtains, false ceiling, and ventilation integrated around the shed.",
+    "Every setup is built for uniform feed access, clean water, better airflow, and practical day-to-day shed management.",
   ],
   sections: [
     {
       id: "deep-litter",
       calculatorHref: "/calculators/broiler",
-      title: "Deep Litter Broiler System",
+      title: "Deep Litter Broiler Housing",
       badge: "Floor Rearing",
       description: [
-        "The Deep Litter Broiler System is a cost-effective and flexible solution for commercial broiler farming.",
-        "Birds are housed on a bedding material-covered floor, ensuring natural movement and comfortable growth. Metplast provides a fully automated setup to simplify farm management and maximize growth performance."
+        "The Deep Litter Broiler System is a cost-effective and flexible solution for commercial broiler farming — birds are housed on a bedding material-covered floor, allowing natural movement and comfortable growth.",
+        "Metplast provides a fully integrated shed setup around this housing — pan feeding, nipple drinking, curtains, false ceiling, and ventilation — to simplify day-to-day management and support consistent growth performance."
       ],
       features: [
         "Automated Pan Feeding System – High-capacity pans ensure even distribution",
@@ -43,32 +43,95 @@ export const broilerConfig: PageConfig = {
       ]
     },
     {
-      id: "battery-cage",
-      calculatorHref: "/calculators/broiler",
-      title: "H-Type Broiler Battery Cage",
-      badge: "High Density",
+      id: "pan-feeding",
+      title: "Pan Feeding System",
       description: [
-        "Metplast’s H-Type Broiler Battery Cages provide an innovative, space-efficient solution for intensive broiler farming.",
-        "With a multi-tier vertical design, this system allows high stocking density, reducing the overall farm footprint while ensuring healthy growth conditions for the birds."
+        "Uniform pans, controlled feed depth, and fast line filling — every bird finds feed within reach, and feed stays in the pan, not on the litter.",
       ],
-      features: [
-        "High-Density Rearing – Multi-tier design allows more birds per square meter",
-        "Optimized Feed Conversion – Precision feeding system improves weight gain",
-        "Automated Manure Removal – Ensures a hygienic environment",
-        "Bird Harvesting System – Streamlines the collection process"
+      images: [],
+      specs: [
+        { label: "Feeder", value: "Pan line" },
+        { label: "Feed Depth", value: "Controlled" },
+        { label: "Coverage", value: "Full shed length" },
+      ]
+    },
+    {
+      id: "nipple-drinking",
+      title: "Nipple Drinking System",
+      description: [
+        "Clean water at the right height at every age, with auto flush available — medicine residue and stagnant water are flushed out before birds drink.",
+      ],
+      images: [],
+      specs: [
+        { label: "Drinker", value: "Nipple line with cups" },
+        { label: "Height", value: "Adjustable by age" },
+        { label: "Auto Flush", value: "Available" },
+      ],
+      bottomBlocks: [
+        { type: 'auto-flush' },
+      ]
+    },
+    {
+      id: "curtain",
+      title: "Curtain System",
+      description: [
+        "Practical side-curtain control for airflow and temperature management in open and semi-controlled sheds.",
+      ],
+      images: [],
+      specs: [
+        { label: "Type", value: "Side curtain" },
+        { label: "Control", value: "Manual / winch" },
+        { label: "Use", value: "Open & semi-controlled sheds" },
+      ]
+    },
+    {
+      id: "false-ceiling",
+      title: "False Ceiling",
+      description: [
+        "Reduces the air volume to be managed, improves air speed over birds, and makes summer and winter management easier and cheaper.",
+      ],
+      images: [],
+      specs: [
+        { label: "Benefit", value: "Lower managed air volume" },
+        { label: "Effect", value: "Higher air speed over birds" },
+        { label: "Season", value: "Summer & winter management" },
+      ]
+    },
+    {
+      id: "ventilation",
+      title: "Ventilation Integration",
+      description: [
+        "Metplast exhaust fans, air inlets, and cooling integrate with the shed design — one supplier, one responsibility.",
+      ],
+      images: [],
+      specs: [
+        { label: "Equipment", value: "Exhaust fans, inlets, cooling" },
+        { label: "Integration", value: "Designed with the shed" },
       ],
       benefits: [
-        "Improved FCR (Feed Conversion Ratio) with efficient feed utilization",
-        "Space Optimization leading to increased profitability",
-        "Hygienic & Disease-Free Environment reduces mortality",
-        "Superior Meat Quality through healthy rearing conditions"
+        "Explore Environmental Control →",
+      ]
+    },
+    {
+      id: "h-type-broiler",
+      calculatorHref: "/calculators/broiler",
+      title: "H-Type Broiler Cage System",
+      badge: "Cage Rearing",
+      description: [
+        "Practical multi-tier broiler rearing for farms that want more birds per square foot of land with organised feeding, drinking, and manure handling.",
       ],
-      images: ["/images/Broiler2.jpg"],
+      features: [
+        "Multi-Tier Rearing – More birds reared per square foot of shed floor across stacked tiers.",
+        "Automated Pan Feeding – Consistent feed delivery across every tier, reducing manual handling.",
+        "Automated Manure Removal – Belt system keeps the shed clean with less daily labour.",
+        "Organised Drinking Lines – Nipple lines arranged per tier for reliable water access."
+      ],
+      images: [],
       specs: [
-        { label: "Design", value: "H-Type Vertical" },
-        { label: "Feeding System", value: "Automated Pan" },
-        { label: "Manure Removal", value: "Automated Belt" },
-        { label: "Harvesting", value: "Integrated Conveyor" },
+        { label: "Cage Type", value: "H-Type Broiler Cage System" },
+        { label: "Feeding", value: "Automated pan" },
+        { label: "Manure System", value: "Automated belt" },
+        { label: "Automation Level", value: "Multi-tier automatic" },
       ]
     }
   ],
