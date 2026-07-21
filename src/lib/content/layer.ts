@@ -50,7 +50,7 @@ export const layerConfig: PageConfig = {
         { label: "Egg Collection", value: "Niagara vertical system" },
         { label: "Feeding", value: "Trolley (standard)" },
         { label: "Feeder Options", value: "ZAM / Aluminium / GI / PVC" },
-        { label: "Automation Level", value: "Automatic-ready" }
+        { label: "Automation Level", value: "Automatic-ready" },
       ]
     },
     {
