@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform, AnimatePresence, useSpring } from 'fra
 import Image from 'next/image';
 import { ArrowUpRight, ArrowRight, Play, CheckCircle2, Calculator, ArrowRightCircle, X, Download, Wind, Image as ImageIcon, Bird, Award, Handshake } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { CommunitySection } from '@/components/CommunitySection';
 import Link from 'next/link';
 
 export default function Home() {
@@ -316,40 +317,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* TESTIMONIALS */}
-      <section className="relative z-20 py-32 px-6 overflow-hidden bg-[var(--bg)] border-t border-[var(--border)]">
-        <div className="absolute inset-0 bg-[url('/images/Hero-Slider-2.jpg')] bg-cover bg-center opacity-10 mix-blend-luminosity" />
-        
-        <div className="max-w-[1600px] mx-auto relative z-10">
-          <div className="flex flex-col items-center text-center mb-24">
-            <h2 className="text-4xl md:text-6xl font-['Space_Grotesk'] font-black tracking-tighter mb-6 text-[var(--text)]">
-              REAL FARMERS. <br/><span className="text-gradient">REAL RESULTS.</span>
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              { q: "Metplast isn't just a company; they treat you like family. Their support and quality products make all the difference in your business.", auth: "Mr. Arez", farm: "Eggsy Farms", img: "/images/Mr.-Arez.jpg" },
-              { q: "We've been using Metplast cages for years — excellent quality, zero issues, and unmatched reliability. Highly recommended!", auth: "Mr. Imran", farm: "Ghanis Food & Farms", img: "/images/Mr.-Ghanis.jpg" },
-              { q: "Switching to Metplast Battery Cages has significantly reduced bird mortality and egg breakage. I'm extremely satisfied with the results!", auth: "Mr. Srinivas", farm: "Shree Manjunath Farms", img: "/images/Mr.-Manjunath-.jpg" },
-              { q: "Their machines run perfectly and their service is truly reliable and commendable. After visiting the factory, I knew I made the right choice.", auth: "Saiyed Tarik", farm: "Satisfied Customer", img: "/images/Mr.-Saiyad-Tarik.jpg" },
-              ].map((t, i) => (
-              <div key={i} className="glass-panel rounded-[2.5rem] p-10 flex flex-col justify-between hover:-translate-y-4 transition-transform duration-500">
-                <p className="text-xl font-bold leading-relaxed mb-10 text-[var(--text)] font-['Space_Grotesk'] tracking-tight">"{t.q}"</p>
-                <div className="flex items-center gap-5 border-t border-[var(--border)] pt-8 mt-auto">
-                  <div className="w-12 h-12 rounded-full border-2 border-[var(--border)] overflow-hidden relative">
-                    <Image src={t.img} alt={t.auth} fill className="object-cover" />
-                  </div>
-                  <div className="flex flex-col">
-                    <h4 className="font-bold text-[var(--text)] text-sm tracking-wide">{t.auth}</h4>
-                    <span className="text-[var(--accent)] text-xs font-bold uppercase tracking-widest">{t.farm}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <CommunitySection />
 
       {/* MASSIVE CTA */}
       <section className="relative z-20 text-white py-40 px-6 rounded-t-[4rem] shadow-[0_-30px_60px_rgba(249,115,22,0.2)]" style={{ background: 'var(--accent)' }}>
