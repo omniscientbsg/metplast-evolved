@@ -50,7 +50,7 @@ const solutions = [
   {
     title: 'Feed Silos',
     sub: 'Bulk Feed Storage',
-    desc: '275 GSM galvanized steel silos with screw conveyors, load cells, and automated feed delivery to every line.',
+    desc: 'Galvanized steel silos with screw conveyors, load cells, and automated feed delivery to every line.',
     href: '/feed-silos',
     image: '/images/Untitled-design-7-560x690.jpg',
     tag: 'All Farm Types',

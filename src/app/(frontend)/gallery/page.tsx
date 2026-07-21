@@ -10,7 +10,7 @@ const GALLERY_ITEMS = [
   {
     id: 1,
     src: '/images/gallery/1-3-600x540.jpg',
-    caption: 'H-Type Layer Battery Cage — multi-tier automatic system with egg belt collection',
+    caption: 'H-Type Layer Cage System — multi-tier automatic system with egg belt collection',
     category: 'Layer Cage Systems',
   },
   {

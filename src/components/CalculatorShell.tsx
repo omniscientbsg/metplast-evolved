@@ -25,7 +25,7 @@ export interface CalculatorShellProps {
   title: string;
   description: string;
   inputs: CalculatorInput[];
-  systemType?: string; // e.g. "Layer Battery Cage"
+  systemType?: string; // e.g. "Layer Cage System"
   onCalculate: (values: Record<string, number>) => CalculatorResult[] | { error: string };
   layoutView?: React.ReactNode;
 }

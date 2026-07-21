@@ -9,7 +9,7 @@ export const metadata = {
 const calculators = [
   {
     title: 'Layer Calculator',
-    description: 'Calculate H-Type and A-Frame cage requirements for commercial layer production based on your bird capacity.',
+    description: 'Calculate H-Type and S-Frame cage requirements for commercial layer production based on your bird capacity.',
     href: '/calculators/layer',
     delay: 0.1
   },
@@ -33,7 +33,7 @@ const calculators = [
   },
   {
     title: 'Broiler Calculator',
-    description: 'Estimate deep litter or battery cage requirements for intensive broiler rearing.',
+    description: 'Estimate deep litter or H-Type cage requirements for intensive broiler rearing.',
     href: '/calculators/broiler',
     delay: 0.5
   }

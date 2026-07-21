@@ -4,7 +4,7 @@ import { broilerConfig } from '@/lib/content/broiler';
 
 export const metadata = {
   title: 'Broiler Solutions | Metplast Industries',
-  description: 'High-performance broiler rearing systems, from automated deep litter to space-saving multi-tier battery cages, designed for superior meat yield.',
+  description: 'Broiler poultry systems — deep litter housing, pan feeding, nipple drinking with auto flush, curtains, and H-Type broiler cage systems for practical shed management.',
 };
 
 export default function BroilerPage() {

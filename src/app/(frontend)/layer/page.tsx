@@ -4,7 +4,7 @@ import { layerConfig } from '@/lib/content/layer';
 
 export const metadata = {
   title: 'Layer Cage Solutions | Metplast Industries',
-  description: 'Precision-engineered H-Type and A-Frame layer cage systems designed for maximum egg production and optimal bird health.',
+  description: 'H-Type and S-Frame layer cage systems engineered for uniform feed access, clean egg handling, stronger cage life, and consistent layer production.',
 };
 
 export default function LayerPage() {

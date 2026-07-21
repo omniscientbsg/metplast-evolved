@@ -8,13 +8,13 @@ import { ArrowUpRight, Wrench, Building2, Wind, Droplets, Zap, Package, Calculat
 import { Button } from '@/components/ui/button';
 
 const systemComponents = [
-  { icon: Building2, title: 'Cage Systems', desc: 'H-Type and A-Frame cages for Layer, Breeder, and Broiler' },
-  { icon: Zap, title: 'Automatic Feeding', desc: 'Chain & trolley feeding systems with 99.7% accuracy' },
+  { icon: Building2, title: 'Cage Systems', desc: 'H-Type and S-Frame cages for Layer, Breeder, and Broiler' },
+  { icon: Zap, title: 'Automatic Feeding', desc: 'Chain & trolley feeding systems for layer, breeder, and broiler lines' },
   { icon: Droplets, title: 'Nipple Drinking', desc: 'Adjustable nipple lines for all bird types and ages' },
   { icon: Wrench, title: 'Manure Removal', desc: 'Automated belt conveyors, cross conveyors, and elevators' },
   { icon: Package, title: 'Egg Collection', desc: 'Gentle slope collection with reduced breakage design' },
   { icon: Wind, title: 'Environmental Control', desc: 'Cooling pads, exhaust fans, cone fans, and control panels' },
-  { icon: Package, title: 'Feed Silos', desc: '275 GSM galvanized steel silos with screw conveyors' },
+  { icon: Package, title: 'Feed Silos', desc: 'Galvanized steel silos with screw conveyors' },
   { icon: Building2, title: 'Shed Structure', desc: 'Pre-engineered steel frames and sidewall systems' },
   { icon: Zap, title: 'Lighting System', desc: 'LED lighting optimised for laying and breeding cycles' },
   { icon: Droplets, title: 'Water Lines', desc: 'Main water lines, pressure regulators, and medication dosers' },
@@ -23,8 +23,8 @@ const systemComponents = [
 
 const farmTypes = [
   { label: 'Layer Farms', desc: 'Commercial egg production from 10,000 to 5 lakh+ birds', href: '/layer' },
-  { label: 'Breeder Farms', desc: 'Hatching egg production with custom male bird placement', href: '/breeder' },
-  { label: 'Broiler Farms', desc: 'Deep litter and battery cage broiler rearing systems', href: '/broiler' },
+  { label: 'Breeder Farms', desc: 'Hatching egg production with practical male bird placement', href: '/breeder' },
+  { label: 'Broiler Farms', desc: 'Deep litter and H-Type cage broiler rearing systems', href: '/broiler' },
   { label: 'Integrated Farms', desc: 'Pullet + Layer or Pullet + Breeder on the same land', href: '/contact' },
 ];
 

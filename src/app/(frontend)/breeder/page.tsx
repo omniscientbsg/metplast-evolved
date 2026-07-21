@@ -4,7 +4,7 @@ import { breederConfig } from '@/lib/content/breeder';
 
 export const metadata = {
   title: 'Breeder Solutions | Metplast Industries',
-  description: 'Advanced breeder housing and cage systems engineered to optimize fertility, hatchability, and uniform flock health.',
+  description: 'H-Type breeder cage systems designed for male-female management, uniform feeding, cleaner hatching eggs, and easier AI workflow.',
 };
 
 export default function BreederPage() {
