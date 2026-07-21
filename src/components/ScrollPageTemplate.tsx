@@ -9,6 +9,8 @@ import { StickyPageNav } from './StickyPageNav';
 import { ProductSection, ProductSectionProps } from './ProductSection';
 import { CrossLinkCards, CrossLink } from './CrossLinkCards';
 import { Button } from '@/components/ui/button';
+import { PageBlock } from './blocks/types';
+import { BlockRenderer } from './blocks/BlockRenderer';
 
 export interface PageConfig {
   hero: {
@@ -20,6 +22,7 @@ export interface PageConfig {
   };
   intro: string[];
   sections: ProductSectionProps[];
+  pageBlocks?: PageBlock[];
   crossLinks: CrossLink[];
 }
 
@@ -27,8 +30,33 @@ interface ScrollPageTemplateProps {
   config: PageConfig;
 }
 
+// Human-readable labels for page-level blocks that carry an explicit id,
+// used only for the sticky nav. Blocks without an id are simply skipped —
+// they're not addressable via anchor nav and that's fine.
+const BLOCK_NAV_LABELS: Partial<Record<PageBlock['type'], string>> = {
+  'feeder-materials': 'Feeder Materials',
+  'auto-flush': 'Auto Flush',
+  'customization': 'Customization',
+  'upgrade-path': 'Upgrade Path',
+  'feeding-trolley': 'Feeding Trolley',
+  'lighting': 'Lighting',
+};
+
+function navLabelForBlock(block: PageBlock): string {
+  if (block.type === 'info') return block.heading;
+  return BLOCK_NAV_LABELS[block.type] ?? block.type;
+}
+
 export function ScrollPageTemplate({ config }: ScrollPageTemplateProps) {
-  const navSections = config.sections.map(s => ({ id: s.id, label: s.title }));
+  const sectionNavEntries = config.sections.map(s => ({ id: s.id, label: s.title }));
+
+  // Only page-level blocks with an explicit id get a nav entry — blocks
+  // without one aren't meant to be anchor-navigable.
+  const pageBlockNavEntries = (config.pageBlocks ?? [])
+    .filter((block): block is PageBlock & { id: string } => Boolean(block.id))
+    .map(block => ({ id: block.id, label: navLabelForBlock(block) }));
+
+  const navSections = [...sectionNavEntries, ...pageBlockNavEntries];
 
   return (
     <main className="min-h-screen bg-[var(--bg)] relative overflow-x-hidden">
@@ -132,6 +160,15 @@ export function ScrollPageTemplate({ config }: ScrollPageTemplateProps) {
           </div>
         ))}
       </div>
+
+      {/* ── PAGE-LEVEL BLOCKS ── */}
+      {config.pageBlocks && config.pageBlocks.length > 0 && (
+        <div className="space-y-0">
+          {config.pageBlocks.map((block, idx) => (
+            <BlockRenderer key={block.id ?? idx} block={block} />
+          ))}
+        </div>
+      )}
 
       {/* ── CROSS LINKS ── */}
       <CrossLinkCards links={config.crossLinks} />

@@ -6,6 +6,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { CheckCircle2, ArrowUpRight, Calculator, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { PageBlock } from './blocks/types';
+import { BlockRenderer } from './blocks/BlockRenderer';
 
 export interface SpecData {
   label: string;
@@ -16,6 +18,7 @@ export interface ProductSectionProps {
   id: string;
   title: string;
   badge?: string;
+  tag?: string;
   description: string[];
   features?: string[];
   benefits?: string[];
@@ -23,32 +26,58 @@ export interface ProductSectionProps {
   specs?: SpecData[];
   calculatorHref?: string;
   reverse?: boolean;
+  topBlocks?: PageBlock[];
+  bottomBlocks?: PageBlock[];
 }
 
 export function ProductSection({
   id,
   title,
   badge,
+  tag,
   description,
   features,
   benefits,
   images,
   specs,
   calculatorHref,
-  reverse = false
+  reverse = false,
+  topBlocks,
+  bottomBlocks
 }: ProductSectionProps) {
-  
+
   return (
     <section id={id} className="py-24 relative scroll-mt-24">
       <div className="max-w-[1400px] mx-auto px-6">
+
+        {/* topBlocks render full-width above the two-column grid — keeps wide
+            content (feeder grids, upgrade-path stage cards) readable instead
+            of being squeezed into the content column. */}
+        {topBlocks && topBlocks.length > 0 && (
+          <div className="mb-16 space-y-16">
+            {topBlocks.map((block, idx) => (
+              <BlockRenderer key={block.id ?? idx} block={block} />
+            ))}
+          </div>
+        )}
+
         <div className={`grid lg:grid-cols-2 gap-16 items-start ${reverse ? 'lg:flex-row-reverse' : ''}`}>
-          
+
           {/* Content Column */}
           <div className={`space-y-8 ${reverse ? 'lg:order-2' : 'lg:order-1'}`}>
             <div>
-              {badge && (
-                <div className="inline-block px-3 py-1 rounded-full border border-[var(--accent)]/20 bg-[var(--accent)]/10 text-[var(--accent)] text-xs font-bold tracking-widest uppercase mb-4">
-                  {badge}
+              {(tag || badge) && (
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {tag && (
+                    <div className="inline-block px-3 py-1 rounded-full border border-[var(--accent)]/20 bg-[var(--accent)]/10 text-[var(--accent)] text-xs font-bold tracking-widest uppercase">
+                      {tag}
+                    </div>
+                  )}
+                  {badge && (
+                    <div className="inline-block px-3 py-1 rounded-full border border-[var(--accent)]/20 bg-[var(--accent)]/10 text-[var(--accent)] text-xs font-bold tracking-widest uppercase">
+                      {badge}
+                    </div>
+                  )}
                 </div>
               )}
               <h2 className="text-3xl md:text-5xl font-['Space_Grotesk'] font-black text-[var(--text)] tracking-tight leading-tight mb-6">
@@ -150,6 +179,18 @@ export function ProductSection({
           </div>
 
         </div>
+
+        {/* bottomBlocks render full-width below the two-column grid — same
+            rationale as topBlocks (see comment above): big blocks like
+            upgrade-path or feeder-materials read poorly squeezed into a
+            single content column. */}
+        {bottomBlocks && bottomBlocks.length > 0 && (
+          <div className="mt-16 space-y-16">
+            {bottomBlocks.map((block, idx) => (
+              <BlockRenderer key={block.id ?? idx} block={block} />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
