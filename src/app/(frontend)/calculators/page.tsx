@@ -1,4 +1,5 @@
 import React from 'react';
+import { MessageCircle, Phone } from 'lucide-react';
 import { CalculatorCard } from '@/components/CalculatorCard';
 
 export const metadata = {
@@ -66,7 +67,7 @@ export default function CalculatorsHubPage() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
           {calculators.map((calc, idx) => (
-            <CalculatorCard 
+            <CalculatorCard
               key={idx}
               title={calc.title}
               description={calc.description}
@@ -74,6 +75,60 @@ export default function CalculatorsHubPage() {
               delay={calc.delay}
             />
           ))}
+
+          {/* Enquiry card — fills the 6th grid slot */}
+          <div
+            className="group relative h-full rounded-3xl p-8 overflow-hidden flex flex-col"
+            style={{
+              background: 'linear-gradient(145deg, #F97316 0%, #EA580C 100%)',
+              boxShadow: '0 20px 40px rgba(249, 115, 22, 0.35)',
+            }}
+          >
+            {/* Blueprint grid background */}
+            <div
+              className="absolute inset-0 opacity-10 pointer-events-none"
+              style={{
+                backgroundImage: `
+                  linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px),
+                  linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px)
+                `,
+                backgroundSize: '20px 20px',
+              }}
+            />
+
+            <div className="relative z-10 flex flex-col h-full">
+              <div className="w-14 h-14 rounded-2xl bg-white/15 flex items-center justify-center mb-6 border border-white/25">
+                <MessageCircle className="w-7 h-7 text-white" />
+              </div>
+
+              <h3 className="text-2xl font-bold text-white mb-3 tracking-tight">
+                Not Sure Which One?
+              </h3>
+
+              <p className="text-white/90 font-medium leading-relaxed flex-grow mb-8">
+                Talk to our engineering team — we&apos;ll size your farm and recommend the right systems for your bird capacity.
+              </p>
+
+              <div className="mt-auto flex flex-col gap-3">
+                <a
+                  href="https://wa.me/918928405002?text=Hi%20Metplast%2C%20I%20need%20help%20planning%20my%20poultry%20farm."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3 font-bold uppercase tracking-widest text-sm text-[#EA580C] transition-transform hover:scale-[1.02]"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  WhatsApp Us
+                </a>
+                <a
+                  href="tel:+918928405002"
+                  className="flex items-center justify-center gap-2 rounded-full border border-white/40 px-6 py-3 font-bold uppercase tracking-widest text-sm text-white transition-colors hover:bg-white/10"
+                >
+                  <Phone className="w-4 h-4" />
+                  Call +91 89284 05002
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </main>
