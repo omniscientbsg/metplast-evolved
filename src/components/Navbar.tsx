@@ -191,6 +191,7 @@ export function Navbar() {
   const [brochureEmail, setBrochureEmail] = useState('');
   const [brochurePhone, setBrochurePhone] = useState('');
   const [brochureCode,  setBrochureCode]  = useState('+91');
+  const [brochureHp,    setBrochureHp]    = useState('');
   const [brochureError, setBrochureError] = useState('');
 
   function handleBrochureSubmit(e: React.FormEvent) {
@@ -214,6 +215,7 @@ export function Navbar() {
         phone: brochurePhone ? `${brochureCode} ${brochurePhone}` : '',
         type: 'brochure_download',
         product: BROCHURE_CATEGORIES[0].label,
+        hp: brochureHp,
         sourceUrl: window.location.href,
       }),
     }).catch(() => {});
@@ -225,13 +227,14 @@ export function Navbar() {
     setIsBrochureOpen(false);
     setBrochureEmail('');
     setBrochurePhone('');
+    setBrochureHp('');
   }
 
   /* ── Enquiry form state ── */
   const [enquiry, setEnquiry] = useState({
     name: '', company: '', countryCode: '+91', phone: '',
     email: '', country: '', birdType: '', requirement: '', capacity: '',
-    timeline: '', message: '',
+    timeline: '', message: '', hp: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
@@ -256,6 +259,7 @@ export function Navbar() {
           birdCapacity: enquiry.capacity,
           timeline: enquiry.timeline,
           message: enquiry.message,
+          hp: enquiry.hp,
           sourceUrl: window.location.href,
         }),
       });
@@ -530,6 +534,11 @@ export function Navbar() {
               </p>
 
               <form className="space-y-4" onSubmit={handleBrochureSubmit}>
+                {/* Honeypot — hidden bot trap */}
+                <input type="text" name="website" tabIndex={-1} autoComplete="off"
+                  aria-hidden="true" value={brochureHp}
+                  onChange={e => setBrochureHp(e.target.value)}
+                  className="absolute left-[-9999px] w-px h-px opacity-0" />
                 <div className="space-y-1.5">
                   <label className={labelCls}>Email</label>
                   <input
@@ -621,6 +630,11 @@ export function Navbar() {
                 </div>
               ) : (
                 <form className="space-y-4" onSubmit={handleEnquirySubmit}>
+                  {/* Honeypot — hidden bot trap */}
+                  <input type="text" name="website" tabIndex={-1} autoComplete="off"
+                    aria-hidden="true" value={enquiry.hp}
+                    onChange={e => setEnquiry(p => ({ ...p, hp: e.target.value }))}
+                    className="absolute left-[-9999px] w-px h-px opacity-0" />
                   <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-1.5">
                       <label className={labelCls}>Name *</label>

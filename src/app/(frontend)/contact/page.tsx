@@ -15,7 +15,7 @@ export default function ContactPage() {
     firstName: '', lastName: '', company: '',
     countryCode: '+91', phone: '', email: '',
     birdType: '', requirement: '', capacity: '',
-    timeline: '', message: '',
+    timeline: '', message: '', hp: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
@@ -66,6 +66,7 @@ export default function ContactPage() {
           birdCapacity: form.capacity,
           timeline: form.timeline,
           message: form.message,
+          hp: form.hp,
           product,
           sourceUrl: window.location.href,
         }),
@@ -138,6 +139,17 @@ export default function ContactPage() {
             </div>
           ) : (
             <form className="space-y-8" onSubmit={handleSubmit}>
+              {/* Honeypot — hidden from users, catches form-filling bots */}
+              <input
+                type="text"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                value={form.hp}
+                onChange={e => setForm(p => ({ ...p, hp: e.target.value }))}
+                className="absolute left-[-9999px] w-px h-px opacity-0"
+              />
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-3">
                   <label className={labelCls}>First Name *</label>
