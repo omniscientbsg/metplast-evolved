@@ -35,7 +35,7 @@ export default function Home() {
       >
         <div className="absolute inset-0 z-[-1] opacity-80">
           <Image src="/images/Hero-Slider-2.jpg" alt="Background" fill className="object-cover object-center" priority sizes="100vw" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/70 to-[var(--bg)]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/70 to-[var(--hero-fade)]" />
         </div>
 
         <motion.div style={{ scale, filter: `blur(${heroBlur}px)` }} className="w-full max-w-[1600px] mx-auto mt-20">

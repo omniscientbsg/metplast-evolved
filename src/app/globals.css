@@ -31,6 +31,9 @@
   /* Shadow */
   --shadow: 0 8px 30px rgba(0, 0, 0, 0.40);
 
+  /* Hero image bottom-fade target (blends into page bg) */
+  --hero-fade: var(--bg);
+
   /* Legacy aliases (keep for backward compat during migration) */
   --background: #0B1220;
   --foreground: #E6ECF5;
@@ -53,6 +56,9 @@
   --text: #1A2430;
   --text-muted: #5A6678;
   --border: rgba(16, 24, 40, 0.10);
+
+  /* Warm orange hero fade instead of stark white in light mode */
+  --hero-fade: #FCE7D2;
 
   /* Brand stays constant */
   --brand-navy: #1B3A6B;
