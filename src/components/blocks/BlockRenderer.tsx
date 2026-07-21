@@ -34,7 +34,11 @@ export function BlockRenderer({ block }: { block: PageBlock }) {
       return <FeedingTrolley id={block.id} />;
     case 'lighting':
       return <Lighting id={block.id} />;
-    default:
-      return null;
+    default: {
+      // Compile-time exhaustiveness: adding a PageBlock variant without a
+      // case here becomes a type error rather than silently rendering nothing.
+      const _exhaustive: never = block;
+      return _exhaustive ?? null;
+    }
   }
 }
