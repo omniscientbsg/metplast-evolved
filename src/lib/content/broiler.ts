@@ -130,6 +130,7 @@ export const broilerConfig: PageConfig = {
       specs: [
         { label: "Cage Type", value: "H-Type Broiler Cage System" },
         { label: "Feeding", value: "Automated pan" },
+        { label: "Drinker", value: "Nipple line (auto flush available)" },
         { label: "Manure System", value: "Automated belt" },
         { label: "Automation Level", value: "Multi-tier automatic" },
       ]
