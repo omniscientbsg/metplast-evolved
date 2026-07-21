@@ -90,19 +90,25 @@ export default function Home() {
               </Link>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
-              className="grid grid-cols-2 gap-8 pt-8 w-full border-t border-white/10 mt-4"
+              className="grid grid-cols-2 gap-6 pt-8 w-full border-t border-white/10 mt-4"
             >
               <div>
-                <p className="text-5xl font-['Space_Grotesk'] font-black text-white">99.7<span style={{ color: 'var(--accent)' }}>%</span></p>
-                <p className="text-xs font-bold text-white/70 uppercase tracking-widest mt-2">Feeding Accuracy</p>
+                <p className="text-4xl font-['Space_Grotesk'] font-black text-white">35<span style={{ color: 'var(--accent)' }}>+</span></p>
+                <p className="text-xs font-bold text-white/70 uppercase tracking-widest mt-2">Years of Experience</p>
               </div>
               <div>
-                <p className="text-5xl font-['Space_Grotesk'] font-black text-white">97<span className="text-primary">%</span></p>
-                <p className="text-xs font-bold text-white/70 uppercase tracking-widest mt-2">Yield Efficiency</p>
+                <p className="text-4xl font-['Space_Grotesk'] font-black text-white">500<span style={{ color: 'var(--accent)' }}>+</span></p>
+                <p className="text-xs font-bold text-white/70 uppercase tracking-widest mt-2">Farms</p>
+              </div>
+              <div>
+                <p className="text-lg font-['Space_Grotesk'] font-black text-white leading-tight">Complete Poultry Housing</p>
+              </div>
+              <div>
+                <p className="text-lg font-['Space_Grotesk'] font-black text-white leading-tight">Layer · Breeder · Broiler Systems</p>
               </div>
             </motion.div>
           </div>
@@ -120,7 +126,7 @@ export default function Home() {
             </div>
             <h3 className="text-2xl font-bold text-[var(--text)] mb-4 relative z-10 group-hover:text-[var(--accent)] transition-colors">Innovative Poultry Solutions</h3>
             <p className="text-[var(--text-muted)] font-medium text-[15px] leading-relaxed relative z-10">
-              Providing cutting-edge, high-quality equipment for efficient and modern poultry farming.
+              Poultry housing systems engineered around bird comfort, farm workflow, clean manure handling, uniform feeding, and long service life.
             </p>
           </div>
           <div className="bg-[var(--surface)] p-10 rounded-[2rem] border border-[var(--border)] relative overflow-hidden group shadow-xl transition-colors duration-500">
@@ -156,7 +162,7 @@ export default function Home() {
                 Engineered for <span className="text-gradient">Performance.</span>
              </h2>
              <p className="text-lg md:text-xl text-[var(--text-muted)] leading-relaxed font-medium">
-                Metplast Industries specializes in high-quality, reliable poultry equipment. With over 35 years of manufacturing experience, we deliver everything from robust cage structures and automated feeding systems to complete turnkey housing projects for layer, breeder, and broiler farms.
+                Metplast designs, manufactures, and installs complete poultry housing — cage systems, feeding, drinking, manure handling, egg collection, ventilation, and feed storage — for layer, breeder, and broiler farms. From levelled land to a running farm, one team stays responsible.
              </p>
           </div>
 
@@ -282,7 +288,7 @@ export default function Home() {
                     <ImageIcon className="w-8 h-8" />
                  </div>
                  <h3 className="text-3xl font-black font-['Space_Grotesk'] text-[var(--text)]">Projects & Gallery</h3>
-                 <p className="text-[var(--text-muted)] font-medium">See real installations of our cages, silos, and housing projects across 250+ farms.</p>
+                 <p className="text-[var(--text-muted)] font-medium">See real installations of our cages, silos, and housing projects across 500+ farms.</p>
               </div>
               <Link href="/gallery" className="mt-12 inline-flex items-center text-[var(--accent)] font-bold tracking-widest uppercase text-sm hover:gap-4 transition-all gap-2 relative z-10">
                  View All Projects <ArrowRight className="w-4 h-4" />
