@@ -2,35 +2,35 @@ import { PageConfig } from '@/components/ScrollPageTemplate';
 
 export const breederConfig: PageConfig = {
   hero: {
-    title: "BREEDER SOLUTIONS",
-    subtitle: "Advanced housing and cage systems engineered to optimize fertility, hatchability, and uniform flock health.",
+    title: "BREEDER POULTRY SYSTEMS",
+    subtitle: "Designed for male-female management, uniform feeding, cleaner hatching eggs, and easier AI workflow.",
     image: "/images/Breeder2.jpg",
     ctaPrimary: { label: "Get a Quote", href: "/contact" },
     ctaSecondary: { label: "View Gallery", href: "/gallery" }
   },
   intro: [
-    "Metplast’s Breeder Cages are designed to create optimal breeding conditions, ensuring superior comfort and efficiency for your breeder birds.",
-    "Built with a robust and ergonomic design, our cages maximize productivity while maintaining the highest standards of bird welfare."
+    "Metplast’s breeder cage systems are designed around bird comfort, controlled feeding, male-female placement, AI access, and cleaner hatching egg handling.",
+    "Built to support consistent breeder management across the flock."
   ],
   sections: [
     {
       id: "h-type-breeder",
       calculatorHref: "/calculators/breeder",
       title: "H-Type Breeder Cage",
-      badge: "Maximum Hatchability",
+      badge: "Breeder Management",
       description: [
         "To enhance breeding efficiency, we offer a custom placement option for male birds, streamlining the artificial insemination process for improved breeding outcomes.",
         "Additionally, our innovative cage structure significantly reduces egg breakage, ensuring higher-quality yields and improved farm efficiency."
       ],
       features: [
         "Custom Male Bird Placement – Enhances efficiency during artificial insemination",
-        "99% Feed Accuracy – Precision-engineered feeding reduces waste",
+        "Controlled Feeding – Trolley feeding keeps breeder body weight on target",
         "Egg Protection Design – Specially sloped floors reduce breakage",
         "Superior Build Quality – Ergonomically designed for comfort"
       ],
       benefits: [
-        "Higher Hatchability Rates with improved fertilization success",
-        "Increased Productivity with optimized breeding environment",
+        "Supports cleaner hatching egg handling and easier AI workflow",
+        "Supports a well-organized breeding environment for the flock",
         "Superior Egg Quality ensures higher-grade hatching eggs",
         "Long-Lasting Durability with premium galvanized materials"
       ],
