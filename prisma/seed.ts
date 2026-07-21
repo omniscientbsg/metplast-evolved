@@ -4,19 +4,35 @@ import bcrypt from 'bcryptjs'
 const prisma = new PrismaClient()
 
 async function main() {
-  const passwordHash = await bcrypt.hash('Admin@123', 10)
+  // Admin credentials come from the environment — never hard-coded, so no
+  // password lives in the repo. Re-running the seed with a new ADMIN_PASSWORD
+  // rotates the existing admin's password (see `update` below).
+  const adminEmail = process.env.ADMIN_EMAIL || 'admin@metplast.com'
+  const adminName = process.env.ADMIN_NAME || 'Metplast Admin'
+  const adminPassword = process.env.ADMIN_PASSWORD
+
+  if (!adminPassword || adminPassword.length < 8) {
+    throw new Error(
+      'ADMIN_PASSWORD env var is required and must be at least 8 characters. ' +
+      'Set it before seeding, e.g. ADMIN_PASSWORD="your-strong-pass" npx prisma db seed'
+    )
+  }
+
+  const passwordHash = await bcrypt.hash(adminPassword, 10)
 
   const admin = await prisma.user.upsert({
-    where: { email: 'admin@metplast.com' },
-    update: {},
+    where: { email: adminEmail },
+    update: { password: passwordHash, name: adminName },
     create: {
-      email: 'admin@metplast.com',
-      name: 'Anshul Rosia',
+      email: adminEmail,
+      name: adminName,
       password: passwordHash,
     },
   })
-  
-  console.log({ admin })
+
+  console.log(`Admin ready: ${admin.email}`)
+
+  const isProd = process.env.NODE_ENV === 'production'
 
   // Seed default chatbot provider to Gemini if not set
   await prisma.setting.upsert({
@@ -36,6 +52,9 @@ async function main() {
       value: 'You are a helpful assistant for Metplast. Metplast sells poultry equipment.'
     }
   })
+  // Demo/sample content below — never seed into production (dummy leads,
+  // placeholder products, sample blog). Production gets admin + settings only.
+  if (!isProd) {
   // Dummy Products
   await prisma.product.upsert({
     where: { slug: 'layer-cages' },
@@ -107,6 +126,7 @@ async function main() {
       }
     })
   }
+  } // end !isProd demo content
 }
 
 main()
