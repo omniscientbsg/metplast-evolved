@@ -2,45 +2,55 @@ import { PageConfig } from '@/components/ScrollPageTemplate';
 
 export const layerConfig: PageConfig = {
   hero: {
-    title: "LAYER SOLUTIONS",
-    subtitle: "Precision-engineered cage systems designed for maximum egg production, optimal bird health, and seamless farm efficiency.",
+    title: "LAYER POULTRY SYSTEMS",
+    subtitle: "Designed for uniform feed access, clean egg handling, stronger cage life, and consistent layer production.",
     image: "/images/Layer2.jpg",
     ctaPrimary: { label: "Get a Quote", href: "/contact" },
     ctaSecondary: { label: "View Gallery", href: "/gallery" }
   },
   intro: [
-    "Metplast’s Layer Cages are meticulously designed to deliver exceptional performance and efficiency for commercial egg producers.",
-    "Engineered for optimal bird health and farm productivity, our cages ensure uniform feed distribution, reducing waste while promoting consistent nutrition and maximum egg yield."
+    "Metplast designs and installs complete layer cage systems built around uniform feed access, clean egg handling, and long cage life.",
+    "Every system is engineered for practical daily management and consistent layer production."
   ],
   sections: [
     {
       id: "h-type",
       calculatorHref: "/calculators/layer",
-      title: "H-Type Layer Battery Cage",
-      badge: "Commercial Production",
+      title: "H-Type Layer Cage System",
       description: [
-        "With a multi-tier vertical design, our H-Type cages maximize space utilization, enhancing farm efficiency without compromising bird welfare.",
-        "The increased box height ensures better bird comfort, while the advanced manure removal system keeps the environment clean and hygienic."
+        "A fully integrated layer cage system for farms that need efficient space use, smooth egg handling, clean manure removal, and practical daily management."
       ],
       features: [
-        "Uniform Feed Distribution – Ensures optimal nutrition, reducing feed waste",
-        "Multi-Tier Space Optimization – Maximizes farm efficiency",
-        "Increased Box Height – Provides enhanced comfort, reducing stress",
-        "Advanced Manure Removal System – Keeps the environment clean",
-        "Gentle Egg Collection System – Minimizes damage, ensuring higher-quality yields"
+        "Uniform Feed Distribution – Every bird gets 3 inches of feeder front. Consistent access across all tiers reduces competition and drives uniform flock performance.",
+        "Gentle Egg Movement – Engineered egg roll for smooth travel and cleaner collection — fewer cracks, less handling stress, better-grade eggs.",
+        "Niagara Egg Collection System – Automated vertical egg collection transfers eggs from every tier to a single collection point — less labour, cleaner eggs.",
+        "UV-Stabilized PP Manure Belt – A durable polypropylene belt built for daily use — cleaner sheds, lower ammonia and smell, easier routine maintenance.",
+        "Trolley Feeding System – Trolley feeding comes standard on every H-Type Layer line — controlled, consistent feed delivery across the full cage row.",
+        "Strong GI Cage Structure – Galvanized construction built for long service life, corrosion resistance, and stable alignment flock after flock."
       ],
       benefits: [
-        "Higher Egg Quality & Yield with gentle transport",
-        "Better Bird Health & Comfort with spacious design",
-        "Efficient Waste Management keeps the farm cleaner",
-        "Maximized Farm Efficiency with vertical space saving"
+        "Cleaner eggs",
+        "Better manure handling",
+        "Reduced daily labour",
+        "Uniform feed access",
+        "Better shed hygiene",
+        "Longer cage service life",
+        "Built for scalable layer farms"
       ],
       images: ["/images/Hero-Slider-1.jpg"],
       specs: [
-        { label: "Design", value: "H-Type Vertical" },
-        { label: "Feeding System", value: "Trolley / Chain" },
-        { label: "Manure Removal", value: "Automated Belt" },
-        { label: "Egg Collection", value: "Automated Elevator" },
+        { label: "Cage Type", value: "H-Type Layer Cage System" },
+        { label: "Birds per Box", value: "10" },
+        { label: "Box Front", value: "30 in" },
+        { label: "Box Depth", value: "26 in" },
+        { label: "Feeding Space per Bird", value: "3 in" },
+        { label: "Area per Bird", value: "78 sq. in (~503 cm²)" },
+        { label: "Material & Coating", value: "GI structure" },
+        { label: "Manure System", value: "UV-stabilized PP belt" },
+        { label: "Egg Collection", value: "Niagara vertical system" },
+        { label: "Feeding", value: "Trolley (standard)" },
+        { label: "Feeder Options", value: "ZAM / Aluminium / GI / PVC" },
+        { label: "Automation Level", value: "Automatic-ready" }
       ]
     },
     {
