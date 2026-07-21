@@ -7,6 +7,7 @@ import Image from 'next/image';
 
 const solutionLinks = [
   { name: 'Metplast Housing', href: '/housing' },
+  { name: 'About Metplast', href: '/about' },
   { name: 'Layer Solutions',  href: '/layer' },
   { name: 'Breeder Solutions', href: '/breeder' },
   { name: 'Broiler Solutions', href: '/broiler' },

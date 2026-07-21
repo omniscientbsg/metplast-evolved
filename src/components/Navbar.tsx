@@ -13,6 +13,7 @@ import Image from 'next/image';
 /* ─── Navigation links ─────────────────────────────────────── */
 const links = [
   { name: 'Home', href: '/' },
+  { name: 'About', href: '/about' },
   { name: 'Metplast Housing', href: '/housing' },
   {
     name: 'Solutions',
