@@ -52,6 +52,7 @@ export default function ContactPage() {
     setIsSubmitting(true);
     setSubmitError('');
     try {
+      const product = new URLSearchParams(window.location.search).get('product') || '';
       const res = await fetch('/api/admin/enquiries', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -65,6 +66,7 @@ export default function ContactPage() {
           birdCapacity: form.capacity,
           timeline: form.timeline,
           message: form.message,
+          product,
           sourceUrl: window.location.href,
         }),
       });
