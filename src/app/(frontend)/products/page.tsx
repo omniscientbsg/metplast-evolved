@@ -26,7 +26,7 @@ const solutions = [
   {
     title: 'Breeder Solutions',
     sub: 'Breeder & Breeder Pullet',
-    desc: 'H-Type Breeder Cage and Breeder Pullet — optimised for hatching egg quality, custom male placement, and AI support.',
+    desc: 'H-Type Breeder Cage and Breeder Pullet — designed for male-female management, uniform feeding, cleaner hatching eggs, and easier AI workflow.',
     href: '/breeder',
     image: '/images/Breeder2.jpg',
     tag: 'Breeder Farms',

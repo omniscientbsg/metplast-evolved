@@ -74,19 +74,19 @@ export const feedSilosConfig: PageConfig = {
   crossLinks: [
     {
       title: "Layer Solutions",
-      desc: "Precision-engineered cages for maximum egg production.",
+      desc: "Layer cage systems for uniform feed access, clean egg handling, and consistent layer production.",
       href: "/layer",
       color: "#f97316"
     },
     {
       title: "Broiler Solutions",
-      desc: "High-performance rearing systems for superior meat yield.",
+      desc: "Broiler systems for uniform feed access, clean water, better airflow, and practical shed management.",
       href: "/broiler",
       color: "#f97316"
     },
     {
       title: "Breeder Solutions",
-      desc: "Advanced housing to optimize fertility and hatchability.",
+      desc: "Breeder cage systems for male-female management, uniform feeding, and cleaner hatching eggs.",
       href: "/breeder",
       color: "#f97316"
     }
