@@ -51,7 +51,8 @@ export const breederConfig: PageConfig = {
         "Superior Egg Quality ensures higher-grade hatching eggs",
         "Long-Lasting Durability with premium galvanized materials"
       ],
-      images: ["/images/gallery/4-1-600x540.jpg"],
+      // [PHOTO: Prateek §14 #3] previous image looked like a layer cage — cleared until an actual breeder cage photo is supplied
+      images: [],
       specs: [
         { label: "Cage Type", value: "H-Type Breeder Cage System" },
         { label: "Female Boxes", value: "18 / 18.75 / 19.5 in front" },

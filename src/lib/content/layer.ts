@@ -50,7 +50,8 @@ export const layerConfig: PageConfig = {
         "Longer cage service life",
         "Built for scalable layer farms"
       ],
-      images: ["/images/Hero-Slider-1.jpg"],
+      // [PHOTO: Prateek §14 #1] reused hero image was misleading — cleared until an actual H-Type layer cage photo is supplied
+      images: [],
       specs: [
         { label: "Cage Type", value: "H-Type Layer Cage System" },
         { label: "Birds per Box", value: "10" },
@@ -91,7 +92,8 @@ export const layerConfig: PageConfig = {
         "Lower replacement pressure",
         "The modern answer to California/patti cage layouts",
       ],
-      images: ["/images/gallery/1-3-600x540.jpg"],
+      // [PHOTO: Prateek §14 #2] gallery crop was not an S-Frame — cleared until an actual S-Frame photo is supplied
+      images: [],
       bottomBlocks: [
         { type: 'upgrade-path' },
         { type: 'feeder-materials' },

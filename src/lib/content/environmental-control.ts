@@ -32,7 +32,8 @@ export const environmentalControlConfig: PageConfig = {
         "Reduces heat stress, preventing flock mortality",
         "Lower energy bills due to high-efficiency motors"
       ],
-      images: ["/images/Shed-8Tier-Cage.png"],
+      // [PHOTO: Prateek §14 #7] cage-shed image was used for the fan section — cleared until an actual exhaust-fan (54"/57") photo is supplied
+      images: [],
       specs: [
         { label: "Material", value: "Galvanized Steel / Stainless Steel" },
         { label: "Drive System", value: "Belt / Direct Drive" },
