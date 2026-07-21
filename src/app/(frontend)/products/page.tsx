@@ -33,7 +33,7 @@ const solutions = [
   },
   {
     title: 'Broiler Solutions',
-    sub: 'Deep Litter & Battery',
+    sub: 'Deep Litter & Cage',
     desc: 'Deep Litter housing with pan feeding, nipple drinking, curtains, false ceilings, and H-Type Broiler cage systems.',
     href: '/broiler',
     image: '/images/gallery/1-3-600x540.jpg',

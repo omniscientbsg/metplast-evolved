@@ -48,7 +48,7 @@ export const breederConfig: PageConfig = {
       benefits: [
         "Supports cleaner hatching egg handling and easier AI workflow",
         "Supports a well-organized breeding environment for the flock",
-        "Superior Egg Quality ensures higher-grade hatching eggs",
+        "Gentle egg handling keeps hatching eggs clean",
         "Long-Lasting Durability with premium galvanized materials"
       ],
       // [PHOTO: Prateek §14 #3] previous image looked like a layer cage — cleared until an actual breeder cage photo is supplied
