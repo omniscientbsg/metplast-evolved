@@ -1,0 +1,330 @@
+# METPLAST WEBSITE — CURRENT → TARGET BUILD SPEC FOR BALJINDER
+
+**Live build audited:** `metplast-evolved.vercel.app` (Home, Products, Product detail, About, Gallery, Contact) — 29 June 2026
+**Scope:** look + architecture + light/dark mode. (Backend, calculator math, analytics = separate track.)
+**Owner:** Arnav Rosia | **Developer:** Baljinder
+
+---
+
+## 0. How to read this
+
+Every section is **NOW → WANT**. Left = exactly what exists today. Right = exactly what to change it to. Where copy is needed, the replacement word is given. **Baljinder does not have to interpret anything.** If something is not listed, leave it as is.
+
+Three jobs, in order:
+1. **Re-tone** — kill the sci-fi language, make it farmer-friendly. (Biggest job. Section 5.)
+2. **Re-architect** — flat product catalog → bird-type scroll pages. (Section 4, 8, 9.)
+3. **Add light/dark mode** — the whole site themable. (Section 7.)
+
+The visual shell (dark, premium, big photos) is good. We are **not** rebuilding the look. We are fixing language, structure, and adding theming.
+
+---
+
+## 1. One-line direction
+
+> Metplast = a complete poultry housing and turnkey systems manufacturer. *From levelled land to a complete poultry housing system.* Tagline: *Think of Poultry, Think of Us.* Tone: engineering-led but **farmer-friendly, practical, simple** — not a sci-fi product.
+
+---
+
+## 2. What the site is RIGHT NOW (current build)
+
+### Navigation (every page)
+`Home · Turnkey Solutions · Products · About Us · Gallery · Contact` + buttons `Brochure`, `Get a Quote`.
+- **"Turnkey Solutions" links to a dead `#`.** No turnkey page exists.
+
+### Homepage — current
+- Hero: "ARCHITECTING THE FUTURE." + "The 100/100 Standard" + a "Watch Showreel" link.
+- Stat strip: "99% Feeding Accuracy" (real figure is **99.7%** — update sitewide), "97% Yield Efficiency".
+- 3 feature cards — **all three carry the identical line** "Providing cutting-edge, high-quality equipment for efficient poultry farming."
+- "BEYOND TRADITION" block with 3 image cards: LAYER ("High-Yield Framework"), BROILER ("Rapid Growth Matrix"), BREEDER ("Genetic Optimization") — **no working links.**
+- "CALCULATE OPTIMAL YIELD" — Layer / Broiler / Breeder "Execute Calculation" buttons → **all dead `#`.**
+- "HARDWARE ARCHITECTURE" product showcase (H-Type Layer Pullet, Silo Storage Matrix).
+- "THE NETWORK" testimonials — **wrong photos:** "Mr. Srinivas" uses file `Mr.-Manjunath-.jpg`, "Mr. Imran" uses `Mr.-Ghanis.jpg`.
+- "INITIATE YOUR BUILD" closing CTA.
+- Footer: headings "Explore / Telemetry", "Comm Line", "© 2026 METPLAST INDUSTRIES. ALL SYSTEMS SECURE.", "Privacy Protocol / Terms of Engagement" (dead `#`).
+
+### Products page — current
+- "ARCHITECTURE CATALOG" — a **flat list of 5 products**, each with a "Deploy Configuration" button:
+  1. H-Type Layer Pullet Systems
+  2. Debeaking AI Module
+  3. H-Type Commercial Matrix
+  4. Automated Nest Boxes
+  5. Silo Storage Matrix
+- **No Layer / Breeder / Broiler grouping. No Breeder products. No Broiler products. No Environmental Control. No Metplast Housing page.**
+- Bottom: "NEED A CUSTOM TURNKEY SOLUTION?" teaser (but no turnkey page to link to).
+
+### Product detail page — current (template)
+- Back link → hero (name + one-line) → "Request Quotation" → image → 6 feature tiles ("Enterprise Grade") → quote form (Facility Name, Email, Phone, Estimated Capacity) → footer.
+- This template is **decent and reusable.**
+
+### About — current
+- "REVOLUTIONIZING THE INDUSTRY." Good factual content. **Says facility is in "Khopoli."**
+- Repeats 99% / 97% stats. "250+ satisfied farm owners across 10+ countries."
+
+### Gallery — current
+- "EXCELLENCE IN ACTION." Image grid tagged Installation / Architecture / Automation / Core Facility. Works fine. Tags are abstract, not bird-type.
+
+### Contact — current
+- "INITIATE DEPLOYMENT." / "Secure Comms".
+- Form heading "TRANSMIT DATA" → fields First Name, Last Name, Email, Phone, Specifications → button "Transmit".
+- "TELEMETRY DATA" with sub-headings "Coordinates" (address), "Voice Comms" (3 phones: +91 89284 05002, 89284 05005, 84520 55536), "Digital Comms" (sales@metplast.com, info@metplast.com).
+- Address here = **Khalapur, Dist Raigad** (conflicts with About's "Khopoli").
+
+---
+
+## 3. What we WANT (target architecture)
+
+A lean, deep site organised by **bird type**, with common system pages, plus a turnkey housing page. Tagline and tone farmer-first.
+
+```
+Home
+├─ Metplast Housing            (NEW — turnkey page; fixes the dead "Turnkey Solutions" link)
+├─ Layer Solutions             (scroll page: H-Type · S-Frame · Layer Pullet)
+├─ Breeder Solutions           (NEW — scroll page: H-Type Breeder · Breeder Pullet · Feeding · Egg Collection · Inspection)
+├─ Broiler Solutions           (NEW — scroll page: Deep Litter · Pan Feeding · Nipple Drinking · Curtain · False Ceiling · Ventilation)
+├─ Environmental Control        (NEW — common page)
+├─ Feed Silos                  (promote the existing silo product to a common page)
+├─ Calculators                 (Layer · Layer Pullet · Breeder · Breeder Pullet · Broiler — currently dead buttons)
+├─ Projects / Gallery          (keep, re-tag by bird type)
+├─ Brochures
+└─ Contact / Enquiry           (keep template, re-tone)
+```
+
+Rules: Pullet is a **section inside** Layer and Breeder, never top-level. Environmental Control and Feed Silo are **separate** pages (common to all bird types, cross-linked). No per-feature pages.
+
+---
+
+## 4. CURRENT → TARGET master table (the no-confusion core)
+
+| Item | NOW | WANT | Action |
+|------|-----|------|--------|
+| Nav: Turnkey Solutions | Dead `#` | Real **Metplast Housing** page | Build page, point link |
+| Nav structure | Home · Turnkey · Products · About · Gallery · Contact | Home · Metplast Housing · Layer · Breeder · Broiler · Environmental Control · Feed Silos · Calculators · Gallery · Contact | Restructure nav |
+| Products | Flat list of 5 | Grouped under Layer / Breeder / Broiler + common pages | Re-architect |
+| Layer | Homepage image card only | Full scroll page (H-Type · S-Frame · Pullet) | Build page |
+| Breeder | Does not exist | Full scroll page | Build page |
+| Broiler | Does not exist | Full scroll page | Build page |
+| Environmental Control | Does not exist | Common page | Build page |
+| Feed Silo | One product ("Silo Storage Matrix") | Common cross-linked page | Promote + rename |
+| Pullet | Standalone product | Section inside Layer & Breeder | Move |
+| Calculators | Dead `#` buttons | 5 working calculators (UI now, math later) | Build UI |
+| Product detail template | Good | Keep, reuse, re-tone | Keep |
+| Testimonial photos | Names/photos mismatched | Correct photos | Fix |
+| Footer category/legal links | Dead `#` | Real links or remove | Fix |
+| Location | About: Khopoli · Contact/Footer: Khalapur | One name everywhere (confirm — see §15) | Standardise |
+| 99% / 97% stats | Shown sitewide, unverified | Feeding accuracy **99.7%** (confirmed); 97% to confirm | Update 99→99.7; confirm 97% |
+| Theme | Dark only | **Light + Dark mode toggle** | Build (§7) |
+
+---
+
+## 5. Tone re-write — kill the sci-fi, keep the polish
+
+The current copy reads like an AI/crypto startup. Brief says remove "overly futuristic lines" and be farmer-friendly. **Swap every term on the left for the right, sitewide.** This is a find-and-replace job plus headline rewrites.
+
+| NOW (remove) | WANT (use) |
+|--------------|-----------|
+| Architecting the Future | Complete Poultry Housing Systems |
+| The 100/100 Standard | 35+ Years of Poultry Engineering |
+| Deploy Configuration | View Product / Enquire |
+| Hardware Architecture | Our Equipment |
+| Architecture Catalog | Product Range |
+| Beyond Tradition | Our Solutions |
+| High-Yield Framework (Layer) | Layer Systems |
+| Rapid Growth Matrix (Broiler) | Broiler Systems |
+| Genetic Optimization (Breeder) | Breeder Systems |
+| H-Type Commercial Matrix | H-Type Layer Cage |
+| Silo Storage Matrix | Feed Silos |
+| Debeaking AI Module | Automatic Debeaking Machine *(drop "AI" — see §14)* |
+| The Network | Trusted Across the Industry |
+| Initiate Your Build / Initiate Deployment | Plan Your Farm / Talk to Our Engineers |
+| Secure Comms | Contact Us |
+| Transmit Data / Transmit | Send Enquiry |
+| Telemetry (footer + contact heading) | Contact |
+| Coordinates | Address |
+| Voice Comms | Phone |
+| Digital Comms | Email |
+| Comm Line | Phone |
+| All Systems Secure | *(remove)* |
+| Privacy Protocol / Terms of Engagement | Privacy Policy / Terms |
+| Intelligence (footer → About) | About |
+| Ecosystem (footer → Gallery) | Gallery |
+
+**Copy rules going forward:** plain words a farmer uses. Say what equipment does and where it fits, not how futuristic it is. Short sentences. No invented numbers.
+
+---
+
+## 6. Visual system (brand)
+
+Keep the premium dark look as the dark theme; add a clean light theme. Confirmed brand colours:
+
+- **Brand navy:** `#1B3A6B` (constant in both themes — logo, primary surfaces, links)
+- **Accent orange:** `#F97316` (constant in both — CTAs, highlights; use sparingly)
+- **Type:** one clean grotesk (e.g. Inter). Hero H1 large; body line-height 1.5–1.65; short paragraphs.
+- **Spacing:** 8px scale; section padding ~96–128px desktop / 56–72px mobile; content max-width ~1280px.
+- **Cards:** rounded 16–24px, image-led, **fully clickable**, subtle hover lift. No tiny "read more".
+- **Photos:** real Metplast installs only. No stock, no cartoon chickens, no icon-pack clutter.
+
+---
+
+## 7. LIGHT / DARK MODE — full spec (new requirement)
+
+The same website must run in **both light and dark mode.** Build it once with tokens; do not hardcode colours.
+
+### 7.1 Method
+1. Use **CSS custom properties (design tokens)** on `:root` for dark (default) and `[data-theme="light"]` for light. (Next.js: `next-themes` with `attribute="data-theme"` is the clean route.)
+2. **No raw hex anywhere in components.** Components reference tokens only (e.g. `background: var(--bg)`).
+3. **Toggle in the header**, left of "Get a Quote". Sun/moon icon, min 44×44px tap target.
+4. **Default = dark** (matches current look). Respect OS `prefers-color-scheme` on first visit, then remember the user's choice (persisted).
+5. Smooth ~200ms transition on background/text/border; **no transition on images**.
+
+### 7.2 Token table — set both
+
+| Token | Dark (default) | Light |
+|-------|----------------|-------|
+| `--bg` | `#0B1220` | `#FFFFFF` |
+| `--bg-elevated` | `#121A2B` | `#F5F7FA` |
+| `--surface` | `#162032` | `#FFFFFF` |
+| `--text` | `#E6ECF5` | `#1A2430` |
+| `--text-muted` | `#9AA7BD` | `#5A6678` |
+| `--border` | `rgba(255,255,255,0.10)` | `rgba(16,24,40,0.10)` |
+| `--brand-navy` | `#1B3A6B` | `#1B3A6B` |
+| `--accent` | `#F97316` | `#F97316` |
+| `--accent-text` | `#FFFFFF` | `#FFFFFF` |
+| `--glass-bg` | `rgba(255,255,255,0.06)` | `rgba(255,255,255,0.55)` |
+| `--glass-border` | `rgba(255,255,255,0.14)` | `rgba(16,24,40,0.08)` |
+| `--glass-blur` | `16px` | `16px` |
+| `--shadow` | `0 8px 30px rgba(0,0,0,0.40)` | `0 8px 30px rgba(16,24,40,0.10)` |
+
+### 7.3 Things that must adapt per theme
+- **Hero images:** they carry white text. In light mode, keep a **dark gradient scrim** behind hero text so it stays readable over the photo (don't flip hero text to dark). Hero text stays light in both themes; only the surrounding page chrome flips.
+- **Logo:** confirm the logo reads on both white and dark. If the current logo is light-only, supply a dark-ink variant for light mode (swap by theme).
+- **Liquid Glass:** uses `--glass-bg` / `--glass-border` tokens, so it auto-flips (frosted-dark in dark, frosted-light in light). See §12.
+- **Spec tables / cards / forms:** all driven by `--surface`, `--text`, `--border` → adapt automatically.
+- **Accent orange and brand navy do not change.**
+
+### 7.4 QA checklist (both themes)
+Text contrast AA in both · toggle persists on reload · respects OS default on first visit · no white flash on load in dark mode · glass readable in both · hero text readable in both · logo visible in both.
+
+---
+
+## 8. Reusable scroll-page template (build once)
+
+Every bird-type and system page is an instance. Build as one component family.
+
+1. **Hero** — full-width photo + glass panel: H1, one-line value, primary CTA, secondary CTA.
+2. **Sticky in-page nav** — glass bar on scroll, anchors to each section, active highlight.
+3. **Overview** — 2–3 short plain-language paragraphs.
+4. **Product/system section** (repeatable block, takes props): title · short overview · relevant sub-blocks (feeding/drinking/egg collection/manure/inspection — only those that apply) · spec table (*values: to be confirmed, never guessed*) · gallery (3–6 real photos, glass lightbox) · CTA row (Enquire · Download Brochure if available · Start Calculator if relevant).
+5. **Uniform-quality messaging** block — bird-type specific.
+6. **Cross-link cards** — next logical step (§11).
+7. **Page enquiry CTA + footer.**
+
+All copy/specs/photos in a per-page content config, separate from layout.
+
+---
+
+## 9. Target page content blocks
+
+Instances of §8. Unique blocks only.
+
+**Metplast Housing (new):** Hero "From levelled land to complete poultry housing systems." · What We Build (shed structure, cage-ready/deep-litter housing, ventilation-ready, cooling-pad side, fan side, curtains, false ceiling, service area, silo placement, workflow) · Who It's For (layer/broiler/breeder/pullet) · What Metplast Integrates · CTAs: Plan My Poultry Housing / Enquire for Turnkey · cross-links Layer/Breeder/Broiler/Env Control.
+
+**Layer:** selector H-Type · S-Frame · Layer Pullet. H-Type section (overview, bird comfort, feeding, drinking, egg collection, manure, inspection, specs, gallery, calculator, enquire). S-Frame section (+ "why move beyond California-style", premium tone, no cheap attack). Layer Pullet section (no egg collection). Uniform-egg messaging.
+
+**Breeder (new):** selector H-Type Breeder · Breeder Pullet · Feeding · Egg Collection · Inspection Cart. H-Type Breeder (male/female layout, AI-management-friendly *workflow*, egg roll, etc.). Breeder Pullet (no egg collection). Breeder Auto Feeding block (feed-accuracy claim only if confirmed). Uniform-egg messaging.
+
+**Broiler (new):** Deep Litter Housing · Pan Feeding · Nipple Drinking · Curtain · False Ceiling · Ventilation Integration. H-Type Broiler cage **only if confirmed (§15)**; do not promote S-Frame Broiler publicly.
+
+**Environmental Control (new):** cooling pads in / fans out / panel automates / airflow across shed. Blocks: Cooling Pad · Exhaust Fans · Cone Fans · Circulating Fans · Box Fans · Control Panel · Air Inlets/Curtains. Spec table (Model/Airflow/RPM/Motor/Noise/Use — *to be confirmed*).
+
+**Feed Silos (promote existing):** features (275 GSM galvanised where applicable, conical bottom, ladder/lid, monitoring if applicable, long life, corrosion resistance) · applications Layer/Broiler/Breeder/Pullet · gallery · specs · enquire.
+
+---
+
+## 10. Homepage target order
+
+1. Hero (positioning + primary CTA) 2. Metplast positioning ("levelled land → complete housing") 3. Product selector cards: **Metplast Housing · Layer · Broiler · Breeder** (make these link — currently dead) 4. System overview 5. Calculators (premium graphic) 6. Environmental Control teaser 7. Projects/Gallery 8. Brochures 9. Enquiry 10. Footer (re-toned, correct contact set).
+
+---
+
+## 11. Cross-linking map
+
+| From | Related cards |
+|------|---------------|
+| Layer H-Type | Layer Pullet · Feed Silo · Environmental Control · Layer Calculator |
+| S-Frame Layer | Layer Calculator · Feed Silo · Environmental Control · Enquire S-Frame |
+| Breeder | Breeder Pullet · Breeder Feeding · Inspection Cart · Feed Silo · Environmental Control · Breeder Calculator |
+| Broiler | Pan Feeding · Nipple Drinking · Curtain · False Ceiling · Environmental Control · Broiler Calculator |
+| Environmental Control | Layer/Broiler/Breeder Housing · Metplast Housing |
+
+---
+
+## 12. Liquid Glass (per theme)
+
+Apply only after structure is correct. Recipe uses tokens so it flips with theme:
+`background: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)) saturate(120%); border:1px solid var(--glass-border); box-shadow: var(--shadow); border-radius:16–24px;`
+
+Use on: header nav · hero panel · product selector cards · calculator cards · brochure cards · contact form panel · sticky in-page nav · gallery lightbox.
+Do NOT use on: long paragraphs · dense spec tables · footer text · tiny buttons.
+Caveats: `backdrop-filter` is GPU-heavy — provide a solid-colour fallback (`@supports not (backdrop-filter: blur(1px))`) and test on a budget Android; keep AA contrast in both themes; don't stack many glass layers per screen.
+
+---
+
+## 13. CTA & click rules
+
+Desktop buttons min 48px, mobile min 52px. Cards fully clickable. Clear action words: Explore Layer/Breeder/Broiler Systems · Plan Complete Housing · Start Calculator · Download Brochure · Enquire Now · Speak to Sales Engineer. Every product section: Enquire + Brochure (if available) + Calculator (if relevant).
+
+---
+
+## 14. Bugs to fix now (regardless of redesign)
+
+1. Testimonial photos mismatched (Mr. Srinivas→`Mr.-Manjunath-.jpg`, Mr. Imran→`Mr.-Ghanis.jpg`). Map correct images.
+2. Location conflict: About says **Khopoli**, Contact/Footer say **Khalapur**. Standardise (§15).
+3. Dead links: Turnkey Solutions, 3 calculator buttons, Privacy/Terms, footer.
+4. Homepage 3 feature cards share identical copy — write 3 distinct lines.
+5. Feeding-accuracy stat: confirmed real at **99.7%** — display 99.7%, not 99%, sitewide. Egg-collection / yield 97% still to confirm (§15).
+6. "Debeaking AI Module" — drop "AI"; calling an automated debeaker "AI" is a credibility/welfare-optics risk with serious buyers. Use "Automatic Debeaking Machine."
+7. Two emails (sales@ + info@) and three phones shown — standardise the set (§15).
+
+---
+
+## 15. Confirm before publish (only Arnav can — carried from the metplast.com sheet)
+
+1. **Contact set:** primary call number, WhatsApp number, sales email, info/support email, enquiry-form recipient. *(Seen: 89284 05002 / 89284 05005 / 84520 55536; sales@ / info@.)*
+2. **Years / founding:** "35+ years" vs 1994 — which to state.
+3. **Location naming:** Khalapur everywhere? (Yes/No)
+4. **Stats:** Feeding accuracy confirmed real at **99.7%** (use this, not 99%). Egg-collection / yield **97%** — still confirm defensible (keep / remove).
+5. **H-Type Broiler cage:** show publicly? (Yes/No)
+6. **Iron Nest / S-Frame:** exact product identity for the Layer page.
+7. **Brochure PDFs:** which categories have one + the files.
+8. **Real photos + confirmed specs** per product (no guessed gauges/airflow).
+9. **Gallery captions** + re-tag by bird type.
+
+---
+
+## 16. Build phases
+
+| Phase | Work | Deliverable |
+|-------|------|-------------|
+| 1 | Nav + sitemap restructure (§3–4); fix dead links + bugs (§14) | Correct nav, no dead links |
+| 2 | Sitewide re-tone find-and-replace + headline rewrites (§5) | Farmer-friendly copy |
+| 3 | Reusable scroll template (§8) | Component family |
+| 4 | Build pages: Metplast Housing, Layer, Breeder, Broiler, Env Control, Feed Silos (§9) | Pages live, wired to config |
+| 5 | Light/Dark mode tokens + toggle (§7) | Both themes pass QA |
+| 6 | Liquid Glass per theme (§12) + visual polish | Final premium look, readable both themes |
+
+---
+
+## 17. Baljinder start checklist
+
+1. Restructure nav to §3; build Metplast Housing page; fix the dead "Turnkey Solutions" link.
+2. Re-tone sitewide using the §5 swap table — this alone transforms the site.
+3. Fix the §14 bugs (photos, location, dead links, duplicate card copy, "AI" debeaker).
+4. Convert flat catalog → bird-type scroll pages (build the §8 template first).
+5. Move Pullet inside Layer & Breeder; promote Feed Silo + add Environmental Control as common pages.
+6. Implement light/dark mode with tokens + header toggle (§7); default dark, remember choice.
+7. Build calculator UI shells (math comes later).
+8. Apply Liquid Glass per theme only after structure is correct.
+
+---
+
+*Visual values are confirmed brand (navy `#1B3A6B`, orange `#F97316`). Anything marked "to be confirmed" stays blank until Arnav provides it — nothing is guessed.*
