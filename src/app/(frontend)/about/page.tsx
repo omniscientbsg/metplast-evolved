@@ -4,6 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { CheckCircle2, Factory, Globe, Trophy, Users, ShieldCheck, Zap } from 'lucide-react';
+import { MobaBlock } from '@/components/MobaBlock';
 
 export default function AboutPage() {
   return (
@@ -58,10 +59,13 @@ export default function AboutPage() {
             </h2>
             <div className="text-lg text-[var(--text-muted)] font-medium space-y-6 leading-relaxed">
               <p>
-                As an industry leader, we manufacture and install complete poultry housing systems — from cage design and feeding systems to ventilation, cooling, and feed silos — from our facility in Khalapur, Maharashtra, just an hour from Mumbai.
+                For 35+ years, Metplast Industries has manufactured poultry housing and cage systems in India — layer, breeder, broiler, and pullet systems, with feeding, drinking, manure handling, egg collection, ventilation, and feed storage built around each farm.
               </p>
               <p>
-                Over 35 years and 500+ farms across India and international markets trust Metplast for durability, precision engineering, and end-to-end project support. From levelled land to fully commissioned poultry housing — that is our commitment.
+                We work turnkey: from levelled land to a running farm, one team stays responsible — planning, manufacturing, installation, and long-term support.
+              </p>
+              <p>
+                500+ farms across India and international markets run on Metplast systems. Farmers who choose Metplast build for the long run.
               </p>
             </div>
             
@@ -115,7 +119,7 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               { icon: Zap, title: "Turnkey Delivery", desc: "From levelled land to a running farm, one team stays responsible — planning, manufacturing, installation, and long-term support." },
-              { icon: Globe, title: "10+ Countries", desc: "Metplast systems operate on poultry farms across India, Africa, Asia, and beyond." },
+              { icon: Globe, title: "India & International", desc: "Metplast systems operate on poultry farms across India and international markets." },
               { icon: ShieldCheck, title: "Egg Protection", desc: "Our cage designs protect every egg from collection to delivery, reducing breakage and improving margins." },
               { icon: Users, title: "500+ Farms", desc: "Layer, Breeder, and Broiler farms trust Metplast for complete housing and equipment solutions." },
             ].map((value, i) => (
@@ -130,6 +134,8 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
+      <MobaBlock />
 
     </main>
   );
