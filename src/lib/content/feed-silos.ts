@@ -10,7 +10,8 @@ export const feedSilosConfig: PageConfig = {
   },
   intro: [
     "Efficient feed management is the backbone of a profitable poultry operation.",
-    "Metplast’s Feed Silos provide a highly durable, weather-proof solution for bulk feed storage. Integrated seamlessly with our automated feeding systems, they ensure a continuous, uncontaminated supply of feed to your flock."
+    "Metplast’s Feed Silos provide a highly durable, weather-proof solution for bulk feed storage. Integrated seamlessly with our automated feeding systems, they ensure a continuous, uncontaminated supply of feed to your flock.",
+    "Metplast feed silos are customizable — capacity, height, ring count, and auger delivery are configured to your shed layout, feed program, and bird capacity. Material and coating are specified per project for long outdoor service life."
   ],
   sections: [
     {
