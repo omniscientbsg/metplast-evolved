@@ -25,8 +25,16 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'page, slug and title are required' }, { status: 400 });
   }
   try {
+    // New sections append to the end of their page so they never tie with an
+    // existing sortOrder (ties would leave the up/down reorder unable to move them).
+    const maxAgg = await prisma.productSection.aggregate({
+      where: { page: body.page },
+      _max: { sortOrder: true },
+    });
+    const data = normalizeSectionPayload(body);
+    data.sortOrder = (maxAgg._max.sortOrder ?? -1) + 1;
     const created = await prisma.productSection.create({
-      data: normalizeSectionPayload(body) as unknown as Prisma.ProductSectionCreateInput,
+      data: data as unknown as Prisma.ProductSectionCreateInput,
     });
     return NextResponse.json(created, { status: 201 });
   } catch (e: unknown) {

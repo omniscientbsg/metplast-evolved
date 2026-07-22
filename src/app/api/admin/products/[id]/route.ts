@@ -35,6 +35,14 @@ export async function PUT(req: Request, ctx: { params: Promise<{ id: string }> }
 export async function DELETE(_req: Request, ctx: { params: Promise<{ id: string }> }) {
   if (!(await authed())) return new Response('Unauthorized', { status: 401 });
   const { id } = await ctx.params;
-  await prisma.productSection.delete({ where: { id } });
-  return NextResponse.json({ ok: true });
+  try {
+    await prisma.productSection.delete({ where: { id } });
+    return NextResponse.json({ ok: true });
+  } catch (e: unknown) {
+    if (e && typeof e === 'object' && (e as { code?: string }).code === 'P2025') {
+      return NextResponse.json({ error: 'Not found' }, { status: 404 });
+    }
+    console.error('delete section failed:', e);
+    return NextResponse.json({ error: 'Could not delete section' }, { status: 500 });
+  }
 }

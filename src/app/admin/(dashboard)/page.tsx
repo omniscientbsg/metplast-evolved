@@ -7,7 +7,7 @@ export default async function AdminDashboard() {
   const session = await getServerSession(authOptions)
 
   const [productsCount, enquiriesCount, blogsCount, chatbotProvider, recentEnquiries] = await Promise.all([
-    prisma.product.count(),
+    prisma.productSection.count(),
     prisma.enquiry.count(),
     prisma.blog.count(),
     prisma.setting.findUnique({ where: { key: 'chatbot_provider' } }),
