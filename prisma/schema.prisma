@@ -81,3 +81,31 @@ model ProductSection {
 
   @@index([page, visible, sortOrder])
 }
+
+model GalleryCategory {
+  id        String        @id @default(cuid())
+  name      String        @unique
+  sortOrder Int           @default(0)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  items     GalleryItem[]
+
+  @@index([sortOrder])
+}
+
+model GalleryItem {
+  id         String           @id @default(cuid())
+  src        String
+  caption    String           @db.Text
+  videoUrl   String?
+  featured   Boolean          @default(false)
+  visible    Boolean          @default(true)
+  sortOrder  Int              @default(0)
+  categoryId String?
+  category   GalleryCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+
+  @@index([visible, sortOrder])
+  @@index([categoryId])
+}
