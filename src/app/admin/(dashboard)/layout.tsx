@@ -42,6 +42,9 @@ export default async function AdminLayout({
           <Link href="/admin/blogs" className="block px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-colors">
             Blogs
           </Link>
+          <Link href="/admin/gallery" className="block px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-colors">
+            Gallery
+          </Link>
           <Link href="/admin/chatbot" className="block px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-colors">
             Chatbot & AI
           </Link>
