@@ -65,13 +65,17 @@ export function ProductForm({
   async function uploadImage(file: File) {
     const fd = new FormData();
     fd.append('file', file);
-    const res = await fetch('/api/admin/upload', { method: 'POST', body: fd });
-    if (!res.ok) {
-      setError('Image upload failed.');
-      return;
+    try {
+      const res = await fetch('/api/admin/upload', { method: 'POST', body: fd });
+      if (!res.ok) {
+        setError('Image upload failed.');
+        return;
+      }
+      const { path } = await res.json();
+      setV((p) => ({ ...p, images: [...p.images, path] }));
+    } catch {
+      setError('Image upload failed (network error).');
     }
-    const { path } = await res.json();
-    set('images', [...v.images, path]);
   }
 
   async function submit(e: React.FormEvent) {
@@ -80,19 +84,24 @@ export function ProductForm({
     setError('');
     const url = mode === 'create' ? '/api/admin/products' : `/api/admin/products/${id}`;
     const method = mode === 'create' ? 'POST' : 'PUT';
-    const res = await fetch(url, {
-      method,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(v),
-    });
-    setSaving(false);
-    if (!res.ok) {
-      const j = await res.json().catch(() => ({}));
-      setError(j.error || 'Save failed.');
-      return;
+    try {
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(v),
+      });
+      if (!res.ok) {
+        const j = await res.json().catch(() => ({}));
+        setError(j.error || 'Save failed.');
+        return;
+      }
+      router.push('/admin/products');
+      router.refresh();
+    } catch {
+      setError('Save failed (network error).');
+    } finally {
+      setSaving(false);
     }
-    router.push('/admin/products');
-    router.refresh();
   }
 
   return (
