@@ -57,3 +57,27 @@ model Blog {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model ProductSection {
+  id              String   @id @default(cuid())
+  page            String
+  slug            String   @unique
+  title           String
+  badge           String?
+  tag             String?
+  calculatorHref  String?
+  descriptions    Json
+  features        Json
+  benefits        Json
+  specs           Json
+  images          Json
+  infoBlocks      Json
+  topBlockKeys    Json
+  bottomBlockKeys Json
+  visible         Boolean  @default(true)
+  sortOrder       Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([page, visible, sortOrder])
+}
