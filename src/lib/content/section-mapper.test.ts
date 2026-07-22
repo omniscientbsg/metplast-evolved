@@ -53,4 +53,37 @@ describe('section-mapper', () => {
     const back = rowToSectionProps(row);
     expect(back.topBlocks).toBeUndefined();
   });
+
+  it('defends against malformed JSON columns', () => {
+    const row = {
+      slug: 's', title: 'T', badge: null, tag: null, calculatorHref: null,
+      descriptions: 'not-an-array',            // wrong type
+      features: null,
+      benefits: undefined,
+      specs: [{ label: 'ok', value: 'v' }, { label: 'no-value' }, 'garbage'], // 2nd + 3rd invalid
+      images: [1, 'good.jpg', null],           // only the string survives
+      infoBlocks: [{ heading: 'H', lines: ['a'] }, { lines: ['x'] }], // 2nd has no heading -> dropped
+      topBlockKeys: [], bottomBlockKeys: [],
+    } as unknown as SectionRow;
+    const back = rowToSectionProps(row);
+    expect(back.description).toEqual([]);
+    expect(back.features).toEqual([]);
+    expect(back.benefits).toEqual([]);
+    expect(back.specs).toEqual([{ label: 'ok', value: 'v' }]);
+    expect(back.images).toEqual(['good.jpg']);
+    expect(back.topBlocks).toEqual([{ type: 'info', heading: 'H', lines: ['a'] }]);
+  });
+
+  it('round-trips the real content shape (info-only topBlocks + keyed bottomBlocks) losslessly', () => {
+    const real: ProductSectionProps = {
+      id: 'h-type-breeder', title: 'H-Type Breeder Cage System', badge: 'Breeder Management',
+      description: ['A breeder cage system.'],
+      features: ['F1'], benefits: ['B1'], specs: [{ label: 'Cage Type', value: 'H-Type Breeder' }],
+      images: [],
+      topBlocks: [{ type: 'info', id: 'breeder-boxes', heading: 'Box Sizes', lines: ['18 in'] }],
+      bottomBlocks: [{ type: 'feeding-trolley' }, { type: 'auto-flush' }],
+    };
+    const back = rowToSectionProps(sectionPropsToRow(real, 'breeder', 0, true) as unknown as SectionRow);
+    expect(back).toEqual(real);
+  });
 });

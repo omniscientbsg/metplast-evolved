@@ -1,6 +1,9 @@
 import type { ProductSectionProps, SpecData } from '@/components/ProductSection';
 import type { PageBlock } from '@/components/blocks/types';
 
+// Note: `ProductSectionProps.reverse` has no corresponding column and is
+// intentionally unsupported for DB-backed sections.
+
 /** The columns of a ProductSection row this mapper reads (Json columns are unknown). */
 export interface SectionRow {
   slug: string;
@@ -88,6 +91,10 @@ export function rowToSectionProps(row: SectionRow): ProductSectionProps {
     heading: b.heading,
     lines: b.lines,
   }));
+  // Top blocks always render as: info blocks first, then self-contained keyed
+  // blocks. This is the CMS rendering model (info = editable intro content shown
+  // above the grid). All current content has info-only/info-first topBlocks, so
+  // migration is lossless; any other original ordering is intentionally normalized.
   const topBlocks = [...infoAsBlocks, ...keysToBlocks(row.topBlockKeys)];
   const bottomBlocks = keysToBlocks(row.bottomBlockKeys);
 
@@ -120,9 +127,16 @@ export function sectionPropsToRow(
     if (b.type === 'info') {
       infoBlocks.push({ ...(b.id ? { id: b.id } : {}), heading: b.heading, lines: b.lines });
     } else {
+      // Self-contained blocks are attached by type key only; an optional `id` on
+      // these variants is intentionally not persisted (attach-by-key design).
       topBlockKeys.push(b.type);
     }
   }
+  // Info blocks are top-area-only by design; bottom blocks are self-contained
+  // (keyed) only. An 'info' block in bottomBlocks is not a supported shape and is
+  // intentionally not persisted. No current content or CMS input produces this.
+  // Self-contained blocks are attached by type key only; an optional `id` on
+  // these variants is intentionally not persisted (attach-by-key design).
   const bottomBlockKeys = (props.bottomBlocks ?? [])
     .filter((b) => b.type !== 'info')
     .map((b) => b.type);
