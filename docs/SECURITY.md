@@ -60,8 +60,9 @@ uploaded images vanish on every redeploy.
 - **`/api/admin/enquiries`** — per-IP rate limit (6/min), honeypot field on all
   three lead forms, and per-field length caps to stop bot spam.
 - **CMS admin** — the product-section CRUD (`/api/admin/products`, `/[id]`,
-  `/reorder`) and image upload (`/api/admin/upload`) all require a valid session
-  (401 otherwise); upload also validates MIME type and a 5 MB size cap.
+  `/reorder`), the gallery CRUD (`/api/admin/gallery*`, including `/categories*`),
+  and image upload (`/api/admin/upload`) all require a valid session (401
+  otherwise); upload also validates MIME type and a 5 MB size cap.
 
 ## Rate limiting notes
 
