@@ -114,16 +114,38 @@ async function main() {
     })
   }
 
-  // Dummy Blogs
+  // Sample blog content (non-prod only). Copy MUST honor the no-overclaim
+  // rules — no fertility/hatchability/yield promises, no banned terms.
   const blogCount = await prisma.blog.count()
   if (blogCount === 0) {
+    const category = await prisma.blogCategory.upsert({
+      where: { name: 'Company News' },
+      update: {},
+      create: { name: 'Company News', slug: 'company-news', sortOrder: 0 },
+    })
     await prisma.blog.create({
       data: {
-        slug: 'future-of-poultry',
-        title: 'The Future of Poultry Automation in 2026',
-        content: 'Automation is rapidly changing how we manage poultry farms. With AI-driven climate control and automated feeding, efficiency has never been higher.',
-        published: true
-      }
+        slug: 'welcome-to-the-metplast-blog',
+        title: 'Welcome to the Metplast Blog',
+        excerpt: 'Updates on our poultry housing systems, projects, and the team behind them.',
+        content: '<p>Welcome to the Metplast blog. Here we will share updates on our poultry housing systems, feed silos, ventilation, project installations, and news from our team.</p><p>Check back for practical guides on planning and running poultry infrastructure.</p>',
+        author: 'Metplast Team',
+        featured: true,
+        published: true,
+        categoryId: category.id,
+      },
+    })
+    await prisma.blog.create({
+      data: {
+        slug: 'planning-your-poultry-housing-project',
+        title: 'Planning Your Poultry Housing Project',
+        excerpt: 'A few things to consider before you build — bird count, climate, layout, and budget.',
+        content: '<p>Every poultry project starts with a few key questions: how many birds, what climate, and how much space is available.</p><h2>Start with the basics</h2><ul><li>Bird count and system type</li><li>Local climate and ventilation needs</li><li>Site layout and access</li><li>Budget and phasing</li></ul><p>Our team can help you match a system to your farm. Reach out through the contact page to start a conversation.</p>',
+        author: 'Metplast Team',
+        featured: false,
+        published: true,
+        categoryId: category.id,
+      },
     })
   }
   } // end !isProd demo content

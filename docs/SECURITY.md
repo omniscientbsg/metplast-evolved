@@ -61,8 +61,9 @@ uploaded images vanish on every redeploy.
   three lead forms, and per-field length caps to stop bot spam.
 - **CMS admin** — the product-section CRUD (`/api/admin/products`, `/[id]`,
   `/reorder`), the gallery CRUD (`/api/admin/gallery*`, including `/categories*`),
-  and image upload (`/api/admin/upload`) all require a valid session (401
-  otherwise); upload also validates MIME type and a 5 MB size cap.
+  the blog CRUD (`/api/admin/blogs*`, including `/categories*`), and image
+  upload (`/api/admin/upload`) all require a valid session (401 otherwise);
+  upload also validates MIME type and a 5 MB size cap.
 
 ## Rate limiting notes
 
@@ -85,3 +86,9 @@ the store in `rateLimit()`; the call sites do not need to change.
 - The rate limiter is in-memory; on a single Docker container that is effectively
   per-process (fine for one instance). If you scale to multiple app containers,
   move it to a shared store (Upstash/Redis) as noted above.
+- Blog post content is rich HTML from a WYSIWYG editor. It is **sanitized
+  server-side on write** (`src/lib/content/sanitize-post.ts`, allowlist —
+  strips scripts, `on*` handlers, unsafe URL schemes) so the DB only stores
+  clean HTML; the public post page renders it via `dangerouslySetInnerHTML`.
+  Blog copy is NOT auto-checked against the no-overclaim content rules —
+  reviewers must keep honoring them when writing posts.
