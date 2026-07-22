@@ -28,6 +28,7 @@ const links = [
   { name: 'Feed Silos', href: '/feed-silos' },
   { name: 'Calculators', href: '/calculators' },
   { name: 'Gallery', href: '/gallery' },
+  { name: 'Blog', href: '/blog' },
   { name: 'Contact', href: '/contact' },
 ];
 
