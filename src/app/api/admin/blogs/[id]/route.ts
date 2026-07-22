@@ -28,7 +28,7 @@ export async function PUT(req: Request, ctx: { params: Promise<{ id: string }> }
   if (!b.title || !b.title.trim()) {
     return NextResponse.json({ error: 'title is required' }, { status: 400 });
   }
-  const slug = (b.slug?.trim() || slugify(b.title));
+  const slug = (b.slug?.trim() || slugify(b.title)) || slugify(`post-${Date.now()}`);
   try {
     const updated = await prisma.blog.update({
       where: { id },

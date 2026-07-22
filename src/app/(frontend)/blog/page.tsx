@@ -16,7 +16,13 @@ export default async function BlogPage() {
     const [rows, cats] = await Promise.all([
       prisma.blog.findMany({
         where: { published: true },
-        include: { category: { select: { name: true } } },
+        // Card fields only — the full @db.Text `content` body is not needed on
+        // the listing (rowToBlogCard drops it), so don't pull it per request.
+        select: {
+          id: true, slug: true, title: true, excerpt: true, image: true,
+          author: true, featured: true, createdAt: true,
+          category: { select: { name: true } },
+        },
       }),
       prisma.blogCategory.findMany({ orderBy: { sortOrder: 'asc' }, select: { name: true } }),
     ]);

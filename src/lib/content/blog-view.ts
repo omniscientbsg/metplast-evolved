@@ -18,9 +18,14 @@ export function sortPosts<T extends { featured: boolean; createdAt: Date }>(rows
   });
 }
 
-/** Deterministic "Mon D, YYYY" (avoids toLocaleDateString tz/locale drift). */
+/**
+ * "Mon D, YYYY" from the date's UTC parts. Fully deterministic across
+ * environments — no locale drift (hard-coded English months) and no timezone
+ * drift (UTC getters, so the rendered calendar day is stable regardless of the
+ * server's TZ).
+ */
 export function formatPostDate(d: Date): string {
-  return `${MONTHS[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+  return `${MONTHS[d.getUTCMonth()]} ${d.getUTCDate()}, ${d.getUTCFullYear()}`;
 }
 
 /** Row shape the listing reads (Blog row + joined category name). */
