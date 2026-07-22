@@ -48,14 +48,34 @@ model Setting {
 }
 
 model Blog {
+  id         String        @id @default(cuid())
+  slug       String        @unique
+  title      String
+  content    String        @db.Text      // sanitized HTML from the editor
+  excerpt    String?       @db.Text      // listing blurb + SEO meta description
+  image      String?                      // cover image path
+  author     String?
+  featured   Boolean       @default(false)
+  published  Boolean       @default(false)
+  categoryId String?
+  category   BlogCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+
+  @@index([published, featured, createdAt])
+  @@index([categoryId])
+}
+
+model BlogCategory {
   id        String   @id @default(cuid())
+  name      String   @unique
   slug      String   @unique
-  title     String
-  content   String   // Markdown or HTML
-  image     String?
-  published Boolean  @default(false)
+  sortOrder Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  posts     Blog[]
+
+  @@index([sortOrder])
 }
 
 model ProductSection {
