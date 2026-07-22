@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 import { sectionPropsToRow } from '../src/lib/content/section-mapper';
 import { layerConfig } from '../src/lib/content/layer';
 import { breederConfig } from '../src/lib/content/breeder';
@@ -20,10 +20,12 @@ async function main() {
   for (const { page, sections } of PAGES) {
     for (let i = 0; i < sections.length; i++) {
       const row = sectionPropsToRow(sections[i], page, i, true);
+      // Prisma's Json input type rejects named-interface arrays (SpecData[] etc.)
+      // under strict TS; the runtime value is valid JSON, so cast for the compiler.
       await prisma.productSection.upsert({
         where: { slug: row.slug },
-        update: row,
-        create: row,
+        update: row as unknown as Prisma.ProductSectionUpdateInput,
+        create: row as unknown as Prisma.ProductSectionCreateInput,
       });
       console.log(`✓ ${page}/${row.slug} (order ${i})`);
     }
