@@ -16,12 +16,16 @@ const input = 'w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 tex
 const label = 'block text-xs font-bold text-white/60 uppercase tracking-widest mb-2';
 
 /** Generic add/remove/reorder list editor. Mirrors CrossLinksEditor's move/add/remove logic. */
-function ListEditor<T extends object>({ items, onChange, blank, renderRow, label: listLabel }: {
+function ListEditor<T extends object>({ items, onChange, blank, renderRow, label: listLabel, fixed = false }: {
   items: T[];
   onChange: (next: T[]) => void;
   blank: T;
   renderRow: (item: T, update: (patch: Partial<T>) => void) => ReactNode;
   label: string;
+  // `fixed` = the section is rendered by fixed index on the site (hero stats, teasers):
+  // edit in place only — no add/remove/reorder, so the array length can't drift and
+  // crash the public page.
+  fixed?: boolean;
 }) {
   function update(i: number, patch: Partial<T>) {
     onChange(items.map((x, j) => (j === i ? { ...x, ...patch } : x)));
@@ -40,14 +44,18 @@ function ListEditor<T extends object>({ items, onChange, blank, renderRow, label
       {items.map((it, i) => (
         <div key={i} className="bg-white/5 border border-white/10 rounded-xl p-3 space-y-2">
           {renderRow(it, (patch) => update(i, patch))}
-          <div className="flex gap-3 justify-end text-sm">
-            <button type="button" disabled={i === 0} onClick={() => move(i, -1)} className="text-white/50 hover:text-white disabled:opacity-20">↑</button>
-            <button type="button" disabled={i === items.length - 1} onClick={() => move(i, 1)} className="text-white/50 hover:text-white disabled:opacity-20">↓</button>
-            <button type="button" onClick={() => remove(i)} className="text-red-400 hover:text-red-300">Remove</button>
-          </div>
+          {!fixed && (
+            <div className="flex gap-3 justify-end text-sm">
+              <button type="button" disabled={i === 0} onClick={() => move(i, -1)} className="text-white/50 hover:text-white disabled:opacity-20">↑</button>
+              <button type="button" disabled={i === items.length - 1} onClick={() => move(i, 1)} className="text-white/50 hover:text-white disabled:opacity-20">↓</button>
+              <button type="button" onClick={() => remove(i)} className="text-red-400 hover:text-red-300">Remove</button>
+            </div>
+          )}
         </div>
       ))}
-      <button type="button" onClick={add} className="text-sm font-bold text-primary hover:opacity-80">+ Add {listLabel}</button>
+      {!fixed && (
+        <button type="button" onClick={add} className="text-sm font-bold text-primary hover:opacity-80">+ Add {listLabel}</button>
+      )}
     </div>
   );
 }
@@ -128,6 +136,7 @@ export function HomeContentForm({ initial }: { initial: HomeContent }) {
         <legend className="px-2 text-sm font-bold text-white/70">Hero stats</legend>
         <ListEditor<StatTile>
           label="stat"
+          fixed
           items={v.heroStats}
           onChange={(next) => set('heroStats', next)}
           blank={{ top: '', bottom: '' }}
@@ -247,6 +256,7 @@ export function HomeContentForm({ initial }: { initial: HomeContent }) {
         <legend className="px-2 text-sm font-bold text-white/70">Teasers</legend>
         <ListEditor<Teaser>
           label="teaser"
+          fixed
           items={v.teasers}
           onChange={(next) => set('teasers', next)}
           blank={{ title: '', desc: '', ctaLabel: '' }}

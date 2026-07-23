@@ -111,15 +111,27 @@ export function parseHomeContent(value: string | null | undefined): HomeContent 
   const str = (v: unknown, def: string) => (typeof v === 'string' ? v : def);
   const arr = <T,>(v: unknown, def: T[]) => (Array.isArray(v) ? (v as T[]) : def);
   const obj = (v: unknown) => (v && typeof v === 'object' ? (v as Record<string, unknown>) : {});
+  /**
+   * heroStats and teasers are rendered by FIXED INDEX in HomeClient (icons/CTAs
+   * are positional), so their length must always equal the default's — otherwise
+   * a removed/short/empty array would make `content.heroStats[3]` undefined and
+   * crash SSR. Normalize element-wise over the defaults (pad missing, drop extras,
+   * fill missing sub-fields), so any input — including `[]` or `[null,...]` from a
+   * crafted PUT — yields a well-formed fixed-length array.
+   */
+  const fixedStats = (v: unknown): StatTile[] =>
+    d.heroStats.map((def, i) => { const o = obj(Array.isArray(v) ? v[i] : undefined); return { top: str(o.top, def.top), bottom: str(o.bottom, def.bottom) }; });
+  const fixedTeasers = (v: unknown): Teaser[] =>
+    d.teasers.map((def, i) => { const o = obj(Array.isArray(v) ? v[i] : undefined); return { title: str(o.title, def.title), desc: str(o.desc, def.desc), ctaLabel: str(o.ctaLabel, def.ctaLabel) }; });
   const pos = obj(p.positioning), ov = obj(p.overview), ca = obj(p.calculators), ct = obj(p.cta);
   return {
-    heroStats: arr(p.heroStats, d.heroStats),
+    heroStats: fixedStats(p.heroStats),
     featureCards: arr(p.featureCards, d.featureCards),
     positioning: { heading: str(pos.heading, d.positioning.heading), accent: str(pos.accent, d.positioning.accent), body: str(pos.body, d.positioning.body) },
     solutionCards: arr(p.solutionCards, d.solutionCards),
     overview: { eyebrow: str(ov.eyebrow, d.overview.eyebrow), heading: str(ov.heading, d.overview.heading), tiles: arr(ov.tiles, d.overview.tiles) },
     calculators: { heading: str(ca.heading, d.calculators.heading), accent: str(ca.accent, d.calculators.accent), body: str(ca.body, d.calculators.body), cards: arr(ca.cards, d.calculators.cards) },
-    teasers: arr(p.teasers, d.teasers),
+    teasers: fixedTeasers(p.teasers),
     cta: { heading: str(ct.heading, d.cta.heading), body: str(ct.body, d.cta.body), buttonLabel: str(ct.buttonLabel, d.cta.buttonLabel), href: str(ct.href, d.cta.href) },
   };
 }
