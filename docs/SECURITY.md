@@ -64,9 +64,11 @@ uploaded images vanish on every redeploy.
 - **CMS admin** — the product-section CRUD (`/api/admin/products`, `/[id]`,
   `/reorder`), the gallery CRUD (`/api/admin/gallery*`, including `/categories*`),
   the blog CRUD (`/api/admin/blogs*`, including `/categories*`), the page-content
-  API (`/api/admin/pages/[page]`, hero/intro/cross-links), and image
-  upload (`/api/admin/upload`) all require a valid session (401 otherwise);
-  upload also validates MIME type and a 5 MB size cap.
+  API (`/api/admin/pages/[page]`, hero/intro/cross-links), the site-settings
+  `PUT /api/admin/settings` (allowlisted to the `SITE_SETTING_KEYS` registry, so
+  it can never overwrite chatbot or other keys), and image upload
+  (`/api/admin/upload`) all require a valid session (401 otherwise); upload also
+  validates MIME type and a 5 MB size cap.
 
 ## Rate limiting notes
 
@@ -85,8 +87,13 @@ the store in `rateLimit()`; the call sites do not need to change.
 - Consider a WAF / bot rule at the Cloudflare/host layer for defense in depth.
 - CMS-edited content is NOT auto-checked against the no-overclaim content rules
   (no banned-term gate on admin writes) — reviewers must keep honoring them when
-  editing product sections, gallery captions, blog posts, and page content
-  (hero / intro / cross-links via `/admin/pages`) in the admin.
+  editing product sections, gallery captions, blog posts, page content
+  (hero / intro / cross-links via `/admin/pages`), and site settings
+  (tagline / footer blurb / SEO via `/admin/settings`) in the admin.
+- The pre-existing `POST /api/admin/settings` (used by the chatbot admin page)
+  is session-gated but NOT key-allowlisted — an authenticated admin can write
+  arbitrary `Setting` keys through it. Low risk (admin-only), but the newer
+  `PUT` is the allowlisted path; consider allowlisting the `POST` too.
 - The rate limiter is in-memory; on a single Docker container that is effectively
   per-process (fine for one instance). If you scale to multiple app containers,
   move it to a shared store (Upstash/Redis) as noted above.
