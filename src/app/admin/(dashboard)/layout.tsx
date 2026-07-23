@@ -3,6 +3,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route"
 import { redirect } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
+import { getSiteSettings } from '@/lib/settings/get-site-settings';
 
 export default async function AdminLayout({
   children,
@@ -15,16 +16,18 @@ export default async function AdminLayout({
     redirect("/admin/login")
   }
 
+  const settings = await getSiteSettings();
+
   return (
     <div className="min-h-screen bg-dark flex">
       {/* Sidebar */}
       <aside className="w-64 border-r border-white/10 flex flex-col hidden md:flex">
         <div className="p-6 border-b border-white/10 flex justify-center">
           <Link href="/admin" className="block w-40 relative h-12">
-            <Image 
-              src="/images/Logo Metplast.png" 
-              alt="Metplast Logo" 
-              fill 
+            <Image
+              src={settings.logoDark}
+              alt="Metplast Logo"
+              fill
               className="object-contain"
             />
           </Link>
@@ -72,10 +75,10 @@ export default async function AdminLayout({
       <main className="flex-1 flex flex-col h-screen overflow-y-auto">
         <header className="h-16 border-b border-white/10 flex items-center px-8 md:hidden">
           <Link href="/admin" className="block w-32 relative h-8">
-            <Image 
-              src="/images/Logo Metplast.png" 
-              alt="Metplast Logo" 
-              fill 
+            <Image
+              src={settings.logoDark}
+              alt="Metplast Logo"
+              fill
               className="object-contain"
             />
           </Link>
