@@ -5,12 +5,15 @@ import { motion } from 'framer-motion';
 import { MapPin, Phone, Mail, ArrowUpRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { CountryCodeSelect } from '@/components/Navbar';
+import { useSiteSettings } from '@/lib/settings/site-settings-context';
+import { telHref } from '@/lib/settings/site-settings';
 
 const BIRD_TYPES   = ['Layer', 'Broiler', 'Breeder', 'Not Sure'];
 const REQUIREMENTS = ['Complete Housing', 'Cage System', 'Feeding System', 'Drinking System', 'Ventilation / Cooling', 'Feed Silo', 'Spare Parts', 'Other'];
 const TIMELINES    = ['Immediate', '1–3 Months', '3–6 Months', 'Later'];
 
 export default function ContactPage() {
+  const s = useSiteSettings();
   const [form, setForm] = useState({
     firstName: '', lastName: '', company: '',
     countryCode: '+91', phone: '', email: '',
@@ -74,7 +77,7 @@ export default function ContactPage() {
       if (!res.ok) throw new Error('Request failed');
       setSubmitSuccess(true);
     } catch {
-      setSubmitError('Could not send your enquiry. Please try again, or call us directly at +91 89284 05002.');
+      setSubmitError(`Could not send your enquiry. Please try again, or call us directly at ${s.phonePrimary}.`);
     } finally {
       setIsSubmitting(false);
     }
@@ -271,9 +274,7 @@ export default function ContactPage() {
                 <div>
                   <h4 className="text-sm font-bold text-[var(--text-muted)] uppercase tracking-widest mb-2">Address</h4>
                   <p className="text-[var(--text)] font-medium leading-relaxed">
-                    Plot No. 207, Atkargaon, Dheku Road,<br />
-                    Sajgaon Phata, Khalapur,<br />
-                    Dist. Raigad, MH-410203, India
+                    {s.address.split('\n').map((ln, i, a) => (<span key={i}>{ln}{i < a.length - 1 && <br />}</span>))}
                   </p>
                 </div>
               </div>
@@ -285,11 +286,11 @@ export default function ContactPage() {
                 <div>
                   <h4 className="text-sm font-bold text-[var(--text-muted)] uppercase tracking-widest mb-2">Phone</h4>
                   <div className="space-y-1">
-                    <a href="tel:+918928405002" className="text-[var(--text)] font-bold text-xl block hover:text-[var(--accent)] transition-colors">
-                      +91 89284 05002
+                    <a href={telHref(s.phonePrimary)} className="text-[var(--text)] font-bold text-xl block hover:text-[var(--accent)] transition-colors">
+                      {s.phonePrimary}
                     </a>
-                    <a href="tel:+918928405005" className="text-[var(--text-muted)] font-medium block hover:text-[var(--text)] transition-colors">
-                      +91 89284 05005
+                    <a href={telHref(s.phoneSecondary)} className="text-[var(--text-muted)] font-medium block hover:text-[var(--text)] transition-colors">
+                      {s.phoneSecondary}
                     </a>
                   </div>
                 </div>
@@ -302,11 +303,11 @@ export default function ContactPage() {
                 <div>
                   <h4 className="text-sm font-bold text-[var(--text-muted)] uppercase tracking-widest mb-2">Email</h4>
                   <div className="space-y-1">
-                    <a href="mailto:info@metplast.com" className="text-[var(--text)] font-bold text-xl block hover:text-[var(--accent)] transition-colors">
-                      info@metplast.com
+                    <a href={`mailto:${s.emailPrimary}`} className="text-[var(--text)] font-bold text-xl block hover:text-[var(--accent)] transition-colors">
+                      {s.emailPrimary}
                     </a>
-                    <a href="mailto:sales@metplast.com" className="text-[var(--text-muted)] font-medium block hover:text-[var(--text)] transition-colors">
-                      sales@metplast.com
+                    <a href={`mailto:${s.emailSecondary}`} className="text-[var(--text-muted)] font-medium block hover:text-[var(--text)] transition-colors">
+                      {s.emailSecondary}
                     </a>
                   </div>
                 </div>

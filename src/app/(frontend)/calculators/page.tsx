@@ -1,6 +1,10 @@
 import React from 'react';
 import { MessageCircle, Phone } from 'lucide-react';
 import { CalculatorCard } from '@/components/CalculatorCard';
+import { getSiteSettings } from '@/lib/settings/get-site-settings';
+import { telHref } from '@/lib/settings/site-settings';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata = {
   title: 'Poultry Farm Calculators | Metplast Industries',
@@ -40,7 +44,8 @@ const calculators = [
   }
 ];
 
-export default function CalculatorsHubPage() {
+export default async function CalculatorsHubPage() {
+  const s = await getSiteSettings();
   return (
     <main className="min-h-screen bg-[var(--bg)] relative overflow-hidden pt-32 pb-24">
       {/* Background Orbs */}
@@ -111,7 +116,7 @@ export default function CalculatorsHubPage() {
 
               <div className="mt-auto flex flex-col gap-3">
                 <a
-                  href="https://wa.me/918928405002?text=Hi%20Metplast%2C%20I%20need%20help%20planning%20my%20poultry%20farm."
+                  href={`https://wa.me/${s.whatsappNumber}?text=Hi%20Metplast%2C%20I%20need%20help%20planning%20my%20poultry%20farm.`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3 font-bold uppercase tracking-widest text-sm text-[#EA580C] transition-transform hover:scale-[1.02]"
@@ -120,11 +125,11 @@ export default function CalculatorsHubPage() {
                   WhatsApp Us
                 </a>
                 <a
-                  href="tel:+918928405002"
+                  href={telHref(s.phonePrimary)}
                   className="flex items-center justify-center gap-2 rounded-full border border-white/40 px-6 py-3 font-bold uppercase tracking-widest text-sm text-white transition-colors hover:bg-white/10"
                 >
                   <Phone className="w-4 h-4" />
-                  Call +91 89284 05002
+                  Call {s.phonePrimary}
                 </a>
               </div>
             </div>
