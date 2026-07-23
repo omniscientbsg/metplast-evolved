@@ -21,6 +21,7 @@ export const SITE_SETTING_KEYS: SettingField[] = [
   { key: 'social_linkedin',  label: 'LinkedIn URL',  group: 'Social', type: 'url', default: '' },
   { key: 'social_youtube',   label: 'YouTube URL',   group: 'Social', type: 'url', default: '' },
   { key: 'seo_description', label: 'Meta description', group: 'SEO', type: 'textarea', default: '' },
+  { key: 'footer_links', label: 'Footer links (one per line: Label | /href)', group: 'Footer', type: 'textarea', default: 'Metplast Housing | /housing\nAbout Metplast | /about\nLayer Solutions | /layer\nBreeder Solutions | /breeder\nBroiler Solutions | /broiler\nEnvironmental Control | /environmental-control\nFeed Silos | /feed-silos\nCalculators | /calculators\nGallery | /gallery\nContact | /contact' },
 ];
 
 export const SETTING_KEY_SET = new Set(SITE_SETTING_KEYS.map((f) => f.key));
@@ -33,6 +34,7 @@ export interface SiteSettings {
   tagline: string; footerBlurb: string;
   socialFacebook: string; socialInstagram: string; socialLinkedin: string; socialYoutube: string;
   seoDescription: string;
+  footerLinks: string;
 }
 
 /** Resolve one key: a non-empty DB value wins, else the registry default. */
@@ -54,6 +56,7 @@ export function siteSettingsFromRows(rows: { key: string; value: string }[]): Si
     socialFacebook: g('social_facebook'), socialInstagram: g('social_instagram'),
     socialLinkedin: g('social_linkedin'), socialYoutube: g('social_youtube'),
     seoDescription: g('seo_description'),
+    footerLinks: g('footer_links'),
   };
 }
 

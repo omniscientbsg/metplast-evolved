@@ -6,22 +6,18 @@ import { MapPin, Phone, Mail } from 'lucide-react';
 import Image from 'next/image';
 import { useSiteSettings } from '@/lib/settings/site-settings-context';
 import { telHref } from '@/lib/settings/site-settings';
-
-const solutionLinks = [
-  { name: 'Metplast Housing', href: '/housing' },
-  { name: 'About Metplast', href: '/about' },
-  { name: 'Layer Solutions',  href: '/layer' },
-  { name: 'Breeder Solutions', href: '/breeder' },
-  { name: 'Broiler Solutions', href: '/broiler' },
-  { name: 'Environmental Control', href: '/environmental-control' },
-  { name: 'Feed Silos',       href: '/feed-silos' },
-  { name: 'Calculators',      href: '/calculators' },
-  { name: 'Gallery',          href: '/gallery' },
-  { name: 'Contact',          href: '/contact' },
-];
+import { parseFooterLinks } from '@/lib/settings/footer-links';
 
 export function Footer() {
   const s = useSiteSettings();
+  const solutionLinks = parseFooterLinks(s.footerLinks);
+  // lucide (this version) ships no brand icons — render social links as text pills.
+  const socials = [
+    { url: s.socialFacebook, name: 'Facebook' },
+    { url: s.socialInstagram, name: 'Instagram' },
+    { url: s.socialLinkedin, name: 'LinkedIn' },
+    { url: s.socialYoutube, name: 'YouTube' },
+  ].filter((x) => x.url);
   return (
     <footer
       className="pt-24 pb-12 px-6 border-t relative z-30"
@@ -59,6 +55,22 @@ export function Footer() {
               <br /><br />
               <em style={{ color: 'var(--text)' }}>{s.tagline}</em>
             </p>
+            {socials.length > 0 && (
+              <div className="flex flex-wrap gap-3">
+                {socials.map(({ url, name }) => (
+                  <a
+                    key={name}
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-4 py-2 rounded-full text-sm font-bold transition-colors hover:text-[var(--accent)]"
+                    style={{ background: 'var(--glass-bg)', border: '1px solid var(--border)', color: 'var(--text-muted)' }}
+                  >
+                    {name}
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Navigation links */}
@@ -71,7 +83,7 @@ export function Footer() {
             </h4>
             <ul className="space-y-4">
               {solutionLinks.map(link => (
-                <li key={link.name}>
+                <li key={link.label}>
                   <Link
                     href={link.href}
                     className="font-medium flex items-center gap-3 transition-colors"
@@ -83,7 +95,7 @@ export function Footer() {
                       className="w-1.5 h-1.5 rounded-full shrink-0"
                       style={{ background: 'var(--accent)' }}
                     />
-                    {link.name}
+                    {link.label}
                   </Link>
                 </li>
               ))}
