@@ -9,6 +9,7 @@ import {
   Menu, X, ArrowUpRight, ChevronDown, Download, FileText, Sun, Moon
 } from 'lucide-react';
 import Image from 'next/image';
+import { useSiteSettings } from '@/lib/settings/site-settings-context';
 
 /* ─── Navigation links ─────────────────────────────────────── */
 const links = [
@@ -134,6 +135,7 @@ export function Navbar() {
   const [isQuoteOpen, setIsQuoteOpen]         = useState(false);
   const [theme, setTheme]                     = useState<'dark' | 'light'>('dark');
   const pathname = usePathname();
+  const { logoDark, logoLight } = useSiteSettings();
 
   /* ── Scroll listener ── */
   useEffect(() => {
@@ -293,14 +295,14 @@ export function Navbar() {
           <Link href="/" className="relative flex items-center h-20 w-72 group shrink-0">
             <div className="absolute inset-0 bg-[var(--accent)]/20 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
             <Image
-              src="/images/Logo Metplast.png"
+              src={logoDark}
               alt="Metplast Industries"
               fill
               className={`object-contain relative z-10 transition-opacity duration-300 ${(theme === 'light' && !isDarkSection) ? 'opacity-0' : 'opacity-100'}`}
               priority
             />
             <Image
-              src="/images/Metplast-Website-Themes-1980-x-400-px.png"
+              src={logoLight}
               alt="Metplast Industries"
               fill
               className={`object-contain relative z-10 transition-opacity duration-300 origin-left scale-[0.7] ${(theme === 'light' && !isDarkSection) ? 'opacity-100' : 'opacity-0'}`}

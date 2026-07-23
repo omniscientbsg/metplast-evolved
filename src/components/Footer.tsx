@@ -4,6 +4,8 @@ import React from 'react';
 import Link from 'next/link';
 import { MapPin, Phone, Mail } from 'lucide-react';
 import Image from 'next/image';
+import { useSiteSettings } from '@/lib/settings/site-settings-context';
+import { telHref } from '@/lib/settings/site-settings';
 
 const solutionLinks = [
   { name: 'Metplast Housing', href: '/housing' },
@@ -19,6 +21,7 @@ const solutionLinks = [
 ];
 
 export function Footer() {
+  const s = useSiteSettings();
   return (
     <footer
       className="pt-24 pb-12 px-6 border-t relative z-30"
@@ -36,13 +39,13 @@ export function Footer() {
           <div className="lg:col-span-2 pr-12">
             <div className="flex items-center h-16 w-60 relative mb-8">
               <Image
-                src="/images/Logo Metplast.png"
+                src={s.logoDark}
                 alt="Metplast Industries"
                 fill
                 className="object-contain footer-logo-dark"
               />
               <Image
-                src="/images/Metplast-Website-Themes-1980-x-400-px.png"
+                src={s.logoLight}
                 alt="Metplast Industries"
                 fill
                 className="object-contain footer-logo-light origin-left scale-[0.7]"
@@ -52,12 +55,9 @@ export function Footer() {
               className="text-lg font-medium leading-relaxed mb-8 max-w-md"
               style={{ color: 'var(--text-muted)' }}
             >
-              From levelled land to complete poultry housing systems.
-              Metplast designs, manufactures, and installs cage systems,
-              feeding, drinking, ventilation, cooling, and feed storage
-              for Layer, Breeder, and Broiler farms.
+              {s.footerBlurb}
               <br /><br />
-              <em style={{ color: 'var(--text)' }}>Think of Poultry, Think of Us.</em>
+              <em style={{ color: 'var(--text)' }}>{s.tagline}</em>
             </p>
           </div>
 
@@ -118,9 +118,9 @@ export function Footer() {
                     className="font-medium leading-relaxed pt-1"
                     style={{ color: 'var(--text-muted)' }}
                   >
-                    Plot No. 207, Atkargaon, Dheku Road,<br />
-                    Sajgaon Phata, Khalapur,<br />
-                    MH 410203, India
+                    {s.address.split('\n').map((ln, i, a) => (
+                      <span key={i}>{ln}{i < a.length - 1 && <br />}</span>
+                    ))}
                   </span>
                 </div>
               </li>
@@ -141,19 +141,21 @@ export function Footer() {
                     Phone
                   </span>
                   <a
-                    href="tel:+918928405002"
+                    href={telHref(s.phonePrimary)}
                     className="font-bold text-lg tracking-wide transition-colors block"
                     style={{ color: 'var(--text)' }}
                   >
-                    +91 89284 05002
+                    {s.phonePrimary}
                   </a>
-                  <a
-                    href="tel:+918928405005"
-                    className="font-medium transition-colors block"
-                    style={{ color: 'var(--text-muted)' }}
-                  >
-                    +91 89284 05005
-                  </a>
+                  {s.phoneSecondary && (
+                    <a
+                      href={telHref(s.phoneSecondary)}
+                      className="font-medium transition-colors block"
+                      style={{ color: 'var(--text-muted)' }}
+                    >
+                      {s.phoneSecondary}
+                    </a>
+                  )}
                 </div>
               </li>
 
@@ -173,19 +175,21 @@ export function Footer() {
                     Email
                   </span>
                   <a
-                    href="mailto:sales@metplast.com"
+                    href={`mailto:${s.emailPrimary}`}
                     className="font-bold tracking-wide hover:underline transition-colors block"
                     style={{ color: 'var(--text)' }}
                   >
-                    sales@metplast.com
+                    {s.emailPrimary}
                   </a>
-                  <a
-                    href="mailto:info@metplast.com"
-                    className="font-medium hover:underline transition-colors block"
-                    style={{ color: 'var(--text-muted)' }}
-                  >
-                    info@metplast.com
-                  </a>
+                  {s.emailSecondary && (
+                    <a
+                      href={`mailto:${s.emailSecondary}`}
+                      className="font-medium hover:underline transition-colors block"
+                      style={{ color: 'var(--text-muted)' }}
+                    >
+                      {s.emailSecondary}
+                    </a>
+                  )}
                 </div>
               </li>
             </ul>
