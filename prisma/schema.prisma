@@ -129,3 +129,19 @@ model GalleryItem {
   @@index([visible, sortOrder])
   @@index([categoryId])
 }
+
+model PageContent {
+  id               String   @id @default(cuid())
+  page             String   @unique
+  heroEyebrow      String?
+  heroTitle        String
+  heroTitleAccent  String?
+  heroSubtitle     String   @db.Text
+  heroImage        String?
+  heroCtaPrimary   Json?
+  heroCtaSecondary Json?
+  intro            Json
+  crossLinks       Json
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
