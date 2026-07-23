@@ -65,7 +65,12 @@ export function SiteSettingsForm({ initial }: { initial: Record<string, string> 
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={v[f.key]} alt="" className="h-14 object-contain rounded-lg border border-white/10 bg-black/30 px-3 mb-3" />
                   )}
-                  <input type="file" accept="image/*" onChange={(e) => { const file = e.target.files?.[0]; if (file) uploadImage(f.key, file); e.target.value = ''; }} className="text-white/70 text-sm" />
+                  <div className="flex items-center gap-4">
+                    <input type="file" accept="image/*" onChange={(e) => { const file = e.target.files?.[0]; if (file) uploadImage(f.key, file); e.target.value = ''; }} className="text-white/70 text-sm" />
+                    {v[f.key] !== f.default && (
+                      <button type="button" onClick={() => set(f.key, f.default)} className="text-xs font-bold text-white/50 hover:text-white">Reset to default</button>
+                    )}
+                  </div>
                 </div>
               ) : f.type === 'textarea' ? (
                 <textarea className={`${input} resize-none`} rows={3} value={v[f.key] ?? ''} onChange={(e) => set(f.key, e.target.value)} />

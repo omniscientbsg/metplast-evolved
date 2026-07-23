@@ -94,6 +94,13 @@ the store in `rateLimit()`; the call sites do not need to change.
   is session-gated but NOT key-allowlisted — an authenticated admin can write
   arbitrary `Setting` keys through it. Low risk (admin-only), but the newer
   `PUT` is the allowlisted path; consider allowlisting the `POST` too.
+- `src/app/(frontend)/layout.tsx` is `force-dynamic` so site-settings edits
+  reflect immediately — this opts the whole marketing subtree out of static
+  generation (most pages were already dynamic from the products/page CMS, so the
+  marginal cost is the previously-static pages). To restore static/ISR while
+  keeping settings fresh, wrap `getSiteSettings()` in `unstable_cache` with a
+  `'site-settings'` tag and call `revalidateTag('site-settings')` in the settings
+  `PUT` handler, then drop `force-dynamic`. Deferred optimization, not a blocker.
 - The rate limiter is in-memory; on a single Docker container that is effectively
   per-process (fine for one instance). If you scale to multiple app containers,
   move it to a shared store (Upstash/Redis) as noted above.

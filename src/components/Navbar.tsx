@@ -135,7 +135,7 @@ export function Navbar() {
   const [isQuoteOpen, setIsQuoteOpen]         = useState(false);
   const [theme, setTheme]                     = useState<'dark' | 'light'>('dark');
   const pathname = usePathname();
-  const { logoDark, logoLight } = useSiteSettings();
+  const { logoDark, logoLight, phonePrimary } = useSiteSettings();
 
   /* ── Scroll listener ── */
   useEffect(() => {
@@ -270,7 +270,7 @@ export function Navbar() {
       setSubmitSuccess(true);
       setTimeout(() => { setIsQuoteOpen(false); setSubmitSuccess(false); }, 2500);
     } catch {
-      setSubmitError('Could not send your enquiry. Please try again, or call us directly at +91 89284 05002.');
+      setSubmitError(`Could not send your enquiry. Please try again, or call us directly at ${phonePrimary}.`);
     } finally {
       setIsSubmitting(false);
     }

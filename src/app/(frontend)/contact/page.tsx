@@ -289,9 +289,11 @@ export default function ContactPage() {
                     <a href={telHref(s.phonePrimary)} className="text-[var(--text)] font-bold text-xl block hover:text-[var(--accent)] transition-colors">
                       {s.phonePrimary}
                     </a>
-                    <a href={telHref(s.phoneSecondary)} className="text-[var(--text-muted)] font-medium block hover:text-[var(--text)] transition-colors">
-                      {s.phoneSecondary}
-                    </a>
+                    {s.phoneSecondary && (
+                      <a href={telHref(s.phoneSecondary)} className="text-[var(--text-muted)] font-medium block hover:text-[var(--text)] transition-colors">
+                        {s.phoneSecondary}
+                      </a>
+                    )}
                   </div>
                 </div>
               </div>
@@ -306,9 +308,11 @@ export default function ContactPage() {
                     <a href={`mailto:${s.emailPrimary}`} className="text-[var(--text)] font-bold text-xl block hover:text-[var(--accent)] transition-colors">
                       {s.emailPrimary}
                     </a>
-                    <a href={`mailto:${s.emailSecondary}`} className="text-[var(--text-muted)] font-medium block hover:text-[var(--text)] transition-colors">
-                      {s.emailSecondary}
-                    </a>
+                    {s.emailSecondary && (
+                      <a href={`mailto:${s.emailSecondary}`} className="text-[var(--text-muted)] font-medium block hover:text-[var(--text)] transition-colors">
+                        {s.emailSecondary}
+                      </a>
+                    )}
                   </div>
                 </div>
               </div>
