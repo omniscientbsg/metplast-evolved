@@ -62,18 +62,22 @@ export function PageContentForm({ def, initial }: { def: PageDef; initial: PageC
 
       <fieldset className="space-y-4 border border-white/10 rounded-2xl p-5">
         <legend className="px-2 text-sm font-bold text-white/70">Hero</legend>
-        <div>
-          <label className={label}>Eyebrow / badge (optional)</label>
-          <input className={input} value={v.eyebrow ?? ''} onChange={(e) => set('eyebrow', e.target.value || null)} />
-        </div>
+        {def.bespoke && (
+          <div>
+            <label className={label}>Eyebrow / badge (optional)</label>
+            <input className={input} value={v.eyebrow ?? ''} onChange={(e) => set('eyebrow', e.target.value || null)} />
+          </div>
+        )}
         <div>
           <label className={label}>Title</label>
           <input className={input} value={v.title} onChange={(e) => set('title', e.target.value)} />
         </div>
-        <div>
-          <label className={label}>Title accent (optional — rendered in gradient)</label>
-          <input className={input} value={v.titleAccent ?? ''} onChange={(e) => set('titleAccent', e.target.value || null)} />
-        </div>
+        {def.bespoke && (
+          <div>
+            <label className={label}>Title accent (optional — rendered in gradient)</label>
+            <input className={input} value={v.titleAccent ?? ''} onChange={(e) => set('titleAccent', e.target.value || null)} />
+          </div>
+        )}
         <div>
           <label className={label}>Subtitle</label>
           <textarea className={input} rows={2} value={v.subtitle} onChange={(e) => set('subtitle', e.target.value)} />

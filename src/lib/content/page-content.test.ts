@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
-  rowToPageContent, pageContentToRow, getPageDef, isKnownPage, PAGE_DEFS,
+  rowToPageContent, pageContentToRow, normalizePageContentView, getPageDef, isKnownPage, PAGE_DEFS,
   type PageContentRow, type PageContentView,
 } from './page-content';
 
@@ -44,12 +44,29 @@ describe('page-content mappers', () => {
   });
 });
 
+describe('normalizePageContentView', () => {
+  it('coerces missing/bad intro & crossLinks to arrays and bad CTAs to null', () => {
+    const dirty = { title: 'T', subtitle: 'S' } as unknown as PageContentView;
+    const clean = normalizePageContentView(dirty);
+    expect(clean.intro).toEqual([]);
+    expect(clean.crossLinks).toEqual([]);
+    expect(clean.ctaPrimary).toBeNull();
+    expect(clean.ctaSecondary).toBeNull();
+    expect(clean.eyebrow).toBeNull();
+    expect(clean.title).toBe('T');
+    expect(clean.subtitle).toBe('S');
+  });
+  it('preserves a valid view unchanged', () => {
+    expect(normalizePageContentView(view)).toEqual(view);
+  });
+});
+
 describe('page defs', () => {
   it('has 8 pages; home has no intro/crossLinks; layer has both', () => {
     expect(PAGE_DEFS).toHaveLength(8);
-    expect(getPageDef('home')).toMatchObject({ hasIntro: false, hasCrossLinks: false });
-    expect(getPageDef('layer')).toMatchObject({ hasIntro: true, hasCrossLinks: true });
-    expect(getPageDef('about')).toMatchObject({ hasIntro: true, hasCrossLinks: false });
+    expect(getPageDef('home')).toMatchObject({ hasIntro: false, hasCrossLinks: false, bespoke: true });
+    expect(getPageDef('layer')).toMatchObject({ hasIntro: true, hasCrossLinks: true, bespoke: false });
+    expect(getPageDef('about')).toMatchObject({ hasIntro: true, hasCrossLinks: false, bespoke: true });
   });
   it('isKnownPage guards the fixed set', () => {
     expect(isKnownPage('layer')).toBe(true);

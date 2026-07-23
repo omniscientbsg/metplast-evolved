@@ -30,17 +30,21 @@ export interface PageContentRow {
   crossLinks: unknown;
 }
 
-export interface PageDef { page: string; label: string; hasIntro: boolean; hasCrossLinks: boolean; }
+/** `bespoke` = the hero renders an eyebrow badge + a gradient title-accent
+ *  (home/about/housing). The 5 product pages use ScrollPageTemplate's plain
+ *  word-split title, which ignores eyebrow/titleAccent — so the admin form
+ *  hides those two inputs when `bespoke` is false. */
+export interface PageDef { page: string; label: string; hasIntro: boolean; hasCrossLinks: boolean; bespoke: boolean; }
 
 export const PAGE_DEFS: PageDef[] = [
-  { page: 'home',                  label: 'Home',                  hasIntro: false, hasCrossLinks: false },
-  { page: 'about',                 label: 'About',                 hasIntro: true,  hasCrossLinks: false },
-  { page: 'housing',               label: 'Metplast Housing',      hasIntro: false, hasCrossLinks: false },
-  { page: 'layer',                 label: 'Layer',                 hasIntro: true,  hasCrossLinks: true  },
-  { page: 'breeder',               label: 'Breeder',               hasIntro: true,  hasCrossLinks: true  },
-  { page: 'broiler',               label: 'Broiler',               hasIntro: true,  hasCrossLinks: true  },
-  { page: 'environmental-control', label: 'Environmental Control', hasIntro: true,  hasCrossLinks: true  },
-  { page: 'feed-silos',            label: 'Feed Silos',            hasIntro: true,  hasCrossLinks: true  },
+  { page: 'home',                  label: 'Home',                  hasIntro: false, hasCrossLinks: false, bespoke: true  },
+  { page: 'about',                 label: 'About',                 hasIntro: true,  hasCrossLinks: false, bespoke: true  },
+  { page: 'housing',               label: 'Metplast Housing',      hasIntro: false, hasCrossLinks: false, bespoke: true  },
+  { page: 'layer',                 label: 'Layer',                 hasIntro: true,  hasCrossLinks: true,  bespoke: false },
+  { page: 'breeder',               label: 'Breeder',               hasIntro: true,  hasCrossLinks: true,  bespoke: false },
+  { page: 'broiler',               label: 'Broiler',               hasIntro: true,  hasCrossLinks: true,  bespoke: false },
+  { page: 'environmental-control', label: 'Environmental Control', hasIntro: true,  hasCrossLinks: true,  bespoke: false },
+  { page: 'feed-silos',            label: 'Feed Silos',            hasIntro: true,  hasCrossLinks: true,  bespoke: false },
 ];
 
 export function getPageDef(page: string): PageDef | undefined {
@@ -113,5 +117,24 @@ export function pageContentToRow(page: string, v: PageContentView): PageContentW
     heroCtaSecondary: v.ctaSecondary,
     intro: v.intro,
     crossLinks: v.crossLinks,
+  };
+}
+
+/** Coerce an untrusted view (an API request body) into a clean PageContentView:
+ *  CTAs -> {label,href}|null, intro/crossLinks -> well-formed arrays, string|null
+ *  fields guarded. Guarantees the write path never sees malformed/missing JSON
+ *  (e.g. a body omitting `intro` would otherwise write `undefined` into a
+ *  non-null Json column and throw). */
+export function normalizePageContentView(v: PageContentView): PageContentView {
+  return {
+    eyebrow: typeof v?.eyebrow === 'string' ? v.eyebrow : null,
+    title: typeof v?.title === 'string' ? v.title : '',
+    titleAccent: typeof v?.titleAccent === 'string' ? v.titleAccent : null,
+    subtitle: typeof v?.subtitle === 'string' ? v.subtitle : '',
+    image: typeof v?.image === 'string' ? v.image : null,
+    ctaPrimary: asCta(v?.ctaPrimary),
+    ctaSecondary: asCta(v?.ctaSecondary),
+    intro: asStringArray(v?.intro),
+    crossLinks: asCrossLinks(v?.crossLinks),
   };
 }

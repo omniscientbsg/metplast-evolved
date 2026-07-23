@@ -3,7 +3,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { Prisma } from '@prisma/client';
 import prisma from '@/lib/prisma';
-import { isKnownPage, rowToPageContent, pageContentToRow, type PageContentView } from '@/lib/content/page-content';
+import { isKnownPage, rowToPageContent, pageContentToRow, normalizePageContentView, type PageContentView } from '@/lib/content/page-content';
 
 async function authed() {
   return Boolean(await getServerSession(authOptions));
@@ -23,10 +23,13 @@ export async function PUT(req: Request, ctx: { params: Promise<{ page: string }>
   if (!isKnownPage(page)) return NextResponse.json({ error: 'Unknown page' }, { status: 404 });
 
   const v = (await req.json()) as PageContentView;
-  if (!v || typeof v.title !== 'string' || !v.title.trim() || typeof v.subtitle !== 'string') {
+  if (!v || typeof v.title !== 'string' || !v.title.trim() || typeof v.subtitle !== 'string' || !v.subtitle.trim()) {
     return NextResponse.json({ error: 'title and subtitle are required' }, { status: 400 });
   }
-  const w = pageContentToRow(page, v);
+  // Coerce the untrusted body so intro/crossLinks are always arrays and CTAs are
+  // clean — the trusted admin form always sends valid data, but a raw client
+  // must not be able to write malformed/missing JSON.
+  const w = pageContentToRow(page, normalizePageContentView(v));
   const data = {
     heroEyebrow: w.heroEyebrow,
     heroTitle: w.heroTitle,
