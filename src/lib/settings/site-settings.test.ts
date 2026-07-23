@@ -20,7 +20,7 @@ describe('siteSettingsFromRows', () => {
   });
   it('ignores unknown keys (e.g. chatbot settings)', () => {
     const s = siteSettingsFromRows([{ key: 'chatbot_provider', value: 'gemini' }]);
-    expect((s as Record<string, string>).chatbot_provider).toBeUndefined();
+    expect((s as unknown as Record<string, string>).chatbot_provider).toBeUndefined();
     expect(s.phonePrimary).toBe('+91 89284 05002');
   });
 });
