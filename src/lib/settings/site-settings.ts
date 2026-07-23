@@ -11,7 +11,7 @@ export const SITE_SETTING_KEYS: SettingField[] = [
   { key: 'whatsapp_number', label: 'WhatsApp number (digits only)', group: 'Contact', type: 'text', default: '918928405002' },
   { key: 'email_primary',   label: 'Email (primary)',   group: 'Contact', type: 'text', default: 'sales@metplast.com' },
   { key: 'email_secondary', label: 'Email (secondary)', group: 'Contact', type: 'text', default: 'info@metplast.com' },
-  { key: 'address', label: 'Address (one line per row)', group: 'Contact', type: 'textarea', default: 'Plot No. 207, Atkargaon, Dheku Road,\nSajgaon Phata, Khalapur,\nMH 410203, India' },
+  { key: 'address', label: 'Address (one line per row)', group: 'Contact', type: 'textarea', default: 'Plot No. 207, Atkargaon, Dheku Road,\nSajgaon Phata, Khalapur,\nDist. Raigad, MH-410203, India' },
   { key: 'map_url', label: 'Google Maps URL', group: 'Contact', type: 'url', default: '' },
   { key: 'business_hours', label: 'Business hours', group: 'Contact', type: 'text', default: '' },
   { key: 'tagline', label: 'Tagline', group: 'Brand', type: 'text', default: 'Think of Poultry, Think of Us.' },
