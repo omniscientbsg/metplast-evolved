@@ -29,8 +29,10 @@ managed MySQL (must be **8.x** — the CMS uses JSON columns). Then:
 npx prisma db push
 # 3. Create the admin + baseline settings (production skips demo data)
 ADMIN_PASSWORD="your-strong-pass" NODE_ENV=production npm run db:seed
-# 4. FIRST DEPLOY ONLY: import the existing page content into the DB
-npm run db:migrate-content
+# 4. FIRST DEPLOY ONLY: import the existing content into the DB
+npm run db:migrate-content   # product sections
+npm run db:migrate-gallery   # gallery categories + images
+npm run db:migrate-pages     # page hero / intro / cross-links (all 8 pages)
 ```
 Local dev needs a `DATABASE_URL` too — `docker compose up -d db` starts a local
 MySQL 8 matching the bundled `docker-compose.yml`.
@@ -61,7 +63,8 @@ uploaded images vanish on every redeploy.
   three lead forms, and per-field length caps to stop bot spam.
 - **CMS admin** — the product-section CRUD (`/api/admin/products`, `/[id]`,
   `/reorder`), the gallery CRUD (`/api/admin/gallery*`, including `/categories*`),
-  the blog CRUD (`/api/admin/blogs*`, including `/categories*`), and image
+  the blog CRUD (`/api/admin/blogs*`, including `/categories*`), the page-content
+  API (`/api/admin/pages/[page]`, hero/intro/cross-links), and image
   upload (`/api/admin/upload`) all require a valid session (401 otherwise);
   upload also validates MIME type and a 5 MB size cap.
 
@@ -82,7 +85,8 @@ the store in `rateLimit()`; the call sites do not need to change.
 - Consider a WAF / bot rule at the Cloudflare/host layer for defense in depth.
 - CMS-edited content is NOT auto-checked against the no-overclaim content rules
   (no banned-term gate on admin writes) — reviewers must keep honoring them when
-  editing product sections in the admin.
+  editing product sections, gallery captions, blog posts, and page content
+  (hero / intro / cross-links via `/admin/pages`) in the admin.
 - The rate limiter is in-memory; on a single Docker container that is effectively
   per-process (fine for one instance). If you scale to multiple app containers,
   move it to a shared store (Upstash/Redis) as noted above.
