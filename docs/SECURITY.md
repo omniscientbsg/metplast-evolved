@@ -70,7 +70,8 @@ uploaded images vanish on every redeploy.
   `PUT /api/admin/home` (normalized through `parseHomeContent` before storing the
   `home_content` JSON), the housing-content `PUT /api/admin/housing` (same pattern
   via `parseHousingContent`), the about-content `PUT /api/admin/about` (same
-  pattern via `parseAboutContent`), and image upload
+  pattern via `parseAboutContent`), the contact/calculators copy
+  `PUT /api/admin/misc` (same pattern via `parseMiscContent`), and image upload
   (`/api/admin/upload`) all require a valid session (401 otherwise); upload also
   validates MIME type and a 5 MB size cap.
 
@@ -95,8 +96,9 @@ the store in `rateLimit()`; the call sites do not need to change.
   (hero / intro / cross-links via `/admin/pages`), site settings
   (tagline / footer blurb / SEO via `/admin/settings`), homepage content
   (feature cards / CTA / all sections via `/admin/home`), housing content
-  (system components / farm types / project steps via `/admin/housing`), and about
-  content (story / stats / values via `/admin/about`) in the admin.
+  (system components / farm types / project steps via `/admin/housing`), about
+  content (story / stats / values via `/admin/about`), and contact/calculators
+  copy (hero / CTA / enquiry via `/admin/misc`) in the admin.
 - The pre-existing `POST /api/admin/settings` (used by the chatbot admin page)
   is session-gated but NOT key-allowlisted — an authenticated admin can write
   arbitrary `Setting` keys through it. Low risk (admin-only), but the newer
