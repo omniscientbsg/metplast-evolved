@@ -69,7 +69,8 @@ uploaded images vanish on every redeploy.
   it can never overwrite chatbot or other keys), the homepage-content
   `PUT /api/admin/home` (normalized through `parseHomeContent` before storing the
   `home_content` JSON), the housing-content `PUT /api/admin/housing` (same pattern
-  via `parseHousingContent`), and image upload
+  via `parseHousingContent`), the about-content `PUT /api/admin/about` (same
+  pattern via `parseAboutContent`), and image upload
   (`/api/admin/upload`) all require a valid session (401 otherwise); upload also
   validates MIME type and a 5 MB size cap.
 
@@ -93,8 +94,9 @@ the store in `rateLimit()`; the call sites do not need to change.
   editing product sections, gallery captions, blog posts, page content
   (hero / intro / cross-links via `/admin/pages`), site settings
   (tagline / footer blurb / SEO via `/admin/settings`), homepage content
-  (feature cards / CTA / all sections via `/admin/home`), and housing content
-  (system components / farm types / project steps via `/admin/housing`) in the admin.
+  (feature cards / CTA / all sections via `/admin/home`), housing content
+  (system components / farm types / project steps via `/admin/housing`), and about
+  content (story / stats / values via `/admin/about`) in the admin.
 - The pre-existing `POST /api/admin/settings` (used by the chatbot admin page)
   is session-gated but NOT key-allowlisted — an authenticated admin can write
   arbitrary `Setting` keys through it. Low risk (admin-only), but the newer
