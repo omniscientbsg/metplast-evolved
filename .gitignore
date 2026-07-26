@@ -51,3 +51,5 @@ next-env.d.ts
 # Deploy artifact (contains .env secrets — never commit)
 /metplast-hostinger.zip
 *.zip
+*.tar.gz
+*.tgz
