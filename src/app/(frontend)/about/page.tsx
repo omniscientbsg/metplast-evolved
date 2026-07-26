@@ -1,6 +1,7 @@
 import prisma from '@/lib/prisma';
 import { rowToPageContent, type PageContentView } from '@/lib/content/page-content';
 import { PAGE_FALLBACK } from '@/lib/content/page-fallback';
+import { getAboutContent } from '@/lib/content/get-about-content';
 import { AboutClient } from './AboutClient';
 
 export const dynamic = 'force-dynamic';
@@ -13,5 +14,6 @@ export default async function AboutPage() {
   } catch (err) {
     console.error('about content query failed, using fallback:', err);
   }
-  return <AboutClient hero={hero} />;
+  const content = await getAboutContent();
+  return <AboutClient hero={hero} content={content} />;
 }

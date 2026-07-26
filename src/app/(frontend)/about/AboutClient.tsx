@@ -6,8 +6,12 @@ import Image from 'next/image';
 import { CheckCircle2, Factory, Globe, Trophy, Users, ShieldCheck, Zap } from 'lucide-react';
 import { MobaBlock } from '@/components/MobaBlock';
 import type { PageContentView } from '@/lib/content/page-content';
+import type { AboutContent } from '@/lib/content/about-content';
 
-export function AboutClient({ hero }: { hero: PageContentView }) {
+// Value-card icons, matched by index to content.values.cards.
+const VALUE_ICONS = [Zap, Globe, ShieldCheck, Users];
+
+export function AboutClient({ hero, content }: { hero: PageContentView; content: AboutContent }) {
   return (
     <main className="min-h-screen bg-[var(--bg)] pt-32 pb-24 overflow-hidden relative text-[var(--text)]">
       {/* Background Orbs */}
@@ -56,22 +60,20 @@ export function AboutClient({ hero }: { hero: PageContentView }) {
             className="space-y-10"
           >
             <h2 className="text-4xl md:text-5xl font-['Space_Grotesk'] font-black text-[var(--text)] leading-none tracking-tighter">
-              DECADES OF EXPERTISE.<br/>
-              <span className="text-[var(--text-muted)]">ZERO COMPROMISE.</span>
+              {content.story.heading}<br/>
+              <span className="text-[var(--text-muted)]">{content.story.subheading}</span>
             </h2>
             <div className="text-lg text-[var(--text-muted)] font-medium space-y-6 leading-relaxed">
               {hero.intro.map((p, i) => (<p key={i}>{p}</p>))}
             </div>
 
             <div className="grid grid-cols-2 gap-6 pt-8 border-t border-[var(--border)]">
-              <div className="glass-panel p-8 rounded-3xl group hover:border-orange-500/50 transition-colors">
-                <p className="text-5xl font-['Space_Grotesk'] font-black mb-3" style={{ color: 'var(--accent)' }}>35<span className="text-2xl">+</span></p>
-                <p className="font-bold tracking-wide uppercase text-sm" style={{ color: 'var(--text)' }}>Years</p>
-              </div>
-              <div className="glass-panel p-8 rounded-3xl group hover:border-orange-500/50 transition-colors">
-                <p className="text-5xl font-['Space_Grotesk'] font-black mb-3" style={{ color: 'var(--accent)' }}>500<span className="text-2xl">+</span></p>
-                <p className="font-bold tracking-wide uppercase text-sm" style={{ color: 'var(--text)' }}>Farms</p>
-              </div>
+              {content.stats.map((stat, i) => (
+                <div key={i} className="glass-panel p-8 rounded-3xl group hover:border-orange-500/50 transition-colors">
+                  <p className="text-5xl font-['Space_Grotesk'] font-black mb-3" style={{ color: 'var(--accent)' }}>{stat.top}</p>
+                  <p className="font-bold tracking-wide uppercase text-sm" style={{ color: 'var(--text)' }}>{stat.bottom}</p>
+                </div>
+              ))}
             </div>
           </motion.div>
 
@@ -81,7 +83,7 @@ export function AboutClient({ hero }: { hero: PageContentView }) {
             viewport={{ once: true }}
             className="relative h-[800px] rounded-[3rem] overflow-hidden shadow-2xl border border-white/10"
           >
-            <Image src="/images/Hero-Slider-2.jpg" alt="Metplast poultry housing project" fill className="object-cover" />
+            <Image src={content.mainImage} alt="Metplast poultry housing project" fill className="object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-[#030305] via-[#030305]/20 to-transparent" />
             <div className="absolute bottom-12 left-12 right-12 glass-panel p-8 rounded-3xl border border-white/20">
               <div className="flex items-center gap-4">
@@ -89,8 +91,8 @@ export function AboutClient({ hero }: { hero: PageContentView }) {
                   <Factory className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: 'var(--accent)' }}>Turnkey Housing Project</p>
-                  <p className="text-2xl font-bold text-white">Built by Metplast, Khalapur</p>
+                  <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: 'var(--accent)' }}>{content.imageBadge.eyebrow}</p>
+                  <p className="text-2xl font-bold text-white">{content.imageBadge.title}</p>
                 </div>
               </div>
             </div>
@@ -103,28 +105,26 @@ export function AboutClient({ hero }: { hero: PageContentView }) {
         <div className="max-w-[1600px] mx-auto">
           <div className="mb-20 max-w-3xl">
             <h2 className="text-5xl md:text-7xl font-['Space_Grotesk'] font-black tracking-tighter leading-none mb-6">
-              WHY CHOOSE <br/><span className="text-gradient">METPLAST.</span>
+              {content.values.heading} <br/><span className="text-gradient">{content.values.accent}</span>
             </h2>
             <p className="text-xl text-[var(--text-muted)] font-medium max-w-2xl">
-              Built on engineering precision and deep understanding of what poultry farmers need. We don't just supply equipment — we help you build a farm that performs year after year.
+              {content.values.intro}
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              { icon: Zap, title: "Turnkey Delivery", desc: "From levelled land to a running farm, one team stays responsible — planning, manufacturing, installation, and long-term support." },
-              { icon: Globe, title: "India & International", desc: "Metplast systems operate on poultry farms across India and international markets." },
-              { icon: ShieldCheck, title: "Egg Protection", desc: "Our cage designs protect every egg from collection to delivery, reducing breakage and improving margins." },
-              { icon: Users, title: "500+ Farms", desc: "Layer, Breeder, and Broiler farms trust Metplast for complete housing and equipment solutions." },
-            ].map((value, i) => (
+            {content.values.cards.map((value, i) => {
+              const Icon = VALUE_ICONS[i] ?? Zap;
+              return (
               <div key={i} className="glass-panel p-10 rounded-[2.5rem] hover:-translate-y-1 transition-all duration-500 group cursor-pointer hover:shadow-2xl">
                 <div className="w-16 h-16 bg-primary text-white rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-primary/30 group-hover:scale-110 transition-transform">
-                  <value.icon className="w-8 h-8" />
+                  <Icon className="w-8 h-8" />
                 </div>
                 <h3 className="text-2xl font-black mb-4 font-['Space_Grotesk'] tracking-tight text-[var(--text)]">{value.title}</h3>
                 <p className="text-[var(--text-muted)] font-medium leading-relaxed transition-colors">{value.desc}</p>
               </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
