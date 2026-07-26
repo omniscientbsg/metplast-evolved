@@ -3,6 +3,7 @@ import { MessageCircle, Phone } from 'lucide-react';
 import { CalculatorCard } from '@/components/CalculatorCard';
 import { getSiteSettings } from '@/lib/settings/get-site-settings';
 import { telHref } from '@/lib/settings/site-settings';
+import { getMiscContent } from '@/lib/content/get-misc-content';
 
 export const dynamic = 'force-dynamic';
 
@@ -45,7 +46,8 @@ const calculators = [
 ];
 
 export default async function CalculatorsHubPage() {
-  const s = await getSiteSettings();
+  const [s, misc] = await Promise.all([getSiteSettings(), getMiscContent()]);
+  const copy = misc.calculators;
   return (
     <main className="min-h-screen bg-[var(--bg)] relative overflow-hidden pt-32 pb-24">
       {/* Background Orbs */}
@@ -58,15 +60,15 @@ export default async function CalculatorsHubPage() {
         <div className="text-center mb-20">
           <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-[var(--border)] bg-[var(--surface)]/50 backdrop-blur-xl mb-6">
             <span className="text-sm font-bold tracking-widest uppercase text-[var(--accent)]">
-              Engineering Tools
+              {copy.heroEyebrow}
             </span>
           </div>
           <h1 className="text-4xl sm:text-6xl md:text-7xl font-black font-['Space_Grotesk'] text-[var(--text)] tracking-tight mb-6">
-            PLAN YOUR FARM <br/>
-            <span className="text-[var(--accent)]">WITH PRECISION.</span>
+            {copy.heroHeading} <br/>
+            <span className="text-[var(--accent)]">{copy.heroAccent}</span>
           </h1>
           <p className="text-xl text-[var(--text-muted)] font-medium max-w-2xl mx-auto leading-relaxed">
-            Select a calculator below to estimate the exact structural and equipment requirements for your poultry project.
+            {copy.heroSubtitle}
           </p>
         </div>
 
@@ -107,11 +109,11 @@ export default async function CalculatorsHubPage() {
               </div>
 
               <h3 className="text-2xl font-bold text-white mb-3 tracking-tight">
-                Not Sure Which One?
+                {copy.enquiryHeading}
               </h3>
 
               <p className="text-white/90 font-medium leading-relaxed flex-grow mb-8">
-                Talk to our engineering team — we&apos;ll size your farm and recommend the right systems for your bird capacity.
+                {copy.enquiryBody}
               </p>
 
               <div className="mt-auto flex flex-col gap-3">

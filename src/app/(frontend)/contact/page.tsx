@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { CountryCodeSelect } from '@/components/Navbar';
 import { useSiteSettings } from '@/lib/settings/site-settings-context';
 import { telHref } from '@/lib/settings/site-settings';
+import { useMiscContent } from '@/lib/content/misc-content-context';
 
 const BIRD_TYPES   = ['Layer', 'Broiler', 'Breeder', 'Not Sure'];
 const REQUIREMENTS = ['Complete Housing', 'Cage System', 'Feeding System', 'Drinking System', 'Ventilation / Cooling', 'Feed Silo', 'Spare Parts', 'Other'];
@@ -14,6 +15,7 @@ const TIMELINES    = ['Immediate', '1–3 Months', '3–6 Months', 'Later'];
 
 export default function ContactPage() {
   const s = useSiteSettings();
+  const copy = useMiscContent().contact;
   const [form, setForm] = useState({
     firstName: '', lastName: '', company: '',
     countryCode: '+91', phone: '', email: '',
@@ -100,7 +102,7 @@ export default function ContactPage() {
             className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-[var(--border)] bg-[var(--text)]/5 backdrop-blur-xl"
           >
             <span className="text-sm font-bold tracking-widest uppercase" style={{ color: 'var(--accent)' }}>
-              Contact Metplast
+              {copy.heroEyebrow}
             </span>
           </motion.div>
           <motion.h1
@@ -109,8 +111,8 @@ export default function ContactPage() {
             transition={{ delay: 0.1 }}
             className="text-4xl sm:text-5xl md:text-7xl lg:text-[100px] break-words hyphens-auto font-['Space_Grotesk'] font-black text-[var(--text)] tracking-tighter max-w-4xl mx-auto leading-[0.9]"
           >
-            SPEAK TO A <br />
-            <span className="text-gradient">SALES ENGINEER.</span>
+            {copy.heroHeading} <br />
+            <span className="text-gradient">{copy.heroAccent}</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -118,7 +120,7 @@ export default function ContactPage() {
             transition={{ delay: 0.2 }}
             className="text-xl text-[var(--text-muted)] font-medium max-w-2xl mx-auto leading-relaxed"
           >
-            Have questions or need expert poultry solutions? Share your project details and our team will guide you every step of the way.
+            {copy.heroSubtitle}
           </motion.p>
         </div>
       </section>
@@ -131,7 +133,7 @@ export default function ContactPage() {
           className="lg:col-span-7 glass-panel p-10 md:p-14 rounded-[3rem] shadow-2xl border border-[var(--border)]"
         >
           <h2 className="text-4xl font-['Space_Grotesk'] font-black text-[var(--text)] mb-8 tracking-tighter">
-            SEND ENQUIRY.
+            {copy.formHeading}
           </h2>
 
           {submitSuccess ? (
@@ -325,10 +327,10 @@ export default function ContactPage() {
           >
             <div className="absolute top-0 right-0 w-32 h-32 bg-white/20 blur-2xl rounded-full" />
             <h3 className="text-3xl font-['Space_Grotesk'] font-black mb-4 tracking-tighter leading-none">
-              FROM BLUEPRINT TO INSTALLATION.
+              {copy.ctaHeading}
             </h3>
             <p className="text-white/90 font-medium text-lg">
-              Our expert team is ready to design and deploy the right system for your farm — from levelled land to full commissioning.
+              {copy.ctaBody}
             </p>
           </div>
         </div>
