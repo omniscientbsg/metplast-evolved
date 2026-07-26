@@ -51,6 +51,9 @@ export default async function AdminLayout({
           <Link href="/admin/about" className="block px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-colors">
             About
           </Link>
+          <Link href="/admin/misc" className="block px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-colors">
+            Contact &amp; Calc Copy
+          </Link>
           <Link href="/admin/enquiries" className="block px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-colors">
             Enquiries
           </Link>
