@@ -6,9 +6,9 @@ blockers** before going live.
 ## Launch blockers (must do)
 
 ### 1. Set `NEXTAUTH_SECRET` in production
-`src/app/api/auth/[...nextauth]/route.ts` falls back to a hard-coded secret if
-this env var is missing. Without it set, **anyone can forge an admin session
-token and skip the login entirely**.
+`src/app/api/auth/[...nextauth]/route.ts` has **no hard-coded fallback** — if
+`NEXTAUTH_SECRET` is unset, NextAuth throws and admin auth will not work (this is
+intentional: there is no forgeable default). You **must** set it.
 
 ```bash
 openssl rand -base64 32   # generate a value
@@ -27,8 +27,8 @@ managed MySQL (must be **8.x** — the CMS uses JSON columns). Then:
 # 1. Set DATABASE_URL (locally: docker compose up -d db uses the bundled MySQL 8)
 # 2. Create the tables
 npx prisma db push
-# 3. Create the admin + baseline settings (production skips demo data)
-ADMIN_PASSWORD="your-strong-pass" NODE_ENV=production npm run db:seed
+# 3. Create the admin accounts + baseline settings (production skips demo data)
+ADMIN_EMAILS="arnav@metplast.com,anshul@metplast.com" ADMIN_PASSWORD="your-strong-pass" NODE_ENV=production npm run db:seed
 # 4. FIRST DEPLOY ONLY: import the existing content into the DB
 npm run db:migrate-content   # product sections
 npm run db:migrate-gallery   # gallery categories + images
@@ -37,14 +37,16 @@ npm run db:migrate-pages     # page hero / intro / cross-links (all 8 pages)
 Local dev needs a `DATABASE_URL` too — `docker compose up -d db` starts a local
 MySQL 8 matching the bundled `docker-compose.yml`.
 
-### 3. Rotate the admin password
-The old seed shipped a default (`Admin@123`). Credentials are now env-driven
-and no password lives in the repo. Set a new one:
+### 3. Admin accounts & password
+No credentials live in the repo — admins are created from `ADMIN_EMAILS`
+(comma-separated) + `ADMIN_PASSWORD` at seed time. To create/rotate:
 
 ```bash
-ADMIN_EMAIL="admin@metplast.com" ADMIN_PASSWORD="new-strong-pass" npm run db:reset-admin
+ADMIN_EMAILS="arnav@metplast.com,anshul@metplast.com" ADMIN_PASSWORD="new-strong-pass" npm run db:seed
 ```
-Re-running `npm run db:seed` with a new `ADMIN_PASSWORD` also rotates it.
+Every listed email gets an admin with that password. **The launch password
+`Metplast@2026` is guessable (company + year) — change it after first login**
+(re-run the seed with a stronger `ADMIN_PASSWORD`, or add a rotation flow).
 
 ### 4. Persistent upload volume (Docker)
 CMS image uploads are written to `UPLOAD_DIR` (default `./public/uploads`) and

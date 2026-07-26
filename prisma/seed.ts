@@ -4,33 +4,39 @@ import bcrypt from 'bcryptjs'
 const prisma = new PrismaClient()
 
 async function main() {
-  // Admin credentials come from the environment — never hard-coded, so no
-  // password lives in the repo. Re-running the seed with a new ADMIN_PASSWORD
-  // rotates the existing admin's password (see `update` below).
-  const adminEmail = process.env.ADMIN_EMAIL || 'admin@metplast.com'
-  const adminName = process.env.ADMIN_NAME || 'Metplast Admin'
+  // Admin accounts come entirely from the environment — no credentials are
+  // hard-coded in the repo. `ADMIN_EMAILS` is a comma-separated list, so one or
+  // more admins can be created with the same `ADMIN_PASSWORD`. Re-running the
+  // seed rotates each admin's password (see `update` below).
+  const emailsRaw = process.env.ADMIN_EMAILS || process.env.ADMIN_EMAIL || ''
+  const adminEmails = emailsRaw.split(',').map((e) => e.trim().toLowerCase()).filter(Boolean)
   const adminPassword = process.env.ADMIN_PASSWORD
 
+  if (adminEmails.length === 0) {
+    throw new Error(
+      'ADMIN_EMAILS (comma-separated) is required. ' +
+      'e.g. ADMIN_EMAILS="a@metplast.com,b@metplast.com" ADMIN_PASSWORD="..." npm run db:seed'
+    )
+  }
   if (!adminPassword || adminPassword.length < 8) {
     throw new Error(
       'ADMIN_PASSWORD env var is required and must be at least 8 characters. ' +
-      'Set it before seeding, e.g. ADMIN_PASSWORD="your-strong-pass" npx prisma db seed'
+      'Set it before seeding, e.g. ADMIN_PASSWORD="your-strong-pass" npm run db:seed'
     )
   }
 
   const passwordHash = await bcrypt.hash(adminPassword, 10)
 
-  const admin = await prisma.user.upsert({
-    where: { email: adminEmail },
-    update: { password: passwordHash, name: adminName },
-    create: {
-      email: adminEmail,
-      name: adminName,
-      password: passwordHash,
-    },
-  })
-
-  console.log(`Admin ready: ${admin.email}`)
+  for (const email of adminEmails) {
+    const local = email.split('@')[0]
+    const name = local.charAt(0).toUpperCase() + local.slice(1)
+    const admin = await prisma.user.upsert({
+      where: { email },
+      update: { password: passwordHash, name },
+      create: { email, name, password: passwordHash },
+    })
+    console.log(`Admin ready: ${admin.email}`)
+  }
 
   const isProd = process.env.NODE_ENV === 'production'
 
@@ -84,35 +90,7 @@ async function main() {
     }
   })
 
-  // Dummy Enquiries
-  const enquiryCount = await prisma.enquiry.count()
-  if (enquiryCount === 0) {
-    await prisma.enquiry.createMany({
-      data: [
-        {
-          name: 'John Smith',
-          email: 'john@smithpoultry.com',
-          phone: '+1 234 567 8900',
-          message: 'I am interested in getting a quote for a 50,000 bird layer cage setup in Texas.',
-          status: 'NEW'
-        },
-        {
-          name: 'Priya Sharma',
-          email: 'priya@sharmafarms.in',
-          phone: '+91 98765 43210',
-          message: 'Can you provide details on your automated broiler feeding systems?',
-          status: 'IN_PROGRESS'
-        },
-        {
-          name: 'David Omondi',
-          email: 'david@agrifrica.ke',
-          phone: '+254 712 345 678',
-          message: 'Looking for climate control solutions for a new poultry shed.',
-          status: 'CLOSED'
-        }
-      ]
-    })
-  }
+  // (Demo enquiries removed — no dummy leads are ever seeded.)
 
   // Sample blog content (non-prod only). Copy MUST honor the no-overclaim
   // rules — no fertility/hatchability/yield promises, no banned terms.

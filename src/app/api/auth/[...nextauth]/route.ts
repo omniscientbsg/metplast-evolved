@@ -44,7 +44,9 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signIn: "/admin/login",
   },
-  secret: process.env.NEXTAUTH_SECRET || "metplast_super_secret_dev_key"
+  // No insecure fallback — NEXTAUTH_SECRET must be set in the environment.
+  // (next-auth throws at runtime if it is missing, which is the desired behavior.)
+  secret: process.env.NEXTAUTH_SECRET,
 }
 
 const handler = NextAuth(authOptions)
