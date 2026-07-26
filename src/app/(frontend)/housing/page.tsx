@@ -1,6 +1,7 @@
 import prisma from '@/lib/prisma';
 import { rowToPageContent, type PageContentView } from '@/lib/content/page-content';
 import { PAGE_FALLBACK } from '@/lib/content/page-fallback';
+import { getHousingContent } from '@/lib/content/get-housing-content';
 import { HousingClient } from './HousingClient';
 
 export const dynamic = 'force-dynamic';
@@ -13,5 +14,6 @@ export default async function HousingPage() {
   } catch (err) {
     console.error('housing content query failed, using fallback:', err);
   }
-  return <HousingClient hero={hero} />;
+  const content = await getHousingContent();
+  return <HousingClient hero={hero} content={content} />;
 }

@@ -7,37 +7,12 @@ import Image from 'next/image';
 import { ArrowUpRight, Wrench, Building2, Wind, Droplets, Zap, Package, Calculator, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import type { PageContentView } from '@/lib/content/page-content';
+import type { HousingContent } from '@/lib/content/housing-content';
 
-const systemComponents = [
-  { icon: Building2, title: 'Cage Systems', desc: 'H-Type and S-Frame cages for Layer, Breeder, and Broiler' },
-  { icon: Zap, title: 'Automatic Feeding', desc: 'Chain & trolley feeding systems for layer, breeder, and broiler lines' },
-  { icon: Droplets, title: 'Nipple Drinking', desc: 'Adjustable nipple lines for all bird types and ages' },
-  { icon: Wrench, title: 'Manure Removal', desc: 'Automated belt conveyors, cross conveyors, and elevators' },
-  { icon: Package, title: 'Egg Collection', desc: 'Gentle slope collection with reduced breakage design' },
-  { icon: Wind, title: 'Environmental Control', desc: 'Cooling pads, exhaust fans, cone fans, and control panels' },
-  { icon: Package, title: 'Feed Silos', desc: 'Galvanized steel silos with screw conveyors' },
-  { icon: Building2, title: 'Shed Structure', desc: 'Pre-engineered steel frames and sidewall systems' },
-  { icon: Zap, title: 'Lighting System', desc: 'LED lighting optimised for laying and breeding cycles' },
-  { icon: Droplets, title: 'Water Lines', desc: 'Main water lines, pressure regulators, and medication dosers' },
-  { icon: Wrench, title: 'Control Panels', desc: 'Smart environmental control panels for every shed' },
-];
+// Icons for the "What We Build" grid, matched by index to the components list.
+const SYSTEM_ICONS = [Building2, Zap, Droplets, Wrench, Package, Wind, Package, Building2, Zap, Droplets, Wrench];
 
-const farmTypes = [
-  { label: 'Layer Farms', desc: 'Commercial egg production from 10,000 to 5 lakh+ birds', href: '/layer' },
-  { label: 'Breeder Farms', desc: 'Hatching egg production with practical male bird placement', href: '/breeder' },
-  { label: 'Broiler Farms', desc: 'Deep litter and H-Type cage broiler rearing systems', href: '/broiler' },
-  { label: 'Integrated Farms', desc: 'Pullet + Layer or Pullet + Breeder on the same land', href: '/contact' },
-];
-
-const projectSteps = [
-  { step: '01', title: 'Site Assessment', desc: 'We visit your land, assess topography, access, and local climate.' },
-  { step: '02', title: 'Farm Layout Planning', desc: 'Shed count, orientation, spacing, utility routing, and system sizing.' },
-  { step: '03', title: 'Manufacturing', desc: 'Cages, feeding systems, drinking lines, and silos made at Khalapur.' },
-  { step: '04', title: 'Installation', desc: 'Our team installs every component — structure, cages, plumbing, electrical.' },
-  { step: '05', title: 'Commissioning', desc: 'Full trial run, team training, and handover with ongoing support.' },
-];
-
-export function HousingClient({ hero }: { hero: PageContentView }) {
+export function HousingClient({ hero, content }: { hero: PageContentView; content: HousingContent }) {
   return (
     <main className="min-h-screen pt-32 pb-24 relative overflow-hidden" style={{ background: 'var(--bg)' }}>
       {/* Background Orbs */}
@@ -115,17 +90,21 @@ export function HousingClient({ hero }: { hero: PageContentView }) {
               className="text-4xl md:text-6xl font-['Space_Grotesk'] font-black tracking-tighter leading-none mb-6"
               style={{ color: 'var(--text)' }}
             >
-              WHAT METPLAST <span className="text-gradient">INTEGRATES.</span>
+              {content.whatWeBuild.heading}
             </h2>
-            <p className="text-lg font-medium leading-relaxed" style={{ color: 'var(--text-muted)' }}>
-              Every system below is designed, manufactured, and installed by Metplast. One vendor. One team. One responsibility.
-            </p>
+            {content.whatWeBuild.intro && (
+              <p className="text-lg font-medium leading-relaxed" style={{ color: 'var(--text-muted)' }}>
+                {content.whatWeBuild.intro}
+              </p>
+            )}
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-            {systemComponents.map((item, i) => (
+            {content.whatWeBuild.components.map((item, i) => {
+              const Icon = SYSTEM_ICONS[i] ?? Building2;
+              return (
               <motion.div
-                key={item.title}
+                key={i}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -137,7 +116,7 @@ export function HousingClient({ hero }: { hero: PageContentView }) {
                   className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
                   style={{ background: 'rgba(249,115,22,0.15)' }}
                 >
-                  <item.icon className="w-6 h-6" style={{ color: 'var(--accent)' }} />
+                  <Icon className="w-6 h-6" style={{ color: 'var(--accent)' }} />
                 </div>
                 <h3 className="font-['Space_Grotesk'] font-bold text-base mb-2" style={{ color: 'var(--text)' }}>
                   {item.title}
@@ -146,7 +125,8 @@ export function HousingClient({ hero }: { hero: PageContentView }) {
                   {item.desc}
                 </p>
               </motion.div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -156,16 +136,18 @@ export function HousingClient({ hero }: { hero: PageContentView }) {
         <div className="max-w-[1600px] mx-auto">
           <div className="mb-16 max-w-2xl">
             <h2 className="text-4xl md:text-6xl font-['Space_Grotesk'] font-black tracking-tighter leading-none mb-6">
-              WHO IT&apos;S <span className="text-gradient">FOR.</span>
+              {content.whoItsFor.heading}
             </h2>
-            <p className="text-lg font-medium leading-relaxed text-slate-600">
-              Metplast Housing is built for farmers starting fresh, expanding existing farms, or upgrading from manual to automated systems.
-            </p>
+            {content.whoItsFor.intro && (
+              <p className="text-lg font-medium leading-relaxed text-slate-600">
+                {content.whoItsFor.intro}
+              </p>
+            )}
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {farmTypes.map((type, i) => (
-              <Link key={type.label} href={type.href}>
+            {content.whoItsFor.types.map((type, i) => (
+              <Link key={i} href={type.href}>
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -197,18 +179,20 @@ export function HousingClient({ hero }: { hero: PageContentView }) {
               className="text-4xl md:text-6xl font-['Space_Grotesk'] font-black tracking-tighter leading-none mb-6"
               style={{ color: 'var(--text)' }}
             >
-              HOW A PROJECT <span className="text-gradient">WORKS.</span>
+              {content.projectFlow.heading}
             </h2>
-            <p className="text-lg font-medium" style={{ color: 'var(--text-muted)' }}>
-              From your first call to the day you stock birds — here is how Metplast manages your project.
-            </p>
+            {content.projectFlow.intro && (
+              <p className="text-lg font-medium" style={{ color: 'var(--text-muted)' }}>
+                {content.projectFlow.intro}
+              </p>
+            )}
           </div>
 
           <div className="grid md:grid-cols-5 gap-6 relative">
             <div className="hidden md:block absolute top-10 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[var(--border)] to-transparent z-0" />
-            {projectSteps.map((step, i) => (
+            {content.projectFlow.steps.map((step, i) => (
               <motion.div
-                key={step.step}
+                key={i}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -246,15 +230,15 @@ export function HousingClient({ hero }: { hero: PageContentView }) {
             </div>
             <div className="relative z-10 space-y-6">
               <h2 className="text-4xl md:text-6xl font-['Space_Grotesk'] font-black text-white tracking-tighter">
-                PLAN YOUR FARM.
+                {content.cta.heading}
               </h2>
               <p className="text-xl text-white/80 font-medium max-w-2xl mx-auto">
-                Talk to a Metplast engineer about your project. We'll guide you from site layout to cage selection to full commissioning.
+                {content.cta.body}
               </p>
               <div className="flex gap-4 justify-center flex-wrap pt-4">
-                <Link href="/contact">
+                <Link href={content.cta.href}>
                   <Button className="h-14 px-10 rounded-full font-bold text-lg text-white btn-glow" style={{ background: 'var(--accent)' }}>
-                    Enquire Now <ArrowUpRight className="ml-2 w-5 h-5" />
+                    {content.cta.buttonLabel} <ArrowUpRight className="ml-2 w-5 h-5" />
                   </Button>
                 </Link>
                 <Link href="/calculators">
