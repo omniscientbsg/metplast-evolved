@@ -47,3 +47,7 @@ next-env.d.ts
 
 # CMS-uploaded images (runtime, mounted volume in prod)
 /public/uploads/
+
+# Deploy artifact (contains .env secrets — never commit)
+/metplast-hostinger.zip
+*.zip
