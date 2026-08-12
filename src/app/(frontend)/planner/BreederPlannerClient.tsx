@@ -6,6 +6,7 @@ import { Calculator, Settings2, ArrowRight, AlertTriangle, Info, Ban } from 'luc
 import { useRouter } from 'next/navigation'
 import { boxFamily, type MasterData, type PlannerProduct } from '@/lib/planner/master-data'
 import { planForward, type ForwardInput, type PlannerMessage } from '@/lib/planner/validation'
+import { buildPlannerDrawings } from '@/lib/planner/drawings'
 
 const PRODUCT_LABEL: Record<PlannerProduct, string> = {
   BREEDER: 'Breeder (production)',
@@ -70,7 +71,7 @@ export function BreederPlannerClient({ data }: { data: MasterData }) {
     setF((p) => ({ ...p, product, boxSize: String(b?.boxSize ?? 1), config: String(c?.configNo ?? 1) }))
   }
 
-  const report = useMemo(() => {
+  const { report, drawings } = useMemo(() => {
     const input: ForwardInput = {
       product: f.product,
       houseLengthFt: Number(f.houseLengthFt),
@@ -80,7 +81,9 @@ export function BreederPlannerClient({ data }: { data: MasterData }) {
       config: Number(f.config),
       malePer100Females: Number(f.male),
     }
-    return planForward(input, data)
+    const rep = planForward(input, data)
+    const dr = rep.ok && rep.result ? buildPlannerDrawings(rep.result, input, data) : null
+    return { report: rep, drawings: dr }
   }, [f, data])
   const r = report.result
 
@@ -257,6 +260,22 @@ export function BreederPlannerClient({ data }: { data: MasterData }) {
                 {report.messages.length > 0 && (
                   <div className="space-y-2">
                     {report.messages.map((msg, i) => <MessageRow key={i} m={msg} />)}
+                  </div>
+                )}
+
+                {/* Layout drawings — Phase 5 / Section 16 */}
+                {drawings && (
+                  <div className="space-y-3">
+                    <p className="text-[var(--accent)] font-bold tracking-widest uppercase text-sm">Layout drawings</p>
+                    <div className="bg-white rounded-2xl p-3 overflow-x-auto">
+                      <div className="min-w-[520px]" dangerouslySetInnerHTML={{ __html: drawings.crossSection }} />
+                    </div>
+                    <div className="bg-white rounded-2xl p-3 overflow-x-auto">
+                      <div className="min-w-[520px]" dangerouslySetInnerHTML={{ __html: drawings.plan }} />
+                    </div>
+                    <p className="text-[#9AA7BD] text-xs">
+                      Approximate overview. Male line layout and positioning are finalised during execution.
+                    </p>
                   </div>
                 )}
 
