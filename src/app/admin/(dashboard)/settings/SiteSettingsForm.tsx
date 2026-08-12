@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { SITE_SETTING_KEYS } from '@/lib/settings/site-settings';
+import { uploadImage as uploadImageApi } from '@/lib/upload-client';
 
 const input = 'w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/20 focus:outline-none focus:border-primary transition-colors';
 const label = 'block text-xs font-bold text-white/60 uppercase tracking-widest mb-2';
@@ -15,13 +16,11 @@ export function SiteSettingsForm({ initial }: { initial: Record<string, string> 
   function set(key: string, val: string) { setV((p) => ({ ...p, [key]: val })); }
 
   async function uploadImage(key: string, file: File) {
-    const fd = new FormData(); fd.append('file', file);
+    setError('');
     try {
-      const res = await fetch('/api/admin/upload', { method: 'POST', body: fd });
-      if (!res.ok) { setError('Image upload failed.'); return; }
-      const { path } = await res.json();
+      const path = await uploadImageApi(file);
       setV((p) => ({ ...p, [key]: path }));
-    } catch { setError('Image upload failed (network error).'); }
+    } catch (e) { setError(e instanceof Error ? e.message : 'Image upload failed.'); }
   }
 
   async function submit(e: React.FormEvent) {

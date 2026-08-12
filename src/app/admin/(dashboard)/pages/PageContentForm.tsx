@@ -5,6 +5,7 @@ import { useState } from 'react';
 import type { PageContentView, PageDef } from '@/lib/content/page-content';
 import { StringListEditor } from './StringListEditor';
 import { CrossLinksEditor } from './CrossLinksEditor';
+import { uploadImage as uploadImageApi } from '@/lib/upload-client';
 
 const input = 'w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white placeholder:text-white/30 focus:outline-none focus:border-primary';
 const label = 'block text-xs font-bold text-white/60 uppercase tracking-widest mb-2';
@@ -26,13 +27,11 @@ export function PageContentForm({ def, initial }: { def: PageDef; initial: PageC
   }
 
   async function uploadImage(file: File) {
-    const fd = new FormData(); fd.append('file', file);
+    setError('');
     try {
-      const res = await fetch('/api/admin/upload', { method: 'POST', body: fd });
-      if (!res.ok) { setError('Image upload failed.'); return; }
-      const { path } = await res.json();
+      const path = await uploadImageApi(file);
       setV((p) => ({ ...p, image: path }));
-    } catch { setError('Image upload failed (network error).'); }
+    } catch (e) { setError(e instanceof Error ? e.message : 'Image upload failed.'); }
   }
 
   async function submit(e: React.FormEvent) {

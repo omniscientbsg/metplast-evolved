@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { RichTextEditor } from './RichTextEditor';
 import { slugify } from '@/lib/content/blog-view';
+import { uploadImage as uploadImageApi } from '@/lib/upload-client';
 
 interface CatOption { id: string; name: string }
 
@@ -49,14 +50,11 @@ export function BlogForm({ mode, id, categories, initial }: {
   }
 
   async function uploadCover(file: File) {
-    const fd = new FormData();
-    fd.append('file', file);
+    setError('');
     try {
-      const res = await fetch('/api/admin/upload', { method: 'POST', body: fd });
-      if (!res.ok) { setError('Cover upload failed.'); return; }
-      const { path } = await res.json();
+      const path = await uploadImageApi(file);
       setV((p) => ({ ...p, image: path }));
-    } catch { setError('Cover upload failed (network error).'); }
+    } catch (e) { setError(e instanceof Error ? e.message : 'Cover upload failed.'); }
   }
 
   async function submit(e: React.FormEvent) {

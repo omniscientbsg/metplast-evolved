@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useState, type ReactNode } from 'react';
 import type { AboutContent, StatTile, ValueCard } from '@/lib/content/about-content';
+import { uploadImage as uploadImageApi } from '@/lib/upload-client';
 
 const input = 'w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white placeholder:text-white/30 focus:outline-none focus:border-primary';
 const label = 'block text-xs font-bold text-white/60 uppercase tracking-widest mb-2';
@@ -50,14 +51,9 @@ function ListEditor<T extends object>({ items, onChange, blank, renderRow, label
 
 function ImageField({ image, onUploaded, onError }: { image: string; onUploaded: (path: string) => void; onError: (msg: string) => void }) {
   async function handle(file: File) {
-    const fd = new FormData();
-    fd.append('file', file);
     try {
-      const res = await fetch('/api/admin/upload', { method: 'POST', body: fd });
-      if (!res.ok) { onError('Image upload failed.'); return; }
-      const { path } = await res.json();
-      onUploaded(path);
-    } catch { onError('Image upload failed (network error).'); }
+      onUploaded(await uploadImageApi(file));
+    } catch (e) { onError(e instanceof Error ? e.message : 'Image upload failed.'); }
   }
   return (
     <div>

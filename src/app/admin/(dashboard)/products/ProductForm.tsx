@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { SELF_CONTAINED_BLOCKS } from '@/lib/content/section-mapper';
+import { uploadImage as uploadImageApi } from '@/lib/upload-client';
 
 const PAGES = ['layer', 'breeder', 'broiler', 'environmental-control', 'feed-silos'];
 
@@ -63,18 +64,12 @@ export function ProductForm({
   }
 
   async function uploadImage(file: File) {
-    const fd = new FormData();
-    fd.append('file', file);
+    setError('');
     try {
-      const res = await fetch('/api/admin/upload', { method: 'POST', body: fd });
-      if (!res.ok) {
-        setError('Image upload failed.');
-        return;
-      }
-      const { path } = await res.json();
+      const path = await uploadImageApi(file);
       setV((p) => ({ ...p, images: [...p.images, path] }));
-    } catch {
-      setError('Image upload failed (network error).');
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Image upload failed.');
     }
   }
 

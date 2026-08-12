@@ -3,6 +3,7 @@
 import { useEditor, EditorContent, type Editor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
+import { uploadImage as uploadImageApi } from '@/lib/upload-client';
 
 const btn = 'px-2.5 py-1 rounded-lg text-sm text-white/70 hover:text-white hover:bg-white/10 transition-colors';
 const btnActive = 'px-2.5 py-1 rounded-lg text-sm text-white bg-primary';
@@ -55,14 +56,10 @@ export function RichTextEditor({ value, onChange }: { value: string; onChange: (
     inputEl.onchange = async () => {
       const file = inputEl.files?.[0];
       if (!file) return;
-      const fd = new FormData();
-      fd.append('file', file);
       try {
-        const res = await fetch('/api/admin/upload', { method: 'POST', body: fd });
-        if (!res.ok) { window.alert('Image upload failed.'); return; }
-        const { path } = await res.json();
+        const path = await uploadImageApi(file);
         editor.chain().focus().setImage({ src: path }).run();
-      } catch { window.alert('Image upload failed (network error).'); }
+      } catch (e) { window.alert(e instanceof Error ? e.message : 'Image upload failed.'); }
     };
     inputEl.click();
   }

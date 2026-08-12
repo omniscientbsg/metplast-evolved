@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { uploadImage as uploadImageApi } from '@/lib/upload-client';
 
 interface CatOption { id: string; name: string }
 
@@ -35,14 +36,11 @@ export function GalleryForm({ mode, id, categories, initial }: {
   }
 
   async function uploadImage(file: File) {
-    const fd = new FormData();
-    fd.append('file', file);
+    setError('');
     try {
-      const res = await fetch('/api/admin/upload', { method: 'POST', body: fd });
-      if (!res.ok) { setError('Image upload failed.'); return; }
-      const { path } = await res.json();
+      const path = await uploadImageApi(file);
       setV((p) => ({ ...p, src: path }));
-    } catch { setError('Image upload failed (network error).'); }
+    } catch (e) { setError(e instanceof Error ? e.message : 'Image upload failed.'); }
   }
 
   async function submit(e: React.FormEvent) {

@@ -4,14 +4,7 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { writeFile, mkdir } from 'fs/promises';
 import path from 'path';
 import { randomUUID } from 'crypto';
-
-const ALLOWED: Record<string, string> = {
-  'image/jpeg': 'jpg',
-  'image/png': 'png',
-  'image/webp': 'webp',
-  'image/avif': 'avif',
-};
-const MAX_BYTES = 5 * 1024 * 1024;
+import { ALLOWED_IMAGE_TYPES, validateImageUpload } from '@/lib/upload-limits';
 
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions);
@@ -22,13 +15,13 @@ export async function POST(req: Request) {
   if (!(file instanceof File)) {
     return NextResponse.json({ error: 'No file provided' }, { status: 400 });
   }
-  const ext = ALLOWED[file.type];
-  if (!ext) {
-    return NextResponse.json({ error: 'Unsupported image type' }, { status: 415 });
+  // Same size/type rule the client enforces — never trust the client.
+  const invalid = validateImageUpload(file);
+  if (invalid) {
+    const status = ALLOWED_IMAGE_TYPES[file.type] ? 413 : 415;
+    return NextResponse.json({ error: invalid }, { status });
   }
-  if (file.size > MAX_BYTES) {
-    return NextResponse.json({ error: 'Image too large (max 5 MB)' }, { status: 413 });
-  }
+  const ext = ALLOWED_IMAGE_TYPES[file.type];
 
   const dir = process.env.UPLOAD_DIR || path.join(process.cwd(), 'public', 'uploads');
   await mkdir(dir, { recursive: true });
