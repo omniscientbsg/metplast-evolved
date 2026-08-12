@@ -28,6 +28,7 @@ const links = [
   { name: 'Environmental Control', href: '/environmental-control' },
   { name: 'Feed Silos', href: '/feed-silos' },
   { name: 'Calculators', href: '/calculators' },
+  { name: 'Breeder Planner', href: '/planner' },
   { name: 'Gallery', href: '/gallery' },
   { name: 'Blog', href: '/blog' },
   { name: 'Contact', href: '/contact' },
