@@ -48,11 +48,18 @@ function mapBox(b: {
  * yet, so a fresh deploy still functions before `db:seed-planner` is run.
  */
 export async function loadMasterData(): Promise<MasterData> {
-  const [boxes, configs, constants] = await Promise.all([
-    prisma.plannerBoxSize.findMany({ where: { active: true, valid: true }, orderBy: [{ product: 'asc' }, { boxSize: 'asc' }] }),
-    prisma.plannerConfig.findMany({ orderBy: { configNo: 'asc' } }),
-    prisma.plannerConstant.findMany(),
-  ])
+  let boxes, configs, constants
+  try {
+    ;[boxes, configs, constants] = await Promise.all([
+      prisma.plannerBoxSize.findMany({ where: { active: true, valid: true }, orderBy: [{ product: 'asc' }, { boxSize: 'asc' }] }),
+      prisma.plannerConfig.findMany({ orderBy: { configNo: 'asc' } }),
+      prisma.plannerConstant.findMany(),
+    ])
+  } catch (e) {
+    // DB unreachable / tables not migrated yet — keep the tool working on canonical data.
+    console.warn('[planner] could not read master data from DB — using canonical defaults.', e)
+    return DEFAULT_MASTER_DATA
+  }
 
   if (boxes.length === 0 || configs.length === 0 || constants.length === 0) {
     console.warn('[planner] master data not fully seeded — falling back to canonical defaults. Run `npm run db:seed-planner`.')
