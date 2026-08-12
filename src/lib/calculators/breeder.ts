@@ -1,14 +1,16 @@
-// Breeder cage capacity — restored to the original WordPress engine.
+// Breeder cage capacity — verbatim port of the original WordPress engine
+// (staging /breeder-calculator, recovered JS archived in
+// docs/original-calculators/). Client-confirmed authoritative: 300/4/4 → 12,954.
 //
 // This calculator is INDEPENDENT. Do not share these constants with any other
 // calculator: the Next.js port wrongly assumed all cage calculators used one
-// engine (only birds-per-box differing), which overcounted breeder capacity by
-// ~43%. Every constant here is breeder-specific.
+// engine (only birds-per-box differing), which overcounted breeder capacity.
+// Every constant here is breeder-specific.
 export const BREEDER = {
-  // Reserved (non-cage) length at the shed ends, in feet.
-  CM: 8, // control / machine room
-  MU: 6.5, // manure / service unit
-  EndKit: 14.0, // end kit + walkway
+  // Reserved (non-cage) length at the shed ends, in feet. CM+MU+EndKit = 16.6.
+  CM: 7, // control / machine room
+  MU: 4.1, // manure / service unit
+  EndKit: 5.5, // end kit + walkway
   sectionLength: 6, // ft per cage section
   baseHeight: 2.52, // ft floor-to-first-tier
   tierHeight: 2.16, // ft per stacked tier
@@ -52,8 +54,8 @@ export function computeBreeder({ shedLength, rows, tiers }: BreederInput): Breed
   if (!tiers || tiers < BREEDER.tiersMin || tiers > BREEDER.tiersMax)
     return { error: `Tiers must be between ${BREEDER.tiersMin} and ${BREEDER.tiersMax}.` }
 
-  const usableLength1 = shedLength - (BREEDER.CM + BREEDER.MU + BREEDER.EndKit) // shedLength − 28.5
-  const sectionsPerRow = Math.floor(usableLength1 / BREEDER.sectionLength) - 2
+  const usableLength1 = shedLength - (BREEDER.CM + BREEDER.MU + BREEDER.EndKit) // shedLength − 16.6
+  const sectionsPerRow = Math.floor(usableLength1 / BREEDER.sectionLength) - 1
   if (sectionsPerRow <= 0) return { error: 'Shed length too short' }
 
   const totalSections = sectionsPerRow * rows

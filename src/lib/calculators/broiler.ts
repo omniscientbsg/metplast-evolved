@@ -1,19 +1,20 @@
-// Broiler deep-litter capacity — INDEPENDENT calculator.
+// Broiler deep-litter capacity — verbatim port of the original WordPress engine
+// (staging /broiler-calculator, recovered JS archived in
+// docs/original-calculators/).
 //
-// The port hardcoded a single 1.2 sq.ft/bird density, undercounting capacity by
-// ~50%. The original page let the user pick the stocking area per bird. Restored
-// here as a dropdown; capacity = floor(length × width / areaPerBird).
+// The earlier port hardcoded a single 1.2 sq.ft/bird density, undercounting
+// capacity by ~50%. The original page let the user pick the stocking area per
+// bird (dropdown); capacity = floor(length × width / areaPerBird).
 //
-// The feed / water / fan / cooling-pad outputs were NOT on the original page.
-// They are gated behind `showSystemEstimates` (off) until the client approves
-// them — the code is kept so it can be switched on without a rewrite.
+// The original had exactly two outputs: total shed area and total birds. The
+// feed / water / fan / cooling-pad estimates were never on the original page and
+// have been removed.
 export const BROILER = {
   areaPerBirdOptions: [0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9] as const,
-  shedLengthMin: 50,
-  shedLengthMax: 500, // TODO: confirm against original page
+  shedLengthMin: 100,
+  shedLengthMax: 450,
   shedWidthMin: 20,
-  shedWidthMax: 100, // TODO: confirm against original page
-  showSystemEstimates: false, // feed/water/fan/cooling gated pending client sign-off
+  shedWidthMax: 70,
 } as const
 
 export interface BroilerInput {
@@ -26,13 +27,6 @@ export interface BroilerResult {
   area: number
   totalBirds: number
   areaPerBird: number
-  // Only populated when BROILER.showSystemEstimates is true.
-  estimates?: {
-    feedLines: number
-    waterLines: number
-    exhaustFans: number
-    coolingPadSqFt: number
-  }
 }
 
 export function computeBroiler({ shedLength, shedWidth, areaPerBird }: BroilerInput): BroilerResult | { error: string } {
@@ -46,16 +40,5 @@ export function computeBroiler({ shedLength, shedWidth, areaPerBird }: BroilerIn
   const area = shedLength * shedWidth
   const totalBirds = Math.floor(area / areaPerBird)
 
-  const result: BroilerResult = { area, totalBirds, areaPerBird }
-
-  if (BROILER.showSystemEstimates) {
-    result.estimates = {
-      feedLines: Math.ceil(shedWidth / 15),
-      waterLines: Math.ceil(shedWidth / 10),
-      exhaustFans: Math.ceil((area * 8) / 10000),
-      coolingPadSqFt: Math.ceil(area / 400),
-    }
-  }
-
-  return result
+  return { area, totalBirds, areaPerBird }
 }

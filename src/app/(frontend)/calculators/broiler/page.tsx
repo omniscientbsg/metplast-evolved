@@ -13,21 +13,11 @@ export default function BroilerCalculatorPage() {
     });
     if ('error' in r) return r;
 
-    const results: CalculatorResult[] = [
-      { title: 'Total Broiler Capacity', value: r.totalBirds.toLocaleString(), highlight: true },
-      { title: 'Total Shed Area', value: `${r.area.toLocaleString()} sq.ft` },
-      { title: 'Area per Bird', value: `${r.areaPerBird.toFixed(2)} sq.ft` },
+    // Original page had exactly two outputs: total shed area, total birds.
+    return [
+      { title: 'Total Shed Area', value: `${r.area.toFixed(2)} sq.ft` },
+      { title: 'Total Birds per Shed', value: r.totalBirds.toLocaleString(), highlight: true },
     ];
-    // Gated behind BROILER.showSystemEstimates (off pending client sign-off).
-    if (r.estimates) {
-      results.push(
-        { title: 'Pan Feeding System', value: `${r.estimates.feedLines} Lines` },
-        { title: 'Nipple Drinking System', value: `${r.estimates.waterLines} Lines` },
-        { title: 'Ventilation Estimate', value: `${r.estimates.exhaustFans} Exhaust Fans` },
-        { title: 'Cooling Pad Estimate', value: `${r.estimates.coolingPadSqFt} sq.ft` },
-      );
-    }
-    return results;
   };
 
   return (

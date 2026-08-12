@@ -12,14 +12,14 @@ function ok<T>(r: T | { error: string }): T {
 }
 
 describe('computeBreeder', () => {
-  it('matches the known-good 300/4/4 case (regression: fixes the ~43% overcount)', () => {
+  it('matches the known-good 300/4/4 case (staging engine, client-confirmed 12,954)', () => {
     const r = ok(computeBreeder({ shedLength: 300, rows: 4, tiers: 4 }))
-    expect(r.sectionsPerRow).toBe(43)
-    expect(r.totalSections).toBe(172)
-    expect(r.totalBoxes).toBe(5504)
-    expect(r.femaleBirds).toBe(11008)
-    expect(r.maleBirds).toBe(1101) // round(11008 × 0.10)
-    expect(r.totalBirds).toBe(12109)
+    expect(r.sectionsPerRow).toBe(46) // floor((300 − 16.6) / 6) − 1
+    expect(r.totalSections).toBe(184)
+    expect(r.totalBoxes).toBe(5888)
+    expect(r.femaleBirds).toBe(11776)
+    expect(r.maleBirds).toBe(1178) // round(11776 × 0.10)
+    expect(r.totalBirds).toBe(12954)
     expect(r.shedHeight).toBeCloseTo(13.62, 2)
   })
 
@@ -59,15 +59,12 @@ describe('computeBroiler', () => {
     expect(ok(computeBroiler({ shedLength: 200, shedWidth: 40, areaPerBird: 0.6 })).totalBirds).toBe(Math.floor(8000 / 0.6))
   })
 
-  it('gates the feed/water/fan/cooling estimates off by default', () => {
-    const r = ok(computeBroiler({ shedLength: 200, shedWidth: 40, areaPerBird: 0.65 }))
-    expect(r.estimates).toBeUndefined()
-  })
-
-  it('rejects an area-per-bird not in the dropdown, and out-of-range dimensions', () => {
+  it('rejects an area-per-bird not in the dropdown, and out-of-range dimensions (len 100–450, width 20–70)', () => {
     expect(computeBroiler({ shedLength: 200, shedWidth: 40, areaPerBird: 1.2 })).toHaveProperty('error')
-    expect(computeBroiler({ shedLength: 10, shedWidth: 40, areaPerBird: 0.65 })).toHaveProperty('error')
-    expect(computeBroiler({ shedLength: 200, shedWidth: 5, areaPerBird: 0.65 })).toHaveProperty('error')
+    expect(computeBroiler({ shedLength: 90, shedWidth: 40, areaPerBird: 0.65 })).toHaveProperty('error')
+    expect(computeBroiler({ shedLength: 460, shedWidth: 40, areaPerBird: 0.65 })).toHaveProperty('error')
+    expect(computeBroiler({ shedLength: 200, shedWidth: 15, areaPerBird: 0.65 })).toHaveProperty('error')
+    expect(computeBroiler({ shedLength: 200, shedWidth: 80, areaPerBird: 0.65 })).toHaveProperty('error')
   })
 })
 
