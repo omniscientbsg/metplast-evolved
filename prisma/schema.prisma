@@ -34,7 +34,11 @@ model Enquiry {
   name      String
   email     String
   phone     String
-  message   String
+  // The API packs every context field (company, bird type, capacity, source
+  // URL, customer message...) into this column, which blows past the 191-char
+  // VARCHAR a bare `String` becomes on MySQL. Strict MySQL rejects the insert,
+  // non-strict silently truncates the lead. Must stay @db.Text.
+  message   String   @db.Text
   status    String   @default("NEW") // NEW, IN_PROGRESS, CLOSED
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -144,4 +148,55 @@ model PageContent {
   crossLinks       Json
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
+}
+
+// ---------------------------------------------------------------------------
+// Breeder Farm Planner — master data (Box-Size Logic Board spec v1.0).
+// Stored in the DB (not hard-coded) so Metplast can add a box size without a
+// code release. Seeded from src/lib/planner/master-data.ts via scripts/seed-planner.ts.
+// ---------------------------------------------------------------------------
+
+model PlannerBoxSize {
+  id               String   @id @default(cuid())
+  product          String   // BREEDER | BREEDER_PULLET
+  boxSize          Int
+  femaleFrontIn    Float
+  femaleDepthIn    Float
+  maleFrontIn      Float
+  maleDepthIn      Float
+  fBoxesPerLine    Int      // nF
+  mBoxesPerLine    Int      // nM
+  birdsPerFBox     Int      // bF
+  birdsPerMBox     Int      // bM
+  autoFitMaleFront Boolean  @default(false) // male front derived (sectionLen/nM), defect D6
+  // Golden Rule (Section 6): femaleFront*nF must equal maleFront*nM within 0.001 in.
+  // Persisted so an invalid row can be hidden from clients without recomputation.
+  valid            Boolean  @default(true)
+  active           Boolean  @default(true) // admin can retire a size without deleting history
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@unique([product, boxSize])
+  @@index([product, active, valid])
+}
+
+model PlannerConfig {
+  id                String   @id @default(cuid())
+  configNo          Int      @unique
+  description       String
+  startKitFt        Float
+  endKitFt          Float
+  frontServiceMinFt Float
+  addsTrolleyHeight Boolean  @default(false)
+  availableOnPullet Boolean  @default(true)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model PlannerConstant {
+  id        String   @id @default(cuid())
+  product   String   @unique // BREEDER | BREEDER_PULLET
+  values    Json     // ProductConstants (Sections 5.1-5.3)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

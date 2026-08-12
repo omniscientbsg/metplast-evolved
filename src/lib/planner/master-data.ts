@@ -154,3 +154,90 @@ export function isBoxSizeValid(row: Pick<BoxSizeRow, 'femaleFrontIn' | 'fBoxesPe
 export function boxFamily(row: Pick<BoxSizeRow, 'mBoxesPerLine'>): 'A' | 'B' {
   return row.mBoxesPerLine >= 5 ? 'B' : 'A'
 }
+
+/** Raw box-size fields as they arrive from the admin form / API (numbers may be strings). */
+export interface BoxSizeInput {
+  product: unknown
+  boxSize: unknown
+  femaleFrontIn: unknown
+  femaleDepthIn: unknown
+  maleFrontIn: unknown
+  maleDepthIn: unknown
+  fBoxesPerLine: unknown
+  mBoxesPerLine: unknown
+  birdsPerFBox: unknown
+  birdsPerMBox: unknown
+  autoFitMaleFront?: unknown
+}
+
+export type BoxSizeValidation =
+  | { ok: true; row: BoxSizeRow; impliedMaleFrontIn: number }
+  | { ok: false; error: string; impliedMaleFrontIn: number | null }
+
+function posNum(v: unknown): number | null {
+  const n = typeof v === 'string' ? Number(v) : (v as number)
+  return typeof n === 'number' && Number.isFinite(n) && n > 0 ? n : null
+}
+
+function posInt(v: unknown): number | null {
+  const n = posNum(v)
+  return n !== null && Number.isInteger(n) ? n : null
+}
+
+/**
+ * Validate and normalise an admin box-size submission (Section 6.2). Shared by
+ * the client form (live feedback) and the server route (authoritative gate). On
+ * an auto-fit row the male front is derived from the section length. Rejects any
+ * row that fails the Golden Rule — the form must not save a mismatch.
+ */
+export function validateBoxSizeInput(raw: BoxSizeInput): BoxSizeValidation {
+  const product = raw.product === 'BREEDER' || raw.product === 'BREEDER_PULLET' ? raw.product : null
+  const boxSize = posInt(raw.boxSize)
+  const femaleFrontIn = posNum(raw.femaleFrontIn)
+  const femaleDepthIn = posNum(raw.femaleDepthIn)
+  const maleDepthIn = posNum(raw.maleDepthIn)
+  const fBoxesPerLine = posInt(raw.fBoxesPerLine)
+  const mBoxesPerLine = posInt(raw.mBoxesPerLine)
+  const birdsPerFBox = posInt(raw.birdsPerFBox)
+  const birdsPerMBox = posInt(raw.birdsPerMBox)
+  const autoFitMaleFront = Boolean(raw.autoFitMaleFront)
+
+  if (!product) return { ok: false, error: 'Product must be BREEDER or BREEDER_PULLET.', impliedMaleFrontIn: null }
+  if (boxSize === null) return { ok: false, error: 'Box size must be a positive whole number.', impliedMaleFrontIn: null }
+  if (femaleFrontIn === null || femaleDepthIn === null || maleDepthIn === null)
+    return { ok: false, error: 'All box dimensions must be positive numbers.', impliedMaleFrontIn: null }
+  if (fBoxesPerLine === null || mBoxesPerLine === null || birdsPerFBox === null || birdsPerMBox === null)
+    return { ok: false, error: 'Box and bird counts must be positive whole numbers.', impliedMaleFrontIn: null }
+
+  const impliedMaleFrontIn = (femaleFrontIn * fBoxesPerLine) / mBoxesPerLine
+  // Auto-fit rows (e.g. breeder 4 & 7) derive the male front from the section length.
+  const maleFrontIn = autoFitMaleFront ? impliedMaleFrontIn : posNum(raw.maleFrontIn)
+  if (maleFrontIn === null)
+    return { ok: false, error: 'Male front width must be a positive number.', impliedMaleFrontIn }
+
+  const row: BoxSizeRow = {
+    product,
+    boxSize,
+    femaleFrontIn,
+    femaleDepthIn,
+    maleFrontIn,
+    maleDepthIn,
+    fBoxesPerLine,
+    mBoxesPerLine,
+    birdsPerFBox,
+    birdsPerMBox,
+    autoFitMaleFront,
+  }
+
+  if (!isBoxSizeValid(row)) {
+    const female = sectionLengthIn(row)
+    const male = maleSideLengthIn(row)
+    return {
+      ok: false,
+      error: `Golden Rule failed: female side ${female.toFixed(3)} in ≠ male side ${male.toFixed(3)} in. Implied male front is ${impliedMaleFrontIn.toFixed(3)} in.`,
+      impliedMaleFrontIn,
+    }
+  }
+
+  return { ok: true, row, impliedMaleFrontIn }
+}

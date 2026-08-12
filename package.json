@@ -12,6 +12,7 @@
     "lint": "eslint",
     "postinstall": "prisma generate",
     "db:seed": "tsx prisma/seed.ts",
+    "db:seed-planner": "tsx scripts/seed-planner.ts",
     "db:reset-admin": "tsx scripts/reset-admin.ts",
     "db:migrate-content": "tsx scripts/migrate-content.ts",
     "db:migrate-gallery": "tsx scripts/migrate-gallery.ts",
