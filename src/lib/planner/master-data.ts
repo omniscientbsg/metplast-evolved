@@ -65,18 +65,21 @@ export const MM_TO_FT = 0.00328084
 export const IN2_TO_M2 = 0.00064516
 
 // ---------------------------------------------------------------------------
-// BROILER BREEDER box table — Section 4 (7 sizes).
-// Male front for auto-fit rows (4, 7) is stored as the EXACT femaleFront*nF/nM
-// so the Golden Rule compares exactly, not the rounded 24.667 / 26.000 display.
+// BROILER BREEDER box table — Section 4.
+// Male front for auto-fit rows is stored as the EXACT femaleFront*nF/nM so the
+// Golden Rule compares exactly, not the rounded 26.000 display.
+// D6 (Arnav, 12 Aug 2026): box size 4 REMOVED from the online planner — its
+// male front back-calculates to 74/3 = 24.667 in, not a manufacturable width.
+// (Box 7 is also back-calculated but resolves to exactly 26.000 in, so it stays.)
+// Box 4 is retained only in the internal Excel for historical reconciliation.
 // ---------------------------------------------------------------------------
 export const BREEDER_BOXES: BoxSizeRow[] = [
-  { product: 'BREEDER', boxSize: 1, femaleFrontIn: 18,    femaleDepthIn: 18, maleFrontIn: 24,          maleDepthIn: 18, fBoxesPerLine: 4, mBoxesPerLine: 3, birdsPerFBox: 2, birdsPerMBox: 2, autoFitMaleFront: false },
-  { product: 'BREEDER', boxSize: 2, femaleFrontIn: 18.75, femaleDepthIn: 18, maleFrontIn: 15,          maleDepthIn: 18, fBoxesPerLine: 4, mBoxesPerLine: 5, birdsPerFBox: 2, birdsPerMBox: 1, autoFitMaleFront: false },
-  { product: 'BREEDER', boxSize: 3, femaleFrontIn: 18.75, femaleDepthIn: 18, maleFrontIn: 25,          maleDepthIn: 18, fBoxesPerLine: 4, mBoxesPerLine: 3, birdsPerFBox: 2, birdsPerMBox: 2, autoFitMaleFront: false },
-  { product: 'BREEDER', boxSize: 4, femaleFrontIn: 18.5,  femaleDepthIn: 18, maleFrontIn: 74 / 3,      maleDepthIn: 18, fBoxesPerLine: 4, mBoxesPerLine: 3, birdsPerFBox: 2, birdsPerMBox: 2, autoFitMaleFront: true },
-  { product: 'BREEDER', boxSize: 5, femaleFrontIn: 19.5,  femaleDepthIn: 18, maleFrontIn: 15.6,        maleDepthIn: 18, fBoxesPerLine: 4, mBoxesPerLine: 5, birdsPerFBox: 2, birdsPerMBox: 1, autoFitMaleFront: false },
-  { product: 'BREEDER', boxSize: 6, femaleFrontIn: 19.05, femaleDepthIn: 18, maleFrontIn: 25.4,        maleDepthIn: 18, fBoxesPerLine: 4, mBoxesPerLine: 3, birdsPerFBox: 2, birdsPerMBox: 2, autoFitMaleFront: false },
-  { product: 'BREEDER', boxSize: 7, femaleFrontIn: 19.5,  femaleDepthIn: 18, maleFrontIn: 78 / 3,      maleDepthIn: 18, fBoxesPerLine: 4, mBoxesPerLine: 3, birdsPerFBox: 2, birdsPerMBox: 2, autoFitMaleFront: true },
+  { product: 'BREEDER', boxSize: 1, femaleFrontIn: 18,    femaleDepthIn: 18, maleFrontIn: 24,     maleDepthIn: 18, fBoxesPerLine: 4, mBoxesPerLine: 3, birdsPerFBox: 2, birdsPerMBox: 2, autoFitMaleFront: false },
+  { product: 'BREEDER', boxSize: 2, femaleFrontIn: 18.75, femaleDepthIn: 18, maleFrontIn: 15,     maleDepthIn: 18, fBoxesPerLine: 4, mBoxesPerLine: 5, birdsPerFBox: 2, birdsPerMBox: 1, autoFitMaleFront: false },
+  { product: 'BREEDER', boxSize: 3, femaleFrontIn: 18.75, femaleDepthIn: 18, maleFrontIn: 25,     maleDepthIn: 18, fBoxesPerLine: 4, mBoxesPerLine: 3, birdsPerFBox: 2, birdsPerMBox: 2, autoFitMaleFront: false },
+  { product: 'BREEDER', boxSize: 5, femaleFrontIn: 19.5,  femaleDepthIn: 18, maleFrontIn: 15.6,   maleDepthIn: 18, fBoxesPerLine: 4, mBoxesPerLine: 5, birdsPerFBox: 2, birdsPerMBox: 1, autoFitMaleFront: false },
+  { product: 'BREEDER', boxSize: 6, femaleFrontIn: 19.05, femaleDepthIn: 18, maleFrontIn: 25.4,   maleDepthIn: 18, fBoxesPerLine: 4, mBoxesPerLine: 3, birdsPerFBox: 2, birdsPerMBox: 2, autoFitMaleFront: false },
+  { product: 'BREEDER', boxSize: 7, femaleFrontIn: 19.5,  femaleDepthIn: 18, maleFrontIn: 78 / 3, maleDepthIn: 18, fBoxesPerLine: 4, mBoxesPerLine: 3, birdsPerFBox: 2, birdsPerMBox: 2, autoFitMaleFront: true },
 ]
 
 // ---------------------------------------------------------------------------

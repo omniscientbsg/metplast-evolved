@@ -88,7 +88,6 @@ export interface PlannerResult {
     heightMm: number
     cageHeightMm: number
     headroomMm: number
-    trolleyClearanceMm: number
     centreGapMm: number
     sideGapMm: number
   }
@@ -168,7 +167,10 @@ export function computePlanner(input: PlannerInput, data: MasterData = DEFAULT_M
   // ---- STEP 5: male:female allocation -----------------------------------
   const p = input.malePer100Females / 100
   const x = (p * bF * FB * N) / (MB * bM + p * bF * FB_top)
-  const x_int = clamp(Math.round(x), 0, N)
+  // D2 (Arnav, 12 Aug 2026): ROUND UP male sections. A male box is physically
+  // different (24 in front) — once built it can be left empty but not created,
+  // so the error is one-sided and we round in the safe direction.
+  const x_int = clamp(Math.ceil(x), 0, N)
   const mixed_sections = x_int
   const female_sections = N - x_int
 
@@ -185,7 +187,8 @@ export function computePlanner(input: PlannerInput, data: MasterData = DEFAULT_M
   const side_gap = input.sideGapMm ?? constants.sideGapMmDefault
   const shed_width_mm = constants.cageWidthMm * input.rows + centre_gap * (input.rows - 1) + 2 * side_gap
   const shed_width_ft = shed_width_mm * MM_TO_FT
-  const trolley_clearance_mm = (shed_width_mm - constants.rowWidthWithTrolleyMm * input.rows) / (input.rows + 1)
+  // (D9) The old "clear beside trolley" figure was removed — it was not a real
+  // dimension. Walkway validation uses the feeder-to-feeder gaps instead.
 
   // ---- STEP 8: shed height ----------------------------------------------
   const cage_h_mm = constants.legHeightMm + constants.tierHeightMm * input.tiers
@@ -244,7 +247,6 @@ export function computePlanner(input: PlannerInput, data: MasterData = DEFAULT_M
       heightMm: shed_height_mm,
       cageHeightMm: cage_h_mm,
       headroomMm: headroom_mm,
-      trolleyClearanceMm: trolley_clearance_mm,
       centreGapMm: centre_gap,
       sideGapMm: side_gap,
     },

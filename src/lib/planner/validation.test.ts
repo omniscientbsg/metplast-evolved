@@ -22,9 +22,9 @@ describe('planForward — TC-01 through the validation layer', () => {
     expect(rep.ok).toBe(true)
     expect(rep.result).not.toBeNull()
     expect(rep.result!.layout.sectionsPerRow).toBe(55)
-    expect(rep.result!.flock.total).toBe(12812)
-    expect(rep.result!.flock.females).toBe(11648)
-    expect(rep.result!.flock.males).toBe(1164)
+    expect(rep.result!.flock.total).toBe(12808)
+    expect(rep.result!.flock.females).toBe(11632)
+    expect(rep.result!.flock.males).toBe(1176)
     expect(rep.result!.shed.widthFt).toBeCloseTo(41.98, 2)
     expect(rep.result!.shed.heightFt).toBe(11)
     // No BLOCK / no WARN; only the informational dead-length note (0.5 ft) may appear.
@@ -70,11 +70,18 @@ describe('planForward — every rule fires on a crafted input (Section 15)', () 
     expect(rep.ok).toBe(true) // WARN only
   })
 
-  it('V9 — tight trolley clearance WARNs (9 rows → ~448 mm)', () => {
-    const rep = planForward(B({ rows: 9 }))
-    expect(has(rep.messages, 'V9')).toBe(true)
-    expect(rep.messages.find((m) => m.code === 'V9')!.severity).toBe('WARN')
-    expect(rep.ok).toBe(true)
+  it('V9 (D9) — walkway gap below 3.5 ft WARNs, below 3.0 ft BLOCKs', () => {
+    const warn = planForward(B({ sideGapMm: 1000 })) // ~3.28 ft
+    expect(has(warn.messages, 'V9')).toBe(true)
+    expect(warn.messages.find((m) => m.code === 'V9')!.severity).toBe('WARN')
+    expect(warn.ok).toBe(true)
+
+    const block = planForward(B({ sideGapMm: 900 })) // ~2.95 ft
+    expect(block.messages.find((m) => m.code === 'V9')!.severity).toBe('BLOCK')
+    expect(block.ok).toBe(false)
+
+    // The default breeder side gap (1066 mm = 3.5 ft standard) must NOT self-warn.
+    expect(has(planForward(B({})).messages, 'V9')).toBe(false)
   })
 
   it('V10 — dead length INFO names a better box (box 5 leaves 5+ ft)', () => {

@@ -103,13 +103,16 @@ export function buildCrossSection(res: PlannerResult, input: PlannerInput, data:
   const femaleRearH = c.femaleRearHeightIn * 25.4
   const maleH = c.maleHeightIn * 25.4
 
+  // D7 (Arnav, 12 Aug 2026): males sit on the MIDDLE tier by default (customer-
+  // changeable). Bird arithmetic is unaffected — one male tier either way.
+  const maleTierIndex = Math.round((tiers - 1) / 2)
   for (let r = 0; r < rows; r++) {
     const x0 = ox + side + r * rowPitch
     const leftX = x0
     const rightX = x0 + c.cageWidthMm - depth
     for (let t = 0; t < tiers; t++) {
       const yb = leg + t * tierH
-      const isMaleTop = t === tiers - 1 // depict a MIXED section: male top tier (Section 16.1)
+      const isMaleTop = t === maleTierIndex // depict a MIXED section: male middle tier (Section 16.1 / D7)
       // manure belt under each tier
       p.push(`<line x1="${x0}" y1="${Y(yb).toFixed(1)}" x2="${x0 + c.cageWidthMm}" y2="${Y(yb).toFixed(1)}" stroke="${COL.belt}" stroke-width="${sw}" stroke-dasharray="${(sw * 6).toFixed(0)} ${(sw * 4).toFixed(0)}"/>`)
       if (isMaleTop) {
@@ -157,12 +160,12 @@ export function buildCrossSection(res: PlannerResult, input: PlannerInput, data:
   p.push(`<text x="${ox + W - fs}" y="${Y(cageTop + trolleyH) - fs * 0.5}" font-size="${fs * 0.85}" fill="${COL.muted}" text-anchor="end">headroom ${res.shed.headroomMm.toFixed(0)} mm</text>`)
 
   // Title + legend + male-tier callout
-  p.push(`<text x="${ox}" y="${padTop * 0.5}" font-size="${fs * 1.15}" font-weight="700" fill="${COL.text}">Cross-section — ${tiers} tiers × ${rows} rows (mixed section shown)</text>`)
+  p.push(`<text x="${ox}" y="${padTop * 0.5}" font-size="${fs * 1.15}" font-weight="700" fill="${COL.text}">Cross-section — ${tiers} tiers × ${rows} rows (mixed section, male on middle tier)</text>`)
   const ly = padTop * 0.78
   p.push(`<rect x="${ox}" y="${ly - fs * 0.8}" width="${fs}" height="${fs}" fill="${COL.female}" stroke="${COL.femaleStroke}" stroke-width="${sw}"/>`)
   p.push(`<text x="${ox + fs * 1.3}" y="${ly}" font-size="${fs * 0.9}" fill="${COL.text}">Female (${res.cage.femaleBoxesPerLine}/line, sloped)</text>`)
   p.push(`<rect x="${ox + W * 0.42}" y="${ly - fs * 0.8}" width="${fs}" height="${fs}" fill="${COL.male}" stroke="${COL.maleStroke}" stroke-width="${sw}"/>`)
-  p.push(`<text x="${ox + W * 0.42 + fs * 1.3}" y="${ly}" font-size="${fs * 0.9}" fill="${COL.text}">Male top tier (${nM}/line)</text>`)
+  p.push(`<text x="${ox + W * 0.42 + fs * 1.3}" y="${ly}" font-size="${fs * 0.9}" fill="${COL.text}">Male middle tier (${nM}/line)</text>`)
 
   p.push(`</svg>`)
   return p.join('')

@@ -12,21 +12,21 @@ const qty = (b: ReturnType<typeof boqFor>, item: string) => b.lines.find((l) => 
 
 describe('computeBoq — TC-01 (config 3)', () => {
   const b = boqFor({})
-  it('cage quantities', () => {
-    expect(qty(b, 'H-Type cage — female positions')).toBe(11648)
-    expect(qty(b, 'H-Type cage — male positions')).toBe(1164)
+  it('cage quantities (D2 round-up)', () => {
+    expect(qty(b, 'H-Type cage — female positions')).toBe(11632)
+    expect(qty(b, 'H-Type cage — male positions')).toBe(1176)
     expect(qty(b, 'Frame assembly')).toBe(5)
     expect(qty(b, 'Total sections')).toBe(275)
-    expect(qty(b, 'Female boxes')).toBe(5824)
-    expect(qty(b, 'Male boxes')).toBe(582)
+    expect(qty(b, 'Female boxes')).toBe(5816)
+    expect(qty(b, 'Male boxes')).toBe(588)
     expect(qty(b, 'Manure belt')).toBe(15) // T×R = 3×5
     expect(qty(b, 'Feeder trough')).toBe(30) // 2×T×R
   })
   it('mats use female_boxes, not females/2 (D3)', () => {
-    expect(qty(b, 'PVC cage mats')).toBe(5824)
+    expect(qty(b, 'PVC cage mats')).toBe(5816)
   })
   it('nipple drinkers = female_boxes×1 + male_boxes×bM', () => {
-    expect(qty(b, 'Nipple drinkers')).toBe(5824 + 582 * 2) // 6988
+    expect(qty(b, 'Nipple drinkers')).toBe(5816 + 588 * 2) // 6992
   })
   it('config 3 includes feeding and egg collection', () => {
     expect(qty(b, 'Automatic feeding trolley')).toBe(5)

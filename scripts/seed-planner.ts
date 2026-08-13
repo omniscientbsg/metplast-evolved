@@ -22,7 +22,11 @@ async function main() {
       create: { ...b, valid, active: true },
     })
   }
-  console.log(`seeded ${boxes.length} box sizes`)
+  // Prune any box sizes no longer in the canonical set (e.g. box 4 removed by D6),
+  // so the DB is an exact mirror of the master module after every seed.
+  const keep = boxes.map((b) => ({ product: b.product, boxSize: b.boxSize }))
+  const pruned = await prisma.plannerBoxSize.deleteMany({ where: { NOT: { OR: keep } } })
+  console.log(`seeded ${boxes.length} box sizes${pruned.count ? `, pruned ${pruned.count} stale` : ''}`)
 
   for (const c of EQUIPMENT_CONFIGS) {
     await prisma.plannerConfig.upsert({ where: { configNo: c.configNo }, update: c, create: c })

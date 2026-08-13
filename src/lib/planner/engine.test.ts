@@ -40,15 +40,17 @@ const B = (o: Partial<PlannerInput>): PlannerInput => ({
   ...o,
 })
 
+// Expected values reflect D2 (ROUND UP male sections). TC-03/05/07 are unchanged
+// because their x was already an integer or rounded up anyway.
 const CASES: Case[] = [
-  { id: 'TC-01', in: B({}), sectionsPerRow: 55, totalSections: 275, mixedSections: 97, females: 11648, males: 1164, total: 12812, achievedPct: 9.99, widthFt: 41.98, heightFt: 11 },
-  { id: 'TC-02', in: B({ tiers: 4 }), sectionsPerRow: 54, totalSections: 270, mixedSections: 127, females: 15248, males: 1524, total: 16772, achievedPct: 9.99, widthFt: 41.98, heightFt: 13 },
+  { id: 'TC-01', in: B({}), sectionsPerRow: 55, totalSections: 275, mixedSections: 98, females: 11632, males: 1176, total: 12808, achievedPct: 10.11, widthFt: 41.98, heightFt: 11 },
+  { id: 'TC-02', in: B({ tiers: 4 }), sectionsPerRow: 54, totalSections: 270, mixedSections: 128, females: 15232, males: 1536, total: 16768, achievedPct: 10.08, widthFt: 41.98, heightFt: 13 },
   { id: 'TC-03', in: B({ boxSize: 2 }), sectionsPerRow: 52, totalSections: 260, mixedSections: 108, females: 10752, males: 1080, total: 11832, achievedPct: 10.04, widthFt: 41.98, heightFt: 11 },
-  { id: 'TC-04', in: B({ boxSize: 5 }), sectionsPerRow: 50, totalSections: 250, mixedSections: 103, females: 10352, males: 1030, total: 11382, achievedPct: 9.95, widthFt: 41.98, heightFt: 11 },
+  { id: 'TC-04', in: B({ boxSize: 5 }), sectionsPerRow: 50, totalSections: 250, mixedSections: 104, females: 10336, males: 1040, total: 11376, achievedPct: 10.06, widthFt: 41.98, heightFt: 11 },
   { id: 'TC-05', in: B({ config: 1 }), sectionsPerRow: 56, totalSections: 280, mixedSections: 99, females: 11856, males: 1188, total: 13044, achievedPct: 10.02, widthFt: 41.98, heightFt: 10 },
-  { id: 'TC-06', in: B({ rows: 3, houseLengthFt: 250, config: 2 }), sectionsPerRow: 36, totalSections: 108, mixedSections: 38, females: 4576, males: 456, total: 5032, achievedPct: 9.97, widthFt: 26.55, heightFt: 11 },
+  { id: 'TC-06', in: B({ rows: 3, houseLengthFt: 250, config: 2 }), sectionsPerRow: 36, totalSections: 108, mixedSections: 39, females: 4560, males: 468, total: 5028, achievedPct: 10.26, widthFt: 26.55, heightFt: 11 },
   { id: 'TC-07', in: B({ boxSize: 3, tiers: 4, rows: 6, houseLengthFt: 400, malePer100Females: 12 }), sectionsPerRow: 58, totalSections: 348, mixedSections: 192, females: 19200, males: 2304, total: 21504, achievedPct: 12.0, widthFt: 49.7, heightFt: 13 },
-  { id: 'TC-08', in: B({ boxSize: 7, rows: 4, houseLengthFt: 300, config: 4, malePer100Females: 8 }), sectionsPerRow: 41, totalSections: 164, mixedSections: 47, females: 7120, males: 564, total: 7684, achievedPct: 7.92, widthFt: 34.27, heightFt: 10 },
+  { id: 'TC-08', in: B({ boxSize: 7, rows: 4, houseLengthFt: 300, config: 4, malePer100Females: 8 }), sectionsPerRow: 41, totalSections: 164, mixedSections: 48, females: 7104, males: 576, total: 7680, achievedPct: 8.11, widthFt: 34.27, heightFt: 10 },
 ]
 
 describe('computePlanner — Section 19 golden test cases', () => {
@@ -99,23 +101,22 @@ describe('computePlanner — TC-01 full step trace (Section 19.1)', () => {
     // length). Following Section 12 exactly; spec inconsistency flagged to Metplast.
     expect(r.layout.rowLengthFt).toBeCloseTo(348.5, 2)
   })
-  it('Step 5 — allocation', () => {
+  it('Step 5 — allocation (D2: x rounds UP, 97.06 → 98)', () => {
     expect(r.layout.xExact).toBeCloseTo(97.0588, 3)
-    expect(r.layout.mixedSections).toBe(97)
-    expect(r.layout.femaleSections).toBe(178)
+    expect(r.layout.mixedSections).toBe(98)
+    expect(r.layout.femaleSections).toBe(177)
   })
   it('Step 6 — bird and box counts', () => {
-    expect(r.flock.femaleBoxes).toBe(5824)
-    expect(r.flock.maleBoxes).toBe(582)
-    expect(r.flock.females).toBe(11648)
-    expect(r.flock.males).toBe(1164)
-    expect(r.flock.total).toBe(12812)
-    expect(r.flock.achievedMalePct).toBeCloseTo(9.9931, 3)
+    expect(r.flock.femaleBoxes).toBe(5816)
+    expect(r.flock.maleBoxes).toBe(588)
+    expect(r.flock.females).toBe(11632)
+    expect(r.flock.males).toBe(1176)
+    expect(r.flock.total).toBe(12808)
+    expect(r.flock.achievedMalePct).toBeCloseTo(10.11, 2)
   })
   it('Step 7 — width', () => {
     expect(r.shed.widthMm).toBe(12797)
     expect(r.shed.widthFt).toBeCloseTo(41.98, 2)
-    expect(r.shed.trolleyClearanceMm).toBeCloseTo(491.2, 1)
   })
   it('Step 8 — height', () => {
     expect(r.shed.cageHeightMm).toBeCloseTo(2372.6, 1)

@@ -6,7 +6,15 @@
 // the client UI calls.
 
 import { computePlanner, type PlannerInput, type PlannerResult } from './engine'
-import { DEFAULT_MASTER_DATA, isBoxSizeValid, type MasterData } from './master-data'
+import { DEFAULT_MASTER_DATA, isBoxSizeValid, MM_TO_FT, type MasterData } from './master-data'
+
+// D9 (Arnav, 12 Aug 2026): walkway is the FEEDER-TO-FEEDER gap, not trolley
+// clearance. Warn below 3.5 ft, block below 3.0 ft. Thresholds in mm: 1066 is
+// Metplast's own 3.5 ft standard side gap (so the default does not self-warn);
+// 914 mm = 3.0 ft. (Arnav's doc rounds 3.5 ft up to 1067; using the 1066
+// standard avoids warning the default breeder gap — flagged to Arnav.)
+const WALKWAY_WARN_MM = 1066
+const WALKWAY_BLOCK_MM = 914
 
 export type Severity = 'BLOCK' | 'WARN' | 'INFO'
 
@@ -115,13 +123,18 @@ export function planForward(input: ForwardInput, data: MasterData = DEFAULT_MAST
       push('V8', 'BLOCK', 'Cage length mismatch. Internal error - log and alert.')
   }
 
-  // V9 — trolley clearance (WARN)
-  if (r.shed.trolleyClearanceMm < 450)
-    push(
-      'V9',
-      'WARN',
-      `Clear walkway alongside the feeding trolley is only ${r.shed.trolleyClearanceMm.toFixed(0)} mm. Consider increasing the walking gaps or reducing rows.`,
-    )
+  // V9 (D9) — feeder-to-feeder walkway gaps. Warn below 3.5 ft, block below 3.0 ft.
+  const gaps: [string, number][] = [
+    ...(input.rows > 1 ? ([['centre', r.shed.centreGapMm]] as [string, number][]) : []),
+    ['side', r.shed.sideGapMm],
+  ]
+  for (const [name, mm] of gaps) {
+    const ft = mm * MM_TO_FT
+    if (mm < WALKWAY_BLOCK_MM)
+      push('V9', 'BLOCK', `The ${name} walkway gap is only ${ft.toFixed(2)} ft (${mm.toFixed(0)} mm), below the 3.0 ft (914 mm) minimum. Increase the ${name} gap or reduce rows.`)
+    else if (mm < WALKWAY_WARN_MM)
+      push('V9', 'WARN', `The ${name} walkway gap is ${ft.toFixed(2)} ft (${mm.toFixed(0)} mm), below the recommended 3.5 ft. Please confirm.`)
+  }
 
   // V10 — dead length (INFO). NOTE: §15's literal condition (deadLength > section
   // length) can never fire — deadLength is always < one section. Implemented per

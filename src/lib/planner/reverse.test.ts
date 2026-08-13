@@ -2,10 +2,10 @@ import { describe, it, expect } from 'vitest'
 import { planTargetBirds, planTargetBirdsAndPlot } from './reverse'
 
 describe('planTargetBirds — Mode B (Section 13.2)', () => {
-  it('reverse of TC-01 returns 364.5 ft and the buildable numbers', () => {
+  it('reverse of TC-01 returns 364.5 ft and the buildable numbers (D2 rounding)', () => {
     const out = planTargetBirds({
       product: 'BREEDER',
-      targetFemales: 11648,
+      targetFemales: 11632, // TC-01 females under D2 round-up
       rows: 5,
       tiers: 3,
       boxSize: 1,
@@ -17,10 +17,10 @@ describe('planTargetBirds — Mode B (Section 13.2)', () => {
     expect(out.nRequired).toBe(275)
     expect(out.sectionsPerRow).toBe(55)
     expect(out.recommendedHouseLengthFt).toBeCloseTo(364.5, 2)
-    // Re-run forward delivers exactly the target.
+    // Re-run forward delivers at least the target.
     expect(out.report.ok).toBe(true)
-    expect(out.report.result!.flock.females).toBe(11648)
-    expect(out.report.result!.flock.males).toBe(1164)
+    expect(out.report.result!.flock.females).toBe(11632)
+    expect(out.report.result!.flock.males).toBe(1176)
     expect(out.report.result!.layout.sectionsPerRow).toBe(55)
   })
 
@@ -33,7 +33,7 @@ describe('planTargetBirdsAndPlot — Mode C', () => {
   it('returns up to three row options that fit the plot width, best capacity first', () => {
     const out = planTargetBirdsAndPlot({
       product: 'BREEDER',
-      targetFemales: 11648,
+      targetFemales: 11632,
       tiers: 3,
       boxSize: 1,
       config: 3,
@@ -52,7 +52,7 @@ describe('planTargetBirdsAndPlot — Mode C', () => {
   it('excludes row counts whose shed is wider than the plot', () => {
     const narrow = planTargetBirdsAndPlot({
       product: 'BREEDER',
-      targetFemales: 11648,
+      targetFemales: 11632,
       tiers: 3,
       boxSize: 1,
       config: 3,

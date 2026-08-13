@@ -4,7 +4,7 @@ import React, { useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Calculator, Settings2, ArrowRight, AlertTriangle, Info, Ban } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { boxFamily, type MasterData, type PlannerProduct } from '@/lib/planner/master-data'
+import { boxFamily, MM_TO_FT, type MasterData, type PlannerProduct } from '@/lib/planner/master-data'
 import { planForward, type PlannerMessage, type PlannerReport } from '@/lib/planner/validation'
 import { planTargetBirds, planTargetBirdsAndPlot, type PlotOption } from '@/lib/planner/reverse'
 import { buildPlannerDrawings } from '@/lib/planner/drawings'
@@ -377,6 +377,23 @@ export function BreederPlannerClient({ data }: { data: MasterData }) {
                   <Stat title="Shed width" value={`${out.result.shed.widthFt.toFixed(2)} ft`} sub={`${out.result.shed.widthMm.toLocaleString()} mm`} />
                   <Stat title="Shed height" value={`${out.result.shed.heightFt} ft`} sub={`${out.result.shed.headroomMm.toFixed(0)} mm clear headroom`} />
                   <Stat title="Shed length" value={`${out.result.shed.lengthFt.toFixed(2)} ft`} sub={`cage ${out.result.layout.cageLengthFt.toFixed(2)} ft · front ${out.result.layout.frontServiceFt.toFixed(2)} ft`} />
+                </div>
+
+                {/* Walkway gaps (D9) — feeder-to-feeder, shown in ft + mm */}
+                <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
+                  <p className="text-xs font-bold uppercase tracking-wider mb-1 text-[#9AA7BD]">Walkway gaps (feeder-to-feeder)</p>
+                  <p className="text-white text-sm">
+                    Side {(out.result.shed.sideGapMm * MM_TO_FT).toFixed(2)} ft ({out.result.shed.sideGapMm.toLocaleString()} mm)
+                    {out.result.layout.totalSections > 0 && out.effInput.rows > 1 && (
+                      <> · Centre {(out.result.shed.centreGapMm * MM_TO_FT).toFixed(2)} ft ({out.result.shed.centreGapMm.toLocaleString()} mm)</>
+                    )}
+                  </p>
+                  <p className="text-[#9AA7BD] text-xs mt-1">Metplast standard is 3.5–4.0 ft; warned below 3.5 ft, not allowed below 3.0 ft.</p>
+                </div>
+
+                {/* D7 — male tier allocation disclaimer, on every output */}
+                <div className="rounded-xl border bg-sky-500/10 border-sky-500/30 text-sky-200 px-4 py-3 text-sm">
+                  Males sit on the middle tier by default (customer-changeable). <span className="font-semibold">Male tier allocation to be confirmed by Metplast Sales Engineer.</span>
                 </div>
 
                 {/* Per-bird metrics — Step 9 */}
