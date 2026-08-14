@@ -18,6 +18,7 @@ const PRODUCT_LABEL: Record<PlannerProduct, string> = {
   BREEDER_PULLET: 'Breeder Pullet (rearing)',
 }
 const MODE_LABEL: Record<Mode, string> = { FORWARD: 'I have a shed', TARGET: 'I have a bird target', PLOT: 'Bird target + plot' }
+const MODE_SHORT: Record<Mode, string> = { FORWARD: 'Shed', TARGET: 'Bird target', PLOT: 'Plot' }
 
 // TC-01 defaults, so the tool opens on the reference case.
 const DEFAULTS = {
@@ -34,14 +35,14 @@ const DEFAULTS = {
 }
 
 const inputCls =
-  'w-full bg-black/40 border border-white/10 rounded-xl px-5 py-3.5 text-white text-lg font-medium focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)] transition-all'
-const labelCls = 'block text-sm font-bold tracking-widest text-[#9AA7BD] uppercase mb-3'
+  'w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-base sm:px-5 sm:py-3.5 sm:text-lg text-white font-medium focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)] transition-all'
+const labelCls = 'block text-[11px] sm:text-sm font-bold tracking-widest text-[#9AA7BD] uppercase mb-2 sm:mb-3'
 
 function Stat({ title, value, sub, highlight }: { title: string; value: string; sub?: string; highlight?: boolean }) {
   return (
-    <div className={`bg-white/5 border border-white/10 rounded-2xl p-5 ${highlight ? 'sm:col-span-2 bg-[var(--brand-navy)]/40 border-[var(--brand-navy)]' : ''}`}>
+    <div className={`bg-white/5 border border-white/10 rounded-2xl p-4 sm:p-5 ${highlight ? 'sm:col-span-2 bg-[var(--brand-navy)]/40 border-[var(--brand-navy)]' : ''}`}>
       <p className={`text-xs font-bold uppercase tracking-wider mb-1.5 ${highlight ? 'text-white/70' : 'text-[#9AA7BD]'}`}>{title}</p>
-      <p className={`${highlight ? 'text-4xl md:text-5xl text-[var(--accent)] font-["Space_Grotesk"]' : 'text-2xl text-white'} font-black leading-none`}>{value}</p>
+      <p className={`${highlight ? 'text-3xl sm:text-4xl md:text-5xl text-[var(--accent)] font-["Space_Grotesk"]' : 'text-xl sm:text-2xl text-white'} font-black leading-none`}>{value}</p>
       {sub && <p className="text-[#9AA7BD] text-xs mt-2 font-medium">{sub}</p>}
     </div>
   )
@@ -73,10 +74,10 @@ function BoqPanel({ boq }: { boq: Boq }) {
     return acc
   }, {})
   return (
-    <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
-      <button onClick={() => setOpen((o) => !o)} className="w-full flex items-center justify-between text-left">
+    <div className="bg-white/5 border border-white/10 rounded-2xl p-4 sm:p-5">
+      <button onClick={() => setOpen((o) => !o)} className="w-full flex items-center justify-between gap-3 text-left">
         <span className="text-xs font-bold uppercase tracking-wider text-[#9AA7BD]">Bill of quantities · connected load ≈ {boq.connectedKw} kW</span>
-        <span className="text-[var(--accent)] text-sm font-bold">{open ? 'Hide' : 'Show'}</span>
+        <span className="text-[var(--accent)] text-sm font-bold shrink-0">{open ? 'Hide' : 'Show'}</span>
       </button>
       {open && (
         <div className="mt-4 space-y-4">
@@ -85,12 +86,12 @@ function BoqPanel({ boq }: { boq: Boq }) {
               <p className="text-[var(--accent)] text-xs font-bold uppercase tracking-wider mb-1">{group}</p>
               <div className="divide-y divide-white/5">
                 {lines.map((l, i) => (
-                  <div key={i} className="flex items-baseline justify-between gap-4 py-1.5 text-sm">
-                    <span className="text-white/80">
+                  <div key={i} className="flex items-baseline justify-between gap-3 py-1.5 text-sm">
+                    <span className="text-white/80 min-w-0">
                       {l.item}
                       {l.note && <span className="text-[#9AA7BD] text-xs"> — {l.note}</span>}
                     </span>
-                    <span className="text-white font-semibold whitespace-nowrap">
+                    <span className="text-white font-semibold whitespace-nowrap shrink-0">
                       {l.qty === null ? 'TBC' : l.qty.toLocaleString()} {l.unit}
                     </span>
                   </div>
@@ -188,18 +189,18 @@ export function BreederPlannerClient({ data }: { data: MasterData }) {
   }
 
   return (
-    <div className="max-w-[1200px] mx-auto pt-32 pb-24 px-6 relative z-10">
-      <div className="text-center mb-14">
+    <div className="max-w-[1200px] mx-auto pt-24 sm:pt-32 pb-16 sm:pb-24 px-4 sm:px-6 relative z-10">
+      <div className="text-center mb-8 sm:mb-14">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--accent)]/10 border border-[var(--accent)]/20 mb-6"
+          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--accent)]/10 border border-[var(--accent)]/20 mb-5 sm:mb-6"
         >
           <Settings2 className="w-4 h-4 text-[var(--accent)]" />
           <span className="text-xs font-bold uppercase tracking-widest text-[var(--accent)]">Breeder Farm Planner</span>
         </motion.div>
-        <h1 className="text-4xl md:text-6xl font-black font-['Space_Grotesk'] text-[var(--text)] mb-5 tracking-tight">H-Type Breeder Planner</h1>
-        <p className="text-lg text-[var(--text-muted)] font-medium max-w-2xl mx-auto">
+        <h1 className="text-3xl sm:text-4xl md:text-6xl font-black font-['Space_Grotesk'] text-[var(--text)] mb-4 sm:mb-5 tracking-tight leading-tight">H-Type Breeder Planner</h1>
+        <p className="text-base sm:text-lg text-[var(--text-muted)] font-medium max-w-2xl mx-auto">
           Start from a shed, a bird target, or a plot. The planner returns capacity, the flock split, shed dimensions, per-bird space, layout drawings and a bill of quantities.
         </p>
       </div>
@@ -214,21 +215,22 @@ export function BreederPlannerClient({ data }: { data: MasterData }) {
         />
         <div className="grid lg:grid-cols-12 relative z-10">
           {/* Inputs */}
-          <div className="lg:col-span-5 p-8 md:p-10 border-b lg:border-b-0 lg:border-r border-white/10 bg-white/5">
+          <div className="lg:col-span-5 p-5 sm:p-8 md:p-10 border-b lg:border-b-0 lg:border-r border-white/10 bg-white/5">
             {/* Mode tabs */}
-            <div className="flex gap-1 mb-8 bg-black/30 rounded-xl p-1">
+            <div className="flex gap-1 mb-6 sm:mb-8 bg-black/30 rounded-xl p-1">
               {(['FORWARD', 'TARGET', 'PLOT'] as Mode[]).map((mo) => (
                 <button
                   key={mo}
                   onClick={() => setMode(mo)}
-                  className={`flex-1 rounded-lg px-2 py-2 text-xs font-bold transition-colors ${mode === mo ? 'bg-[var(--accent)] text-white' : 'text-[#9AA7BD] hover:text-white'}`}
+                  className={`flex-1 rounded-lg px-1.5 sm:px-2 py-2 text-[11px] sm:text-xs font-bold leading-tight transition-colors ${mode === mo ? 'bg-[var(--accent)] text-white' : 'text-[#9AA7BD] hover:text-white'}`}
                 >
-                  {MODE_LABEL[mo]}
+                  <span className="sm:hidden">{MODE_SHORT[mo]}</span>
+                  <span className="hidden sm:inline">{MODE_LABEL[mo]}</span>
                 </button>
               ))}
             </div>
 
-            <div className="space-y-6">
+            <div className="space-y-5 sm:space-y-6">
               <div>
                 <label className={labelCls}>Product</label>
                 <select className={inputCls} value={f.product} onChange={(e) => setProduct(e.target.value as PlannerProduct)}>
@@ -320,7 +322,7 @@ export function BreederPlannerClient({ data }: { data: MasterData }) {
           </div>
 
           {/* Outputs */}
-          <div className="lg:col-span-7 p-8 md:p-10 bg-black/40 flex flex-col justify-center min-h-[560px]">
+          <div className="lg:col-span-7 p-5 sm:p-8 md:p-10 bg-black/40 flex flex-col justify-center min-h-[320px] sm:min-h-[560px]">
             {out.kind === 'blocked' ? (
               <div className="space-y-4">
                 {out.report.messages.filter((x) => x.severity === 'BLOCK').map((msg, i) => <MessageRow key={i} m={msg} />)}
@@ -332,9 +334,9 @@ export function BreederPlannerClient({ data }: { data: MasterData }) {
                 <p className="text-[var(--accent)] font-bold tracking-widest uppercase text-sm">Best fits for your plot</p>
                 {out.options.length === 0 && <p className="text-[#9AA7BD]">No row count fits that width. Increase the maximum width.</p>}
                 {out.options.map((o, i) => (
-                  <div key={o.rows} className="bg-white/5 border border-white/10 rounded-2xl p-5 flex items-center justify-between gap-4">
+                  <div key={o.rows} className="bg-white/5 border border-white/10 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div>
-                      <p className="text-white font-black text-xl">
+                      <p className="text-white font-black text-lg sm:text-xl">
                         {o.rows} rows · {o.totalBirds.toLocaleString()} birds
                         {i === 0 && <span className="ml-2 text-[var(--accent)] text-xs font-bold uppercase">Best</span>}
                       </p>
@@ -342,25 +344,25 @@ export function BreederPlannerClient({ data }: { data: MasterData }) {
                         {o.recommendedHouseLengthFt.toFixed(1)} ft long · {o.widthFt.toFixed(2)} ft wide · {o.females.toLocaleString()} F / {o.males.toLocaleString()} M
                       </p>
                     </div>
-                    <button onClick={() => useLayout(o)} className="shrink-0 bg-[var(--accent)] text-white font-bold px-4 py-2 rounded-xl hover:bg-[var(--accent)]/90">
+                    <button onClick={() => useLayout(o)} className="w-full sm:w-auto shrink-0 bg-[var(--accent)] text-white font-bold px-4 py-2.5 rounded-xl hover:bg-[var(--accent)]/90">
                       Use this
                     </button>
                   </div>
                 ))}
               </motion.div>
             ) : out.kind === 'result' ? (
-              <motion.div initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} className="space-y-6">
+              <motion.div initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} className="space-y-5 sm:space-y-6">
                 {out.recommendedLengthFt !== null && (
-                  <div className="bg-[var(--accent)]/10 border border-[var(--accent)]/30 rounded-2xl p-5">
+                  <div className="bg-[var(--accent)]/10 border border-[var(--accent)]/30 rounded-2xl p-4 sm:p-5">
                     <p className="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-1">Recommended shed length</p>
-                    <p className="text-4xl font-black text-white">{out.recommendedLengthFt.toFixed(1)} ft</p>
+                    <p className="text-3xl sm:text-4xl font-black text-white">{out.recommendedLengthFt.toFixed(1)} ft</p>
                     <p className="text-[#9AA7BD] text-xs mt-1">Smallest shed that meets your target, run back through the forward engine for exact numbers.</p>
                   </div>
                 )}
 
                 <div>
                   <p className="text-[var(--accent)] font-bold tracking-widest uppercase text-sm mb-1">Farm Plan Summary</p>
-                  <h3 className="text-2xl font-black text-white">
+                  <h3 className="text-xl sm:text-2xl font-black text-white">
                     {out.result.flock.total.toLocaleString()} birds · {out.result.flock.females.toLocaleString()} F / {out.result.flock.males.toLocaleString()} M
                   </h3>
                   <p className="text-[#9AA7BD] text-sm mt-1">
@@ -380,7 +382,7 @@ export function BreederPlannerClient({ data }: { data: MasterData }) {
                 </div>
 
                 {/* Walkway gaps (D9) — feeder-to-feeder, shown in ft + mm */}
-                <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
+                <div className="bg-white/5 border border-white/10 rounded-2xl p-4 sm:p-5">
                   <p className="text-xs font-bold uppercase tracking-wider mb-1 text-[#9AA7BD]">Walkway gaps (feeder-to-feeder)</p>
                   <p className="text-white text-sm">
                     Side {(out.result.shed.sideGapMm * MM_TO_FT).toFixed(2)} ft ({out.result.shed.sideGapMm.toLocaleString()} mm)
@@ -397,7 +399,7 @@ export function BreederPlannerClient({ data }: { data: MasterData }) {
                 </div>
 
                 {/* Per-bird metrics — Step 9 */}
-                <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
+                <div className="bg-white/5 border border-white/10 rounded-2xl p-4 sm:p-5">
                   <p className="text-xs font-bold uppercase tracking-wider mb-3 text-[#9AA7BD]">Per-bird space (Step 9)</p>
                   <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm text-white/80">
                     <span>Female area</span>
@@ -412,7 +414,7 @@ export function BreederPlannerClient({ data }: { data: MasterData }) {
                 </div>
 
                 {/* Dead-length indicator — V10 / Section 9.3 */}
-                <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
+                <div className="bg-white/5 border border-white/10 rounded-2xl p-4 sm:p-5">
                   <p className="text-xs font-bold uppercase tracking-wider mb-1 text-[#9AA7BD]">Unused shed length (dead length)</p>
                   <p className="text-2xl font-black text-white">{out.result.layout.deadLengthFt.toFixed(2)} ft</p>
                   <p className="text-[#9AA7BD] text-xs mt-1">Length left over after whole sections, kits and service areas. A different box size may use it better.</p>
@@ -426,11 +428,11 @@ export function BreederPlannerClient({ data }: { data: MasterData }) {
                 {view?.drawings && (
                   <div className="space-y-3">
                     <p className="text-[var(--accent)] font-bold tracking-widest uppercase text-sm">Layout drawings</p>
-                    <div className="bg-white rounded-2xl p-3 overflow-x-auto">
-                      <div className="min-w-[520px]" dangerouslySetInnerHTML={{ __html: view.drawings.crossSection }} />
+                    <div className="bg-white rounded-2xl p-2 sm:p-3 overflow-x-auto">
+                      <div className="min-w-[300px] sm:min-w-[520px] [&>svg]:w-full [&>svg]:h-auto" dangerouslySetInnerHTML={{ __html: view.drawings.crossSection }} />
                     </div>
-                    <div className="bg-white rounded-2xl p-3 overflow-x-auto">
-                      <div className="min-w-[520px]" dangerouslySetInnerHTML={{ __html: view.drawings.plan }} />
+                    <div className="bg-white rounded-2xl p-2 sm:p-3 overflow-x-auto">
+                      <div className="min-w-[300px] sm:min-w-[520px] [&>svg]:w-full [&>svg]:h-auto" dangerouslySetInnerHTML={{ __html: view.drawings.plan }} />
                     </div>
                     <p className="text-[#9AA7BD] text-xs">Approximate overview. Male line layout and positioning are finalised during execution.</p>
                   </div>
