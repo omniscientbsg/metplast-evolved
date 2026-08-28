@@ -9,6 +9,7 @@ import {
   Menu, X, ArrowUpRight, ChevronDown, Download, FileText, Sun, Moon
 } from 'lucide-react';
 import Image from 'next/image';
+import { useSiteSettings } from '@/lib/settings/site-settings-context';
 
 /* ─── Navigation links ─────────────────────────────────────── */
 const links = [
@@ -27,7 +28,9 @@ const links = [
   { name: 'Environmental Control', href: '/environmental-control' },
   { name: 'Feed Silos', href: '/feed-silos' },
   { name: 'Calculators', href: '/calculators' },
+  { name: 'Breeder Planner', href: '/planner' },
   { name: 'Gallery', href: '/gallery' },
+  { name: 'Blog', href: '/blog' },
   { name: 'Contact', href: '/contact' },
 ];
 
@@ -133,6 +136,7 @@ export function Navbar() {
   const [isQuoteOpen, setIsQuoteOpen]         = useState(false);
   const [theme, setTheme]                     = useState<'dark' | 'light'>('dark');
   const pathname = usePathname();
+  const { logoDark, logoLight, phonePrimary } = useSiteSettings();
 
   /* ── Scroll listener ── */
   useEffect(() => {
@@ -191,6 +195,7 @@ export function Navbar() {
   const [brochureEmail, setBrochureEmail] = useState('');
   const [brochurePhone, setBrochurePhone] = useState('');
   const [brochureCode,  setBrochureCode]  = useState('+91');
+  const [brochureHp,    setBrochureHp]    = useState('');
   const [brochureError, setBrochureError] = useState('');
 
   function handleBrochureSubmit(e: React.FormEvent) {
@@ -214,6 +219,7 @@ export function Navbar() {
         phone: brochurePhone ? `${brochureCode} ${brochurePhone}` : '',
         type: 'brochure_download',
         product: BROCHURE_CATEGORIES[0].label,
+        hp: brochureHp,
         sourceUrl: window.location.href,
       }),
     }).catch(() => {});
@@ -225,13 +231,14 @@ export function Navbar() {
     setIsBrochureOpen(false);
     setBrochureEmail('');
     setBrochurePhone('');
+    setBrochureHp('');
   }
 
   /* ── Enquiry form state ── */
   const [enquiry, setEnquiry] = useState({
     name: '', company: '', countryCode: '+91', phone: '',
     email: '', country: '', birdType: '', requirement: '', capacity: '',
-    timeline: '', message: '',
+    timeline: '', message: '', hp: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
@@ -256,6 +263,7 @@ export function Navbar() {
           birdCapacity: enquiry.capacity,
           timeline: enquiry.timeline,
           message: enquiry.message,
+          hp: enquiry.hp,
           sourceUrl: window.location.href,
         }),
       });
@@ -263,7 +271,7 @@ export function Navbar() {
       setSubmitSuccess(true);
       setTimeout(() => { setIsQuoteOpen(false); setSubmitSuccess(false); }, 2500);
     } catch {
-      setSubmitError('Could not send your enquiry. Please try again, or call us directly at +91 89284 05002.');
+      setSubmitError(`Could not send your enquiry. Please try again, or call us directly at ${phonePrimary}.`);
     } finally {
       setIsSubmitting(false);
     }
@@ -288,14 +296,14 @@ export function Navbar() {
           <Link href="/" className="relative flex items-center h-20 w-72 group shrink-0">
             <div className="absolute inset-0 bg-[var(--accent)]/20 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
             <Image
-              src="/images/Logo Metplast.png"
+              src={logoDark}
               alt="Metplast Industries"
               fill
               className={`object-contain relative z-10 transition-opacity duration-300 ${(theme === 'light' && !isDarkSection) ? 'opacity-0' : 'opacity-100'}`}
               priority
             />
             <Image
-              src="/images/Metplast-Website-Themes-1980-x-400-px.png"
+              src={logoLight}
               alt="Metplast Industries"
               fill
               className={`object-contain relative z-10 transition-opacity duration-300 origin-left scale-[0.7] ${(theme === 'light' && !isDarkSection) ? 'opacity-100' : 'opacity-0'}`}
@@ -530,6 +538,11 @@ export function Navbar() {
               </p>
 
               <form className="space-y-4" onSubmit={handleBrochureSubmit}>
+                {/* Honeypot — hidden bot trap */}
+                <input type="text" name="website" tabIndex={-1} autoComplete="off"
+                  aria-hidden="true" value={brochureHp}
+                  onChange={e => setBrochureHp(e.target.value)}
+                  className="absolute left-[-9999px] w-px h-px opacity-0" />
                 <div className="space-y-1.5">
                   <label className={labelCls}>Email</label>
                   <input
@@ -621,6 +634,11 @@ export function Navbar() {
                 </div>
               ) : (
                 <form className="space-y-4" onSubmit={handleEnquirySubmit}>
+                  {/* Honeypot — hidden bot trap */}
+                  <input type="text" name="website" tabIndex={-1} autoComplete="off"
+                    aria-hidden="true" value={enquiry.hp}
+                    onChange={e => setEnquiry(p => ({ ...p, hp: e.target.value }))}
+                    className="absolute left-[-9999px] w-px h-px opacity-0" />
                   <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-1.5">
                       <label className={labelCls}>Name *</label>

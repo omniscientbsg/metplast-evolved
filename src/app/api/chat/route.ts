@@ -3,9 +3,43 @@ import { createOpenAI } from '@ai-sdk/openai'
 import { createAnthropic } from '@ai-sdk/anthropic'
 import { streamText } from 'ai'
 import prisma from '@/lib/prisma'
+import { rateLimit, getClientIp, tooManyRequests } from '@/lib/rate-limit'
+
+// Abuse limits. This endpoint calls a paid LLM using the owner's API key,
+// so uncapped access is a cost-DoS risk.
+const CHAT_RATE_LIMIT = 15        // requests
+const CHAT_RATE_WINDOW = 60_000   // per 60s per IP
+const MAX_MESSAGES = 40           // conversation turns per request
+const MAX_TOTAL_CHARS = 12_000    // total prompt size per request
 
 export async function POST(req: Request) {
-  const { messages } = await req.json()
+  // 1) Rate limit per IP.
+  const ip = getClientIp(req)
+  const rl = rateLimit(`chat:${ip}`, CHAT_RATE_LIMIT, CHAT_RATE_WINDOW)
+  if (!rl.ok) return tooManyRequests(rl.retryAfter)
+
+  // 2) Parse + validate input size.
+  let body: unknown
+  try {
+    body = await req.json()
+  } catch {
+    return new Response(JSON.stringify({ error: 'Invalid request body' }), { status: 400 })
+  }
+
+  const messages = (body as { messages?: unknown })?.messages
+  if (!Array.isArray(messages) || messages.length === 0) {
+    return new Response(JSON.stringify({ error: 'messages must be a non-empty array' }), { status: 400 })
+  }
+  if (messages.length > MAX_MESSAGES) {
+    return new Response(JSON.stringify({ error: 'Too many messages in one request' }), { status: 400 })
+  }
+  const totalChars = messages.reduce((sum: number, m) => {
+    const content = (m as { content?: unknown })?.content
+    return sum + (typeof content === 'string' ? content.length : JSON.stringify(content ?? '').length)
+  }, 0)
+  if (totalChars > MAX_TOTAL_CHARS) {
+    return new Response(JSON.stringify({ error: 'Message too long' }), { status: 400 })
+  }
 
   // Get active provider and training data
   const providerSetting = await prisma.setting.findUnique({ where: { key: 'chatbot_provider' } })

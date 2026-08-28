@@ -72,7 +72,7 @@ export function ScrollPageTemplate({ config }: ScrollPageTemplateProps) {
             priority 
             sizes="100vw" 
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-dark/60 via-dark/40 to-[var(--bg)]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-dark/60 via-dark/40 to-[var(--hero-fade)]" />
         </div>
 
         <div className="max-w-[1400px] mx-auto w-full relative z-10 pt-20">

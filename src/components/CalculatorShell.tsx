@@ -149,7 +149,7 @@ export function CalculatorShell({ title, description, inputs, systemType, onCalc
                     <input 
                       type="number"
                       value={values[input.id] || ''}
-                      onChange={(e) => setValues({ ...values, [input.id]: parseInt(e.target.value) || 0 })}
+                      onChange={(e) => setValues({ ...values, [input.id]: parseFloat(e.target.value) || 0 })}
                       placeholder={input.placeholder}
                       className="w-full bg-black/40 border border-white/10 rounded-xl px-5 py-4 text-white text-lg font-medium focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)] transition-all"
                     />
@@ -157,7 +157,7 @@ export function CalculatorShell({ title, description, inputs, systemType, onCalc
                     <div className="relative">
                       <select
                         value={values[input.id] || ''}
-                        onChange={(e) => setValues({ ...values, [input.id]: parseInt(e.target.value) || 0 })}
+                        onChange={(e) => setValues({ ...values, [input.id]: parseFloat(e.target.value) || 0 })}
                         className="w-full appearance-none bg-black/40 border border-white/10 rounded-xl px-5 py-4 text-white text-lg font-medium focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)] transition-all"
                       >
                         {input.options?.map((opt) => (

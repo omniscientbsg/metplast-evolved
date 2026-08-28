@@ -5,17 +5,22 @@ import { motion } from 'framer-motion';
 import { MapPin, Phone, Mail, ArrowUpRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { CountryCodeSelect } from '@/components/Navbar';
+import { useSiteSettings } from '@/lib/settings/site-settings-context';
+import { telHref } from '@/lib/settings/site-settings';
+import { useMiscContent } from '@/lib/content/misc-content-context';
 
 const BIRD_TYPES   = ['Layer', 'Broiler', 'Breeder', 'Not Sure'];
 const REQUIREMENTS = ['Complete Housing', 'Cage System', 'Feeding System', 'Drinking System', 'Ventilation / Cooling', 'Feed Silo', 'Spare Parts', 'Other'];
 const TIMELINES    = ['Immediate', '1–3 Months', '3–6 Months', 'Later'];
 
 export default function ContactPage() {
+  const s = useSiteSettings();
+  const copy = useMiscContent().contact;
   const [form, setForm] = useState({
     firstName: '', lastName: '', company: '',
     countryCode: '+91', phone: '', email: '',
     birdType: '', requirement: '', capacity: '',
-    timeline: '', message: '',
+    timeline: '', message: '', hp: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
@@ -66,6 +71,7 @@ export default function ContactPage() {
           birdCapacity: form.capacity,
           timeline: form.timeline,
           message: form.message,
+          hp: form.hp,
           product,
           sourceUrl: window.location.href,
         }),
@@ -73,7 +79,7 @@ export default function ContactPage() {
       if (!res.ok) throw new Error('Request failed');
       setSubmitSuccess(true);
     } catch {
-      setSubmitError('Could not send your enquiry. Please try again, or call us directly at +91 89284 05002.');
+      setSubmitError(`Could not send your enquiry. Please try again, or call us directly at ${s.phonePrimary}.`);
     } finally {
       setIsSubmitting(false);
     }
@@ -96,7 +102,7 @@ export default function ContactPage() {
             className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-[var(--border)] bg-[var(--text)]/5 backdrop-blur-xl"
           >
             <span className="text-sm font-bold tracking-widest uppercase" style={{ color: 'var(--accent)' }}>
-              Contact Metplast
+              {copy.heroEyebrow}
             </span>
           </motion.div>
           <motion.h1
@@ -105,8 +111,8 @@ export default function ContactPage() {
             transition={{ delay: 0.1 }}
             className="text-4xl sm:text-5xl md:text-7xl lg:text-[100px] break-words hyphens-auto font-['Space_Grotesk'] font-black text-[var(--text)] tracking-tighter max-w-4xl mx-auto leading-[0.9]"
           >
-            SPEAK TO A <br />
-            <span className="text-gradient">SALES ENGINEER.</span>
+            {copy.heroHeading} <br />
+            <span className="text-gradient">{copy.heroAccent}</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -114,7 +120,7 @@ export default function ContactPage() {
             transition={{ delay: 0.2 }}
             className="text-xl text-[var(--text-muted)] font-medium max-w-2xl mx-auto leading-relaxed"
           >
-            Have questions or need expert poultry solutions? Share your project details and our team will guide you every step of the way.
+            {copy.heroSubtitle}
           </motion.p>
         </div>
       </section>
@@ -127,7 +133,7 @@ export default function ContactPage() {
           className="lg:col-span-7 glass-panel p-10 md:p-14 rounded-[3rem] shadow-2xl border border-[var(--border)]"
         >
           <h2 className="text-4xl font-['Space_Grotesk'] font-black text-[var(--text)] mb-8 tracking-tighter">
-            SEND ENQUIRY.
+            {copy.formHeading}
           </h2>
 
           {submitSuccess ? (
@@ -138,6 +144,17 @@ export default function ContactPage() {
             </div>
           ) : (
             <form className="space-y-8" onSubmit={handleSubmit}>
+              {/* Honeypot — hidden from users, catches form-filling bots */}
+              <input
+                type="text"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                value={form.hp}
+                onChange={e => setForm(p => ({ ...p, hp: e.target.value }))}
+                className="absolute left-[-9999px] w-px h-px opacity-0"
+              />
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-3">
                   <label className={labelCls}>First Name *</label>
@@ -259,9 +276,7 @@ export default function ContactPage() {
                 <div>
                   <h4 className="text-sm font-bold text-[var(--text-muted)] uppercase tracking-widest mb-2">Address</h4>
                   <p className="text-[var(--text)] font-medium leading-relaxed">
-                    Plot No. 207, Atkargaon, Dheku Road,<br />
-                    Sajgaon Phata, Khalapur,<br />
-                    Dist. Raigad, MH-410203, India
+                    {s.address.split('\n').map((ln, i, a) => (<span key={i}>{ln}{i < a.length - 1 && <br />}</span>))}
                   </p>
                 </div>
               </div>
@@ -273,12 +288,14 @@ export default function ContactPage() {
                 <div>
                   <h4 className="text-sm font-bold text-[var(--text-muted)] uppercase tracking-widest mb-2">Phone</h4>
                   <div className="space-y-1">
-                    <a href="tel:+918928405002" className="text-[var(--text)] font-bold text-xl block hover:text-[var(--accent)] transition-colors">
-                      +91 89284 05002
+                    <a href={telHref(s.phonePrimary)} className="text-[var(--text)] font-bold text-xl block hover:text-[var(--accent)] transition-colors">
+                      {s.phonePrimary}
                     </a>
-                    <a href="tel:+918928405005" className="text-[var(--text-muted)] font-medium block hover:text-[var(--text)] transition-colors">
-                      +91 89284 05005
-                    </a>
+                    {s.phoneSecondary && (
+                      <a href={telHref(s.phoneSecondary)} className="text-[var(--text-muted)] font-medium block hover:text-[var(--text)] transition-colors">
+                        {s.phoneSecondary}
+                      </a>
+                    )}
                   </div>
                 </div>
               </div>
@@ -290,12 +307,14 @@ export default function ContactPage() {
                 <div>
                   <h4 className="text-sm font-bold text-[var(--text-muted)] uppercase tracking-widest mb-2">Email</h4>
                   <div className="space-y-1">
-                    <a href="mailto:info@metplast.com" className="text-[var(--text)] font-bold text-xl block hover:text-[var(--accent)] transition-colors">
-                      info@metplast.com
+                    <a href={`mailto:${s.emailPrimary}`} className="text-[var(--text)] font-bold text-xl block hover:text-[var(--accent)] transition-colors">
+                      {s.emailPrimary}
                     </a>
-                    <a href="mailto:sales@metplast.com" className="text-[var(--text-muted)] font-medium block hover:text-[var(--text)] transition-colors">
-                      sales@metplast.com
-                    </a>
+                    {s.emailSecondary && (
+                      <a href={`mailto:${s.emailSecondary}`} className="text-[var(--text-muted)] font-medium block hover:text-[var(--text)] transition-colors">
+                        {s.emailSecondary}
+                      </a>
+                    )}
                   </div>
                 </div>
               </div>
@@ -308,10 +327,10 @@ export default function ContactPage() {
           >
             <div className="absolute top-0 right-0 w-32 h-32 bg-white/20 blur-2xl rounded-full" />
             <h3 className="text-3xl font-['Space_Grotesk'] font-black mb-4 tracking-tighter leading-none">
-              FROM BLUEPRINT TO INSTALLATION.
+              {copy.ctaHeading}
             </h3>
             <p className="text-white/90 font-medium text-lg">
-              Our expert team is ready to design and deploy the right system for your farm — from levelled land to full commissioning.
+              {copy.ctaBody}
             </p>
           </div>
         </div>

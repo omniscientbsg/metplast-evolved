@@ -1,58 +1,58 @@
-import prisma from "@/lib/prisma"
+import prisma from '@/lib/prisma';
+import Link from 'next/link';
+import { ProductRowActions } from './ProductRowActions';
+
+export const dynamic = 'force-dynamic';
 
 export default async function ProductsAdminPage() {
-  const products = await prisma.product.findMany({
-    orderBy: { createdAt: 'desc' }
-  })
+  const sections = await prisma.productSection.findMany({
+    orderBy: [{ page: 'asc' }, { sortOrder: 'asc' }],
+  });
+
+  const byPage: Record<string, typeof sections> = {};
+  for (const s of sections) (byPage[s.page] ??= []).push(s);
 
   return (
     <div className="space-y-8">
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-black text-white tracking-tight">Products</h1>
-          <p className="text-white/60 mt-1">Manage your poultry equipment catalog.</p>
+          <p className="text-white/60 mt-1">Sections shown on each public page. Reorder with the arrows.</p>
         </div>
-        <button className="bg-primary text-white font-bold px-6 py-2 rounded-xl hover:bg-primary/90 transition-colors">Add Product</button>
+        <Link href="/admin/products/new"
+          className="bg-primary text-white font-bold px-6 py-2 rounded-xl hover:bg-primary/90 transition-colors">
+          Add Section
+        </Link>
       </div>
-      
-      <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
-        <table className="w-full text-left border-collapse">
-          <thead>
-            <tr className="border-b border-white/10 bg-black/20">
-              <th className="p-4 text-white/60 text-sm font-bold uppercase tracking-wider">Product Name</th>
-              <th className="p-4 text-white/60 text-sm font-bold uppercase tracking-wider">Category</th>
-              <th className="p-4 text-white/60 text-sm font-bold uppercase tracking-wider">Tagline</th>
-              <th className="p-4 text-white/60 text-sm font-bold uppercase tracking-wider text-right">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {products.length === 0 ? (
-              <tr>
-                <td colSpan={4} className="p-8 text-center text-white/50">No products found. Add your first product!</td>
-              </tr>
-            ) : (
-              products.map((product) => (
-                <tr key={product.id} className="border-b border-white/10 hover:bg-white/5 transition-colors">
+
+      {Object.keys(byPage).length === 0 && (
+        <div className="bg-white/5 border border-white/10 rounded-2xl p-8 text-center text-white/50">
+          No sections yet. Run <code>npm run db:migrate-content</code> or add one.
+        </div>
+      )}
+
+      {Object.entries(byPage).map(([page, rows]) => (
+        <div key={page} className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+          <div className="px-4 py-3 bg-black/20 text-white/70 text-sm font-bold uppercase tracking-wider">
+            {page}
+          </div>
+          <table className="w-full text-left border-collapse">
+            <tbody>
+              {rows.map((s, i) => (
+                <tr key={s.id} className="border-t border-white/10 hover:bg-white/5">
                   <td className="p-4">
-                    <div className="font-bold text-white">{product.name}</div>
-                    <div className="text-xs text-white/50">/{product.slug}</div>
+                    <div className="font-bold text-white">{s.title}</div>
+                    <div className="text-xs text-white/50">/{s.slug}{!s.visible && ' · hidden'}</div>
                   </td>
-                  <td className="p-4">
-                    <span className="bg-white/10 text-white/80 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-                      {product.category}
-                    </span>
-                  </td>
-                  <td className="p-4 text-white/80 text-sm">{product.tagline}</td>
-                  <td className="p-4 text-right space-x-2">
-                    <button className="text-white/50 hover:text-white transition-colors text-sm font-medium">Edit</button>
-                    <button className="text-red-400 hover:text-red-300 transition-colors text-sm font-medium">Delete</button>
+                  <td className="p-4 text-right">
+                    <ProductRowActions id={s.id} isFirst={i === 0} isLast={i === rows.length - 1} />
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ))}
     </div>
-  )
+  );
 }

@@ -4,21 +4,20 @@ import React from 'react';
 import Link from 'next/link';
 import { MapPin, Phone, Mail } from 'lucide-react';
 import Image from 'next/image';
-
-const solutionLinks = [
-  { name: 'Metplast Housing', href: '/housing' },
-  { name: 'About Metplast', href: '/about' },
-  { name: 'Layer Solutions',  href: '/layer' },
-  { name: 'Breeder Solutions', href: '/breeder' },
-  { name: 'Broiler Solutions', href: '/broiler' },
-  { name: 'Environmental Control', href: '/environmental-control' },
-  { name: 'Feed Silos',       href: '/feed-silos' },
-  { name: 'Calculators',      href: '/calculators' },
-  { name: 'Gallery',          href: '/gallery' },
-  { name: 'Contact',          href: '/contact' },
-];
+import { useSiteSettings } from '@/lib/settings/site-settings-context';
+import { telHref } from '@/lib/settings/site-settings';
+import { parseFooterLinks } from '@/lib/settings/footer-links';
 
 export function Footer() {
+  const s = useSiteSettings();
+  const solutionLinks = parseFooterLinks(s.footerLinks);
+  // lucide (this version) ships no brand icons — render social links as text pills.
+  const socials = [
+    { url: s.socialFacebook, name: 'Facebook' },
+    { url: s.socialInstagram, name: 'Instagram' },
+    { url: s.socialLinkedin, name: 'LinkedIn' },
+    { url: s.socialYoutube, name: 'YouTube' },
+  ].filter((x) => x.url);
   return (
     <footer
       className="pt-24 pb-12 px-6 border-t relative z-30"
@@ -36,13 +35,13 @@ export function Footer() {
           <div className="lg:col-span-2 pr-12">
             <div className="flex items-center h-16 w-60 relative mb-8">
               <Image
-                src="/images/Logo Metplast.png"
+                src={s.logoDark}
                 alt="Metplast Industries"
                 fill
                 className="object-contain footer-logo-dark"
               />
               <Image
-                src="/images/Metplast-Website-Themes-1980-x-400-px.png"
+                src={s.logoLight}
                 alt="Metplast Industries"
                 fill
                 className="object-contain footer-logo-light origin-left scale-[0.7]"
@@ -52,13 +51,26 @@ export function Footer() {
               className="text-lg font-medium leading-relaxed mb-8 max-w-md"
               style={{ color: 'var(--text-muted)' }}
             >
-              From levelled land to complete poultry housing systems.
-              Metplast designs, manufactures, and installs cage systems,
-              feeding, drinking, ventilation, cooling, and feed storage
-              for Layer, Breeder, and Broiler farms.
+              {s.footerBlurb}
               <br /><br />
-              <em style={{ color: 'var(--text)' }}>Think of Poultry, Think of Us.</em>
+              <em style={{ color: 'var(--text)' }}>{s.tagline}</em>
             </p>
+            {socials.length > 0 && (
+              <div className="flex flex-wrap gap-3">
+                {socials.map(({ url, name }) => (
+                  <a
+                    key={name}
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-4 py-2 rounded-full text-sm font-bold transition-colors hover:text-[var(--accent)]"
+                    style={{ background: 'var(--glass-bg)', border: '1px solid var(--border)', color: 'var(--text-muted)' }}
+                  >
+                    {name}
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Navigation links */}
@@ -71,7 +83,7 @@ export function Footer() {
             </h4>
             <ul className="space-y-4">
               {solutionLinks.map(link => (
-                <li key={link.name}>
+                <li key={link.label}>
                   <Link
                     href={link.href}
                     className="font-medium flex items-center gap-3 transition-colors"
@@ -83,7 +95,7 @@ export function Footer() {
                       className="w-1.5 h-1.5 rounded-full shrink-0"
                       style={{ background: 'var(--accent)' }}
                     />
-                    {link.name}
+                    {link.label}
                   </Link>
                 </li>
               ))}
@@ -118,9 +130,9 @@ export function Footer() {
                     className="font-medium leading-relaxed pt-1"
                     style={{ color: 'var(--text-muted)' }}
                   >
-                    Plot No. 207, Atkargaon, Dheku Road,<br />
-                    Sajgaon Phata, Khalapur,<br />
-                    MH 410203, India
+                    {s.address.split('\n').map((ln, i, a) => (
+                      <span key={i}>{ln}{i < a.length - 1 && <br />}</span>
+                    ))}
                   </span>
                 </div>
               </li>
@@ -141,19 +153,21 @@ export function Footer() {
                     Phone
                   </span>
                   <a
-                    href="tel:+918928405002"
+                    href={telHref(s.phonePrimary)}
                     className="font-bold text-lg tracking-wide transition-colors block"
                     style={{ color: 'var(--text)' }}
                   >
-                    +91 89284 05002
+                    {s.phonePrimary}
                   </a>
-                  <a
-                    href="tel:+918928405005"
-                    className="font-medium transition-colors block"
-                    style={{ color: 'var(--text-muted)' }}
-                  >
-                    +91 89284 05005
-                  </a>
+                  {s.phoneSecondary && (
+                    <a
+                      href={telHref(s.phoneSecondary)}
+                      className="font-medium transition-colors block"
+                      style={{ color: 'var(--text-muted)' }}
+                    >
+                      {s.phoneSecondary}
+                    </a>
+                  )}
                 </div>
               </li>
 
@@ -173,19 +187,21 @@ export function Footer() {
                     Email
                   </span>
                   <a
-                    href="mailto:sales@metplast.com"
+                    href={`mailto:${s.emailPrimary}`}
                     className="font-bold tracking-wide hover:underline transition-colors block"
                     style={{ color: 'var(--text)' }}
                   >
-                    sales@metplast.com
+                    {s.emailPrimary}
                   </a>
-                  <a
-                    href="mailto:info@metplast.com"
-                    className="font-medium hover:underline transition-colors block"
-                    style={{ color: 'var(--text-muted)' }}
-                  >
-                    info@metplast.com
-                  </a>
+                  {s.emailSecondary && (
+                    <a
+                      href={`mailto:${s.emailSecondary}`}
+                      className="font-medium hover:underline transition-colors block"
+                      style={{ color: 'var(--text-muted)' }}
+                    >
+                      {s.emailSecondary}
+                    </a>
+                  )}
                 </div>
               </li>
             </ul>

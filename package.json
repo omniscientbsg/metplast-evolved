@@ -2,42 +2,65 @@
   "name": "metplast-app",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:seed-planner": "tsx scripts/seed-planner.ts",
+    "db:reset-admin": "tsx scripts/reset-admin.ts",
+    "db:migrate-content": "tsx scripts/migrate-content.ts",
+    "db:migrate-gallery": "tsx scripts/migrate-gallery.ts",
+    "db:migrate-pages": "tsx scripts/migrate-pages.ts",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^3.0.79",
     "@ai-sdk/google": "^3.0.79",
     "@ai-sdk/openai": "^3.0.65",
     "@ai-sdk/react": "^3.0.193",
+    "@prisma/client": "^5.22.0",
     "@radix-ui/react-slot": "^1.2.4",
+    "@tailwindcss/postcss": "^4",
+    "@tiptap/extension-image": "^3.28.0",
+    "@tiptap/pm": "^3.28.0",
+    "@tiptap/react": "^3.28.0",
+    "@tiptap/starter-kit": "^3.28.0",
     "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^20",
+    "@types/nodemailer": "^8.0.1",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/sanitize-html": "^2.16.1",
     "ai": "^6.0.191",
     "bcryptjs": "^3.0.3",
     "clsx": "^2.1.1",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.6",
     "framer-motion": "^12.40.0",
     "lucide-react": "^1.16.0",
     "next": "^16.2.6",
     "next-auth": "^4.24.14",
+    "nodemailer": "^7.0.13",
+    "prisma": "^5.22.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
-    "tailwind-merge": "^3.6.0"
-  },
-  "devDependencies": {
-    "@prisma/client": "^5.22.0",
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.2.6",
-    "prisma": "^5.22.0",
+    "sanitize-html": "2.16.0",
+    "tailwind-merge": "^3.6.0",
     "tailwindcss": "^4",
     "tsx": "^4.22.3",
     "typescript": "^5"
+  },
+  "devDependencies": {
+    "vitest": "^4.1.10"
   }
 }
